@@ -12,10 +12,11 @@ import Parallax from "components/Parallax/Parallax.js";
 import Hidden from '@material-ui/core/Hidden';
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import Footer from "components/Footer/Footer.js";
 import { BsChevronUp } from 'react-icons/bs';
 //import BackToTopButton from "components/BackToTopButton/BackToTopButton.js"
 
-import docPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyle.js";
+import docPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docPageStyle.js";
 
 import { getAllDocsIds, getDocData } from 'lib/docs'
 import Date from 'lib/date'
@@ -186,6 +187,23 @@ export default function DocPage({ docData }) {
           <span className={classes.backToTopButtonStyle}><BsChevronUp /></span>
         </div>
       </a>
+      <Footer
+          theme="white"
+          content={
+            <div style={{ fontSize: '0.8em' }}>
+              копирайт бгг &copy; {" "}
+              <a
+                href="http://epinetov.com"
+                target="_blank"
+              >
+                Vsevolod Epinetov
+              </a>{" "}
+              <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
+            </div>
+          }
+        >
+          <br />
+        </Footer>
     </div>
   );
 }

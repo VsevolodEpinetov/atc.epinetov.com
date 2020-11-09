@@ -43,6 +43,7 @@ export default function SectionFeatures({ ...rest }) {
               sm={8}
               md={8}
               className={classes.mlAuto + " " + classes.mrAuto}
+              style={{marginBottom: '2em !important'}}
             >
               <h2 className={classes.title}>Why our product is the best</h2>
               <h5 className={classes.description}>

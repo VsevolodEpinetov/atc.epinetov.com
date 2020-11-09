@@ -11,6 +11,7 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import Footer from "components/Footer/Footer.js";
 
 import Subject from "@material-ui/icons/Subject";
 
@@ -31,7 +32,7 @@ export default function IndexPage() {
   return (
     <div>
       <Header
-        links={<HeaderLinks dropdownHoverColor="dark"/>}
+        links={<HeaderLinks dropdownHoverColor="dark" />}
         color="transparent"
       />
       <div className={classes.projects}>
@@ -120,6 +121,23 @@ export default function IndexPage() {
             </GridItem>
           </GridContainer>
         </div>
+        <Footer
+          theme="white"
+          content={
+            <div style={{ fontSize: '0.8em' }}>
+              копирайт бгг &copy; {" "}
+              <a
+                href="http://epinetov.com"
+                target="_blank"
+              >
+                Vsevolod Epinetov
+              </a>{" "}
+              <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
+            </div>
+          }
+        >
+          <br />
+        </Footer>
       </div>
     </div>
   );

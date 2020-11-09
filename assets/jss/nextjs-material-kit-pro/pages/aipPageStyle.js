@@ -5,24 +5,22 @@ import {
     title,
     description,
     main
-} from "assets/jss/nextjs-material-kit-pro.js";
-
-const docsPageStyle = {
+  } from "assets/jss/nextjs-material-kit-pro.js";
+  
+  const aipStyle = {
     main,
     mlAuto,
     mrAuto,
     container: {
         ...container,
-        zIndex: "2"
+        zIndex: 1
     },
     title,
     description: {
         ...description,
         marginBottom: '1.6em'
-    },
-    textCenter: {
-        textAlign: "center"
     }
-};
-
-export default docsPageStyle;
+  };
+  
+  export default aipStyle;
+  

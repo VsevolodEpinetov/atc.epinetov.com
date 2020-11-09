@@ -1,12 +1,8 @@
 /*eslint-disable*/
 import React from "react";
 import Link from "next/link";
-// nodejs library that concatenates classes
-import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -15,15 +11,14 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import Footer from "components/Footer/Footer.js";
 
-import GetApp from "@material-ui/icons/GetApp";
-
-import indexPageStyle from "assets/jss/nextjs-material-kit-pro/pages/indexPageStyle.js";
+import docsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyle.js";
 
 import { getSortedDocsData } from 'lib/docs'
 import Date from 'lib/date'
 
-const useStyles = makeStyles(indexPageStyle);
+const useStyles = makeStyles(docsPageStyle);
 
 export default function docsPage({ allDocsData }) {
   React.useEffect(() => {
@@ -34,33 +29,63 @@ export default function docsPage({ allDocsData }) {
   return (
     <div>
       <Header
-        links={<HeaderLinks dropdownHoverColor="dark"/>}
+        links={<HeaderLinks dropdownHoverColor="dark" />}
         color="transparent"
       />
       <div className={classes.projects}>
         <div className={classes.container}>
           <GridContainer>
+            <GridItem
+              md={12}
+              className={classes.mlAuto + " " + classes.mrAuto}
+              style={{ marginBottom: '3em !important' }}
+            >
+              <h2 className={classes.title}>Актуальная документация</h2>
+              <h5 className={classes.description}>
+                Здесь находятся актуальные версии важных для ОВД документов. В некоторых документах имеется "краткая версия", которая содержит выжимку из документа только с важными частями. На странице всех документов снизу спарва имеется кнопка для быстрого возврата в начало документа.
+              </h5>
+              <h5 className={classes.description}>
+                Все файлы взяты с различных источников, но, как правило, все интересующие документы можно найти на сайте <a href="http://www.garant.ru/" target='_blank'>Гарант</a> и <a href="http://www.consultant.ru/" target='_blank'>Консультант.Плюс</a>.
+              </h5>
+            </GridItem>
             {
-                allDocsData.map(({ id, date, title }) => (
-                  <GridItem
-                    md={4}
-                    className={
-                      classes.mlAuto + " " + classes.mrAuto + " " + classes.textCenter
-                    }
-                  >
-                    <Card>
-                      <CardBody>
-                        <h4 className={classes.cardTitle}>{title}</h4>
-                        <p>Ред. от <Date dateString={date} /></p>
-                        <Button color="blue" href={`/docs/${id}`}>Смотреть</Button>
-                      </CardBody>
-                    </Card>
-                  </GridItem>
-                ))
+              allDocsData.map(({ id, date, title }) => (
+                <GridItem
+                  md={4}
+                  className={
+                    classes.mlAuto + " " + classes.mrAuto + " " + classes.textCenter
+                  }
+                >
+                  <Card>
+                    <CardBody>
+                      <h4 className={classes.cardTitle}>{title}</h4>
+                      <p>Ред. от <Date dateString={date} /></p>
+                      <Button color="blue" href={`/docs/${id}`}>Смотреть</Button>
+                    </CardBody>
+                  </Card>
+                </GridItem>
+              ))
             }
           </GridContainer>
         </div>
       </div>
+      <Footer
+        theme="white"
+        content={
+          <div style={{ fontSize: '0.8em' }}>
+            копирайт бгг &copy; {" "}
+            <a
+              href="http://epinetov.com"
+              target="_blank"
+            >
+              Vsevolod Epinetov
+              </a>{" "}
+            <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
+          </div>
+        }
+      >
+        <br />
+      </Footer>
     </div>
   );
 }

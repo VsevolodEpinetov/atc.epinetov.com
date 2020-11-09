@@ -6,7 +6,7 @@ import {
   mainRaised,
 } from "assets/jss/nextjs-material-kit-pro.js";
 
-const presentationStyle = {
+const indexPageStyle = {
   main: {
     ...main
     /*overflow: "hidden"*/
@@ -26,4 +26,4 @@ const presentationStyle = {
   }
 };
 
-export default presentationStyle;
+export default indexPageStyle;
