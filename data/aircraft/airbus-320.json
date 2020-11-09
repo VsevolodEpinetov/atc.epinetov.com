@@ -1,0 +1,57 @@
+{
+  "name": {
+    "plain": "Airbus 320",
+    "alt": ["a320"],
+    "forDevPurposes": "airbus-320"
+  },
+  "specs": {
+    "engines": {
+      "quantity": 2
+    },
+    "size": {
+      "length": {
+        "m": 37.57
+      },
+      "wingspan": {
+        "m": 35.8
+      },
+      "rank": 5
+    },
+    "speed": {
+      "cruising": {
+        "kmh": 830
+      },
+      "max": {
+        "kmh": 870
+      },
+      "rank": 5
+    },
+    "rates": {
+      "climb": {
+        "fpm": 3000
+      },
+      "rank": 5
+    },
+    "ceiling": {
+      "m": 12500,
+      "fl": 420
+    },
+    "range": {
+      "km": 6000,
+      "rank": 5
+    },
+    "maxTakeOffWeight": {
+      "kg": 78000
+    },
+    "mobility": {
+      "rank": 5
+    },
+    "rank": 5
+  },
+  "commentary": {
+    "subtitle": "Родоначальник семейства A320, узкофюзеляжный самолёт для авиалиний средней протяжённости. Разработан европейским консорциумом «Airbus S.A.S» в качестве конкурента самому популярному ВС на то время - Boeing 727. Предполагалось создать самолёт аналогичных размеров, но более экономичный и технологичный."
+  },
+  "links": {
+    "wiki": "https://ru.wikipedia.org/wiki/Airbus_A320"
+  }
+}
