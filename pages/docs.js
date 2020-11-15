@@ -49,7 +49,7 @@ export default function docsPage({ allDocsData }) {
               </h5>
             </GridItem>
             {
-              allDocsData.map(({ id, date, title }) => (
+              allDocsData.map(({ id, date, title, summaryExists }) => (
                 <GridItem
                   md={4}
                   className={
@@ -60,7 +60,8 @@ export default function docsPage({ allDocsData }) {
                     <CardBody>
                       <h4 className={classes.cardTitle}>{title}</h4>
                       <p>Ред. от <Date dateString={date} /></p>
-                      <Button color="blue" href={`/docs/${id}`}>Смотреть</Button>
+                      <Button color="blue" href={`/docs/${id}`}>Смотреть</Button> {" "}
+                      {summaryExists && <Button color="success" href={`/docs/summary/${id}`}>Кратко</Button>}
                     </CardBody>
                   </Card>
                 </GridItem>
@@ -69,23 +70,7 @@ export default function docsPage({ allDocsData }) {
           </GridContainer>
         </div>
       </div>
-      <Footer
-        theme="white"
-        content={
-          <div style={{ fontSize: '0.8em' }}>
-            копирайт бгг &copy; {" "}
-            <a
-              href="http://epinetov.com"
-              target="_blank"
-            >
-              Vsevolod Epinetov
-              </a>{" "}
-            <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
-          </div>
-        }
-      >
-        <br />
-      </Footer>
+      <Footer/>
     </div>
   );
 }

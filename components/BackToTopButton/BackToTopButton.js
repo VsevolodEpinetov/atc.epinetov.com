@@ -1,36 +1,64 @@
 /* eslint-disable */
 import React from "react";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
-import {FaArrowCircleUp} from 'react-icons/fa';
 
+import { BsChevronUp } from 'react-icons/bs';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 import styles from "assets/jss/nextjs-material-kit-pro/components/backToTopButtonStyle.js";
 
+import smoothScroll from "components/SmoothScroll/SmoothScroll.js"
+
 const useStyles = makeStyles(styles);
 
 export default function BackToTopButton (props) {
-    //const [showScroll, setShowScroll] = React.useState(false)
+  const classes = useStyles();
 
-    /*React.useEffect(() => {
-      const checkScrollTop = () => {
-        if (!showScroll && window.pageYOffset > 400){
-          setShowScroll(true)
-        } else if (showScroll && window.pageYOffset <= 400){
-          setShowScroll(false)
-        }
-      }
+  React.useEffect(() => {
+    var href = window.location.href.substring(
+      window.location.href.lastIndexOf("#") + 1
+    );
+    if (window.location.href.lastIndexOf("#") > 0) {
+      document.getElementById(href).scrollIntoView();
+    }
+    window.addEventListener("scroll", updateView);
+    updateView();
+    return function cleanup() {
+      window.removeEventListener("scroll", updateView);
+    };
+  });
 
-      const scrollTop = () =>{
-        window.scrollTo({top: 0, behavior: 'smooth'});
-      }
+  const updateView = () => {
+    var documentBody = document.getElementById("document-body");
+    var button = document.getElementById("button-to-top");
 
-      window.addEventListener('scroll', checkScrollTop)
-    })*/
-  
+    if (
+      documentBody.offsetTop -
+      window.innerHeight / 2 <
+      window.pageYOffset &&
+      documentBody.offsetTop +
+      documentBody.scrollHeight -
+      window.innerHeight / 2 >
+      window.pageYOffset
+    ) {
+      button.classList.remove("is-hidden");
+    } else {
+      button.classList.add("is-hidden");
+    }
+  };
+
     return (
-          <FaArrowCircleUp style={{height: 40, display: showScroll ? 'flex' : 'none'}}/>
+      <a
+        href="#start"
+        onClick={e => {
+          e.preventDefault();
+          smoothScroll("start");
+        }}
+      >
+        <div className={classes.backToTopButtonWrapper} id="button-to-top">
+          <span className={classes.backToTopButtonStyle}><BsChevronUp /></span>
+        </div>
+      </a>
     );
 }

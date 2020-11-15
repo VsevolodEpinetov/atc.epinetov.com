@@ -9,17 +9,18 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
-import Footer from "components/Footer/Footer.js";
 import Hidden from '@material-ui/core/Hidden';
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import { BsChevronUp } from 'react-icons/bs';
-
+import Footer from "components/Footer/Footer.js";
+import BackToTopButton from "components/BackToTopButton/BackToTopButton.js"
+import smoothScroll from "components/SmoothScroll/SmoothScroll.js"
+// styles
 import docPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docPageStyle.js";
-
+// libraries
 import { getAllSummaryDocsIds, getDocSummaryData } from 'lib/docsSummary'
 import Date from 'lib/date'
-
+// images
 import patternBG from "assets/img/pattern-bg.webp";
 
 const useStyles = makeStyles(docPageStyle);
@@ -29,68 +30,6 @@ export default function DocPage({ docData }) {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
-
-  React.useEffect(() => {
-    var href = window.location.href.substring(
-      window.location.href.lastIndexOf("#") + 1
-    );
-    if (window.location.href.lastIndexOf("#") > 0) {
-      document.getElementById(href).scrollIntoView();
-    }
-    window.addEventListener("scroll", updateView);
-    updateView();
-    return function cleanup() {
-      window.removeEventListener("scroll", updateView);
-    };
-  });
-
-  const easeInOutQuad = (t, b, c, d) => {
-    t /= d / 2;
-    if (t < 1) return (c / 2) * t * t + b;
-    t--;
-    return (-c / 2) * (t * (t - 2) - 1) + b;
-  };
-
-  const updateView = () => {
-    var documentBody = document.getElementById("document-body");
-    var button = document.getElementById("button-to-top");
-
-    if (
-      documentBody.offsetTop -
-      window.innerHeight / 2 <
-      window.pageYOffset &&
-      documentBody.offsetTop +
-      documentBody.scrollHeight -
-      window.innerHeight / 2 >
-      window.pageYOffset
-    ) {
-      button.classList.remove("is-hidden");
-    } else {
-      button.classList.add("is-hidden");
-    }
-  };
-
-  const smoothScroll = target => {
-    var targetScroll = document.getElementById(target);
-    scrollTo(document.documentElement, targetScroll.offsetTop, 900);
-  };
-
-  const scrollTo = (element, to, duration) => {
-    var start = element.scrollTop,
-      change = to - start + document.getElementById("document-body").offsetTop + 450,
-      currentTime = 0,
-      increment = 20;
-
-    var animateScroll = function () {
-      currentTime += increment;
-      var val = easeInOutQuad(currentTime, start, change, duration);
-      element.scrollTop = val;
-      if (currentTime < duration) {
-        setTimeout(animateScroll, increment);
-      }
-    };
-    animateScroll();
-  };
 
   const structureList = (structure) => {
     const headersLinks = Object.keys(structure).map(id => {
@@ -173,34 +112,8 @@ export default function DocPage({ docData }) {
           </div>
         </div>
       </div>
-      <a
-        href="#start"
-        onClick={e => {
-          e.preventDefault();
-          smoothScroll("start");
-        }}
-      >
-        <div className={classes.backToTopButtonWrapper} id="button-to-top">
-          <span className={classes.backToTopButtonStyle}><BsChevronUp /></span>
-        </div>
-      </a>
-      <Footer
-          theme="white"
-          content={
-            <div style={{ fontSize: '0.8em' }}>
-              копирайт бгг &copy; {" "}
-              <a
-                href="http://epinetov.com"
-                target="_blank"
-              >
-                Vsevolod Epinetov
-              </a>{" "}
-              <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
-            </div>
-          }
-        >
-          <br />
-        </Footer>
+      <BackToTopButton/>
+      <Footer/>
     </div>
   );
 }

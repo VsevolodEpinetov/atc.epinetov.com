@@ -185,23 +185,7 @@ export default function AircraftPage({ allAircraftData }) {
           </GridContainer>
         </div>
       </div>
-      <Footer
-        theme="white"
-        content={
-          <div style={{ fontSize: '0.8em' }}>
-            копирайт бгг &copy; {" "}
-            <a
-              href="http://epinetov.com"
-              target="_blank"
-            >
-              Vsevolod Epinetov
-              </a>{" "}
-            <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
-          </div>
-        }
-      >
-        <br />
-      </Footer>
+      <Footer/>
     </div>
   );
 }

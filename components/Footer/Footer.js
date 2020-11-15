@@ -16,7 +16,17 @@ import styles from "assets/jss/nextjs-material-kit-pro/components/footerStyle.js
 const useStyles = makeStyles(styles);
 
 export default function Footer(props) {
-  const { children, content, theme, big, className } = props;
+  // Replaced content placeholder with literal content
+  const { children, /*content, theme,*/ big, className } = props;
+  const theme = 'transparent';
+  const content = (
+    <div style={{ fontSize: '0.8em' }}>
+      копирайт бгг &copy; {" "}
+      <a href="http://epinetov.com" target="_blank" > Vsevolod Epinetov </a>
+      {" "}
+      <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
+    </div>
+  )
   const classes = useStyles();
   const themeType =
     theme === "transparent" || theme == undefined ? false : true;
@@ -39,7 +49,7 @@ export default function Footer(props) {
             <hr />
           </div>
         ) : (
-          " "
+          <hr />
         )}
         {content}
         <div className={classes.clearFix} />
@@ -51,5 +61,5 @@ export default function Footer(props) {
 Footer.propTypes = {
   theme: PropTypes.oneOf(["dark", "white", "transparent"]),
   big: PropTypes.bool,
-  content: PropTypes.node.isRequired
+  content: PropTypes.string
 };
