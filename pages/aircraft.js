@@ -30,31 +30,43 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const useStyles = makeStyles(style);
 
 function rankSpeed10(speed) {
-  if (speed > 1000) return 10;
-  else if (speed > 950) return 9;
-  else if (speed > 900) return 8;
-  else if (speed > 850) return 7;
-  else if (speed > 750) return 6;
-  else if (speed > 650) return 5;
-  else if (speed > 550) return 4;
-  else if (speed > 450) return 3;
-  else if (speed > 350) return 2;
-  else if (speed > 250) return 1;
-  else if (speed > 150) return 0;
+  if (speed >= 1000) return 10;
+  else if (speed >= 950) return 9;
+  else if (speed >= 900) return 8;
+  else if (speed >= 850) return 7;
+  else if (speed >= 750) return 6;
+  else if (speed >= 650) return 5;
+  else if (speed >= 550) return 4;
+  else if (speed >= 450) return 3;
+  else if (speed >= 350) return 2;
+  else if (speed >= 250) return 1;
+  else if (speed >= 150) return 0;
 }
 
+function colorForSpeed (speed) {
+  var color = "success";
+  if (speed >= 900) color = "primary";
+  else if (speed < 750) {
+    if (speed >= 350) color = "warning";
+    else color = "danger";
+  }
+
+  return color;
+}
+  
+
 function rankSpeed100(speed) {
-  if (speed > 1000) return 100;
-  else if (speed > 950) return 90;
-  else if (speed > 900) return 80;
-  else if (speed > 850) return 70;
-  else if (speed > 750) return 60;
-  else if (speed > 650) return 50;
-  else if (speed > 550) return 40;
-  else if (speed > 450) return 30;
-  else if (speed > 350) return 20;
-  else if (speed > 250) return 10;
-  else if (speed > 150) return 0;
+  if (speed >= 1000) return 100;
+  else if (speed >= 950) return 90;
+  else if (speed >= 900) return 80;
+  else if (speed >= 850) return 70;
+  else if (speed >= 750) return 60;
+  else if (speed >= 650) return 50;
+  else if (speed >= 550) return 40;
+  else if (speed >= 450) return 30;
+  else if (speed >= 350) return 20;
+  else if (speed >= 250) return 10;
+  else if (speed >= 150) return 0;
 }
 
 export default function AircraftPage({ allAircraftData }) {
@@ -168,7 +180,7 @@ export default function AircraftPage({ allAircraftData }) {
                             <p>Скорость: {rankSpeed10(aircraftInfo.specs.speed.cruising.kmh)}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
                             <CustomLinearProgress
                               variant="determinate"
-                              color="success"
+                              color={colorForSpeed(aircraftInfo.specs.speed.cruising.kmh)}
                               value={rankSpeed100(aircraftInfo.specs.speed.cruising.kmh)}
                             />
                             <Button color="white" justIcon href={aircraftInfo.links.wiki}>

@@ -1,0 +1,37 @@
+{
+  "name": {
+    "plain": "Airbus 380",
+    "alt": ["a380"]
+  },
+  "specs": {
+    "engines": {
+      "quantity": 4
+    },
+    "speed": {
+      "cruising": {
+        "kmh": 945
+      }
+    },
+    "rates": {
+      "climb": {
+        "fpm": 3000
+      }
+    },
+    "ceiling": {
+      "m": 13115,
+      "fl": 430
+    },
+    "range": {
+      "km": 15200
+    },
+    "maxTakeOffWeight": {
+      "kg": 560000
+    }
+  },
+  "commentary": {
+    "subtitle": "Airbus A380 является самым большим пассажирским самолетам мира как по размерам, так и по весовым характеристикам. Длина самолета 73 метра, высота - 24 м, размах крыльев - 80 м. Площадь крыла Airbus A380 составляет 845 кв.м, взлетный вес - 560 тонн."
+  },
+  "links": {
+    "wiki": "https://ru.wikipedia.org/wiki/Airbus_A380"
+  }
+}
