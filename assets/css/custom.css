@@ -53,6 +53,7 @@ body {
     min-height: 0.1%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    display: block;
 }
 
 .document-table>tbody>tr {
