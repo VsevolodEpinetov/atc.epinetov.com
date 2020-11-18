@@ -6,13 +6,14 @@ import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
 import CustomLinearProgress from "components/CustomLinearProgress/CustomLinearProgress.js";
 import Footer from "components/Footer/Footer.js";
 
@@ -21,6 +22,8 @@ import Close from "@material-ui/icons/Close";
 
 import { getAllAircraftData } from 'lib/aircraft'
 
+import { rankSpeed, colorForSpeed } from 'lib/utility'
+
 import style from "assets/jss/nextjs-material-kit-pro/pages/aircraftPageStyle.js";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -28,46 +31,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const useStyles = makeStyles(style);
-
-function rankSpeed10(speed) {
-  if (speed >= 1000) return 10;
-  else if (speed >= 950) return 9;
-  else if (speed >= 900) return 8;
-  else if (speed >= 850) return 7;
-  else if (speed >= 750) return 6;
-  else if (speed >= 650) return 5;
-  else if (speed >= 550) return 4;
-  else if (speed >= 450) return 3;
-  else if (speed >= 350) return 2;
-  else if (speed >= 250) return 1;
-  else if (speed >= 150) return 0;
-}
-
-function colorForSpeed (speed) {
-  var color = "success";
-  if (speed >= 900) color = "primary";
-  else if (speed < 750) {
-    if (speed >= 350) color = "warning";
-    else color = "danger";
-  }
-
-  return color;
-}
-  
-
-function rankSpeed100(speed) {
-  if (speed >= 1000) return 100;
-  else if (speed >= 950) return 90;
-  else if (speed >= 900) return 80;
-  else if (speed >= 850) return 70;
-  else if (speed >= 750) return 60;
-  else if (speed >= 650) return 50;
-  else if (speed >= 550) return 40;
-  else if (speed >= 450) return 30;
-  else if (speed >= 350) return 20;
-  else if (speed >= 250) return 10;
-  else if (speed >= 150) return 0;
-}
 
 export default function AircraftPage({ allAircraftData }) {
   const [modals, setModalsState] = React.useState({});
@@ -134,62 +97,83 @@ export default function AircraftPage({ allAircraftData }) {
                       <p>{aircraftInfo.specs.engines.quantity} двигателя</p>
                     </GridItem>
                   </GridContainer>
-
                   <Dialog
-                    classes={{
-                      root: classes.modalRoot,
-                      paper: classes.modal + ' ' + classes.modalLarge
-                    }}
+                    scroll="paper"
                     open={modals[aircraftName]}
                     TransitionComponent={Transition}
-                    keepMounted
                     onClose={() => closeModal(aircraftName)}
+                    aria-labelledby={`aircraft-${aircraftName}-slide-title`}
+                    aria-describedby={`aircraft-${aircraftName}-slide-description`}
                   >
-                    <Card plain className={classes.modalSignupCard}>
-                      <DialogTitle
-                        disableTypography
-                        className={classes.modalHeader}
+                    {/*<DialogTitle
+                      disableTypography
+                      className={classes.modalHeader}
+                      id={`aircraft-${aircraftName}-modal-title`}
+                    >
+                      <Button
+                        simple
+                        className={classes.modalCloseButton}
+                        key="close"
+                        aria-label="Close"
+                        onClick={() => closeModal(aircraftName)}
+                      >
+                        {" "}
+                        <Close className={classes.modalClose} />
+                      </Button>
+                      <h4 className={classes.modalTitle}>
+                        {aircraftName}
+                      </h4>
+                    </DialogTitle>*/}
+                    <DialogTitle id="scroll-dialog-title">
+                      {aircraftInfo.name.plain}
+                    </DialogTitle>
+                      <DialogContent
+                        id={`aircraft-${aircraftName}-modal-description`}
+                        className={classes.modalBody}
+                        dividers
+                      >
+                        <DialogContentText
+                          id={`scroll-dialog-${aircraftName}-description`}
+                          tabIndex={-1}
+                        >
+                          <GridContainer>
+                            <GridItem md={12} className={classes.imageHolder} style={{ background: `url(${require(`assets/data/aircraft/${aircraftName}/main.webp`)})` }}>
+                              <img
+                                src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
+                                alt={aircraftName}
+                                style={{ width: "100%", display: "block", opacity: "0" }}
+                              />
+                            </GridItem>
+                            <GridItem md={12}>
+                              <h2 className={classes.title}>{aircraftInfo.name.plain}</h2>
+                              <h4>{aircraftInfo.commentary.subtitle}</h4>
+                              <br />
+                              <p>Скорость: {rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['10']}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
+                              <CustomLinearProgress
+                                variant="determinate"
+                                color={colorForSpeed(aircraftInfo.specs.speed.cruising.kmh)}
+                                value={rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['100']}
+                              />
+                              <Button color="white" justIcon href={aircraftInfo.links.wiki}>
+                                <i className="fab fa-wikipedia-w" />
+                              </Button>
+                            </GridItem>
+                          </GridContainer>
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions
+                        className={
+                          classes.modalFooter + " " + classes.modalFooterCenter
+                        }
                       >
                         <Button
-                          simple
-                          className={classes.modalCloseButton}
-                          key="close"
-                          aria-label="Close"
                           onClick={() => closeModal(aircraftName)}
+                          color="info"
+                          round
                         >
-                          {" "}
-                          <Close className={classes.modalClose} />
+                          Закрыть
                         </Button>
-                      </DialogTitle>
-                      <DialogContent
-                        id="signup-modal-slide-description"
-                        className={classes.modalBody}
-                      >
-                        <GridContainer>
-                          <GridItem xs={12} sm={6} md={6} className={classes.imageHolder} style={{ background: `url(${require(`assets/data/aircraft/${aircraftName}/main.webp`)})` }}>
-                            <img
-                              src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
-                              alt={aircraftName}
-                              style={{ width: "100%", display: "block", opacity: "0" }}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={6} md={6}>
-                            <h2 className={classes.title}>{aircraftInfo.name.plain}</h2>
-                            <h4>{aircraftInfo.commentary.subtitle}</h4>
-                            <br />
-                            <p>Скорость: {rankSpeed10(aircraftInfo.specs.speed.cruising.kmh)}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
-                            <CustomLinearProgress
-                              variant="determinate"
-                              color={colorForSpeed(aircraftInfo.specs.speed.cruising.kmh)}
-                              value={rankSpeed100(aircraftInfo.specs.speed.cruising.kmh)}
-                            />
-                            <Button color="white" justIcon href={aircraftInfo.links.wiki}>
-                              <i className="fab fa-wikipedia-w" />
-                            </Button>
-                          </GridItem>
-                        </GridContainer>
-                      </DialogContent>
-                    </Card>
+                      </DialogActions>
                   </Dialog>
                 </GridItem>
               ))
