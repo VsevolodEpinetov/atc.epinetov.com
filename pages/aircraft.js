@@ -22,7 +22,7 @@ import Close from "@material-ui/icons/Close";
 
 import { getAllAircraftData } from 'lib/aircraft'
 
-import { rankSpeed, colorForSpeed } from 'lib/utility'
+import { rankSpeed, colorForSpeed, getWeightStats } from 'lib/utility'
 
 import style from "assets/jss/nextjs-material-kit-pro/pages/aircraftPageStyle.js";
 
@@ -94,7 +94,7 @@ export default function AircraftPage({ allAircraftData }) {
                     </GridItem>
                     <GridItem style={{ cursor: "pointer" }}>
                       <h3>{aircraftInfo.name.plain}</h3>
-                      <p>{aircraftInfo.specs.engines.quantity} двигателя</p>
+                      <p>{aircraftInfo.specs.engines.quantity} двигателя <br/> <span className={classes.[`${getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).color}Text`]}>{getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).rus}</span></p>
                     </GridItem>
                   </GridContainer>
                   <Dialog
@@ -105,25 +105,6 @@ export default function AircraftPage({ allAircraftData }) {
                     aria-labelledby={`aircraft-${aircraftName}-slide-title`}
                     aria-describedby={`aircraft-${aircraftName}-slide-description`}
                   >
-                    {/*<DialogTitle
-                      disableTypography
-                      className={classes.modalHeader}
-                      id={`aircraft-${aircraftName}-modal-title`}
-                    >
-                      <Button
-                        simple
-                        className={classes.modalCloseButton}
-                        key="close"
-                        aria-label="Close"
-                        onClick={() => closeModal(aircraftName)}
-                      >
-                        {" "}
-                        <Close className={classes.modalClose} />
-                      </Button>
-                      <h4 className={classes.modalTitle}>
-                        {aircraftName}
-                      </h4>
-                    </DialogTitle>*/}
                     <DialogTitle id="scroll-dialog-title">
                       {aircraftInfo.name.plain}
                     </DialogTitle>
