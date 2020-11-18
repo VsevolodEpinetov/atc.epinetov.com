@@ -1,0 +1,37 @@
+{
+  "name": {
+    "plain": "Ил-18",
+    "alt": ["il18"]
+  },
+  "specs": {
+    "engines": {
+      "quantity": 4
+    },
+    "speed": {
+      "cruising": {
+        "kmh": 625
+      }
+    },
+    "rates": {
+      "climb": {
+        "fpm": 3000
+      }
+    },
+    "ceiling": {
+      "m": 6500,
+      "fl": 220
+    },
+    "range": {
+      "km": 6500
+    },
+    "maxTakeOffWeight": {
+      "kg": 64000
+    }
+  },
+  "commentary": {
+    "subtitle": "Линейка турбовентиляторных двухмоторных самолётов бизнес-класса, разработанных компанией Gulfstream Aerospace Copropation, дочерней компанией General Dynamics. Самолёт производился с 1985 по 2003 годы. Оснащен двумя двигателями Rolls-Royce RB.183 Tay."
+  },
+  "links": {
+    "wiki": "https://ru.wikipedia.org/wiki/%D0%98%D0%BB-18"
+  }
+}
