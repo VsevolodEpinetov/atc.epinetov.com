@@ -94,7 +94,7 @@ export default function AircraftPage({ allAircraftData }) {
                     </GridItem>
                     <GridItem style={{ cursor: "pointer" }}>
                       <h3>{aircraftInfo.name.plain}</h3>
-                      <p>{aircraftInfo.specs.engines.quantity} двигателя <br/> <span className={classes.[`${getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).color}Text`]}>{getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).rus}</span></p>
+                      <p>{aircraftInfo.specs.engines.quantity} двигателя <br/> <span className={classes[`${getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).color}Text`]}>{getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).rus}</span></p>
                     </GridItem>
                   </GridContainer>
                   <Dialog
