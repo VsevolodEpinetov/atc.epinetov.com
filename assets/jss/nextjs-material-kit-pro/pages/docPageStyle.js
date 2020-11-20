@@ -23,7 +23,8 @@ const docPageStyle = {
   },
   main: {
     ...main,
-    ...mainRaised
+    ...mainRaised,
+    margin: "-150px 60px 0px",
   },
   block: {
     color: "inherit",

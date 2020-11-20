@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React from "react";
+import Image from 'next/image'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
@@ -22,7 +23,7 @@ import Close from "@material-ui/icons/Close";
 
 import { getAllAircraftData } from 'lib/aircraft'
 
-import { rankSpeed, colorForSpeed, getWeightStats } from 'lib/utility'
+import { rankSpeed, colorForSpeed, getWeightStats, rankCeiling, colorForCeiling } from 'lib/utility'
 
 import style from "assets/jss/nextjs-material-kit-pro/pages/aircraftPageStyle.js";
 
@@ -85,10 +86,12 @@ export default function AircraftPage({ allAircraftData }) {
                         color="black"
                         backgroundColor="rgba(255, 255, 255, 0)"
                       >
-                        <img
-                          src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)}
-                          alt={aircraftInfo.name.plain}
-                          style={{ width: "100%", display: "block", cursor: "pointer" }}
+                        <Image 
+                          src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)} 
+                          alt={aircraftInfo.name.plain} 
+                          style={{ display: "block", cursor: "pointer" }}
+                          width="290px"
+                          height="220px"
                         />
                       </Box>
                     </GridItem>
@@ -101,6 +104,7 @@ export default function AircraftPage({ allAircraftData }) {
                     scroll="paper"
                     open={modals[aircraftName]}
                     TransitionComponent={Transition}
+                    maxWidth='md'
                     onClose={() => closeModal(aircraftName)}
                     aria-labelledby={`aircraft-${aircraftName}-slide-title`}
                     aria-describedby={`aircraft-${aircraftName}-slide-description`}
@@ -115,25 +119,35 @@ export default function AircraftPage({ allAircraftData }) {
                       >
                         <DialogContentText
                           id={`scroll-dialog-${aircraftName}-description`}
-                          tabIndex={-1}
                         >
                           <GridContainer>
-                            <GridItem md={12} className={classes.imageHolder} style={{ background: `url(${require(`assets/data/aircraft/${aircraftName}/main.webp`)})` }}>
-                              <img
+                            <GridItem md={12} className={classes.imageHolder}>
+                              <Image 
                                 src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
-                                alt={aircraftName}
-                                style={{ width: "100%", display: "block", opacity: "0" }}
+                                alt={aircraftInfo.name.plain} 
+                                style={{ display: "block", cursor: "pointer", opacity: "0" }}
+                                width="900px"
+                                height="600px"
                               />
                             </GridItem>
                             <GridItem md={12}>
                               <h2 className={classes.title}>{aircraftInfo.name.plain}</h2>
-                              <h4>{aircraftInfo.commentary.subtitle}</h4>
+                              <h3>Общее</h3>
+                              <p>{aircraftInfo.commentary.summary}</p>
+                              <h3>Особенности при ОВД</h3>
+                              <p>{aircraftInfo.commentary.atc}</p>
                               <br />
                               <p>Скорость: {rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['10']}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
                               <CustomLinearProgress
                                 variant="determinate"
                                 color={colorForSpeed(aircraftInfo.specs.speed.cruising.kmh)}
                                 value={rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['100']}
+                              />
+                              <p>Потолок: {rankCeiling(aircraftInfo.specs.ceiling.fl)['10']}/10 (FL{aircraftInfo.specs.ceiling.fl})</p>
+                              <CustomLinearProgress
+                                variant="determinate"
+                                color={colorForCeiling(aircraftInfo.specs.ceiling.fl)}
+                                value={rankCeiling(aircraftInfo.specs.ceiling.fl)['100']}
                               />
                               <Button color="white" justIcon href={aircraftInfo.links.wiki}>
                                 <i className="fab fa-wikipedia-w" />
