@@ -20,7 +20,6 @@ import Footer from "components/Footer/Footer.js";
 
 import Box from '@material-ui/core/Box';
 import Close from "@material-ui/icons/Close";
-
 import { getAllAircraftData } from 'lib/aircraft'
 
 import { rankSpeed, colorForSpeed, getWeightStats, rankCeiling, colorForCeiling } from 'lib/utility'
@@ -134,8 +133,22 @@ export default function AircraftPage({ allAircraftData }) {
                               <h2 className={classes.title}>{aircraftInfo.name.plain}</h2>
                               <h3>Общее</h3>
                               <p>{aircraftInfo.commentary.summary}</p>
-                              <h3>Особенности при ОВД</h3>
-                              <p>{aircraftInfo.commentary.atc}</p>
+                              {
+                                aircraftInfo.commentary.atc && (
+                                  <>
+                                    <h3>Особенности при ОВД</h3>
+                                    <p>{aircraftInfo.commentary.atc}</p>
+                                  </>
+                                )
+                              }
+                              {
+                                aircraftInfo.commentary.atcHtml && (
+                                  <>
+                                    <h3>Особенности при ОВД</h3>
+                                    <span dangerouslySetInnerHTML={{ __html: aircraftInfo.commentary.atcHtml }} />
+                                  </>
+                                )
+                              }
                               <br />
                               <p>Скорость: {rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['10']}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
                               <CustomLinearProgress

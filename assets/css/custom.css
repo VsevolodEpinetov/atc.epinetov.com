@@ -56,6 +56,18 @@ body {
     display: block;
 }
 
+.table-not-responsive {
+  display: table !important;
+}
+
+.table-small>tbody>tr>td {
+    font-size: 0.85rem !important;
+}
+
+.table-small>thead>tr>th {
+    font-size: 0.9rem !important;
+}
+
 .document-table>tbody>tr {
     height: auto;
 }

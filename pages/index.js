@@ -49,12 +49,12 @@ export default function IndexPage() {
                     <a>
                       <h3 className={classes.cardTitleWhite}>
                         Воздушные суда
-                        </h3>
+                      </h3>
                     </a>
                   </Link>
                   <p className={classes.cardDescription}>
                     Список наиболее встречаемых ВС с кратким описанием
-                    </p>
+                  </p>
                   <Button
                     href="/aircraft"
                     round
