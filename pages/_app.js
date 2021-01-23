@@ -60,6 +60,7 @@ export default class MyApp extends App {
 `);
     document.insertBefore(comment, document.documentElement);
   }
+  
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
 
@@ -76,6 +77,18 @@ export default class MyApp extends App {
       <React.Fragment>
         <Head>
           <title>Информация по ОВД | ATC</title>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S"/>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-SPEBEGWV0S');
+                `
+            }}
+          />
         </Head>
         <Component {...pageProps} />
       </React.Fragment>

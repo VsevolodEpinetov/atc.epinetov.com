@@ -7,9 +7,13 @@ const easeInOutQuad = (t, b, c, d) => {
 
 const scrollTo = (element, to, duration) => {
   var start = element.scrollTop,
-    change = to - start + document.getElementById("document-body").offsetTop + 450,
+    change = to - start + document.getElementById("document-body").offsetTop,
     currentTime = 0,
     increment = 20;
+
+  console.log(start)
+  console.log(change)
+  console.log(document.documentElement.scrollHeight)
  
     var animateScroll = function () {
     currentTime += increment;
