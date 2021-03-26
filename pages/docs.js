@@ -53,7 +53,7 @@ export default function docsPage({ allDocsData }) {
                 <GridItem
                   md={4}
                   className={
-                    classes.mlAuto + " " + classes.mrAuto + " " + classes.textCenter
+                    classes.textCenter
                   }
                 >
                   <Card>

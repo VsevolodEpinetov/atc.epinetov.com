@@ -14,11 +14,15 @@ import Hidden from "@material-ui/core/Hidden";
 // @material-ui/icons
 import AirplanemodeActive from "@material-ui/icons/AirplanemodeActive";
 import DescriptionOutlined from "@material-ui/icons/DescriptionOutlined";
+import AccountBox from "@material-ui/icons/AccountBox";
 import Home from "@material-ui/icons/Home";
 
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
+
+// user
+import { useUser } from '@auth0/nextjs-auth0';
 
 import styles from "assets/jss/nextjs-material-kit-pro/components/headerLinksStyle.js";
 
@@ -66,6 +70,9 @@ export default function HeaderLinks(props) {
 
   const { dropdownHoverColor } = props;
   const classes = useStyles();
+
+  const { user, error, isLoading } = useUser();
+
   return (
     <List className={classes.list + " " + classes.mlAuto}>
       <ListItem className={classes.listItem}>
@@ -111,6 +118,46 @@ export default function HeaderLinks(props) {
           ]}
         />
       </ListItem>
+      {
+        user && (
+          <ListItem className={classes.listItem}>
+            <CustomDropdown
+              noLiPadding
+              navDropdown
+              hoverColor={dropdownHoverColor}
+              buttonText={user.name}
+              buttonProps={{
+                className: classes.navLink,
+                color: "transparent"
+              }}
+              buttonIcon={AccountBox}
+              dropdownList={[
+                <Link href="/api/auth/me">
+                  <a className={classes.dropdownLink}>
+                    Профиль
+                  </a>
+                </Link>,
+                <Link href="/api/auth/logout">
+                  <a className={classes.dropdownLink}>
+                    Выйти
+                  </a>
+                </Link>
+              ]}
+            />
+          </ListItem>
+        )
+      }
+      {!isLoading && !error && !user && (
+        <ListItem className={classes.listItem}>
+          <Button
+            href="/api/auth/login"
+            className={classes.navLink}
+            color="transparent"
+          >
+            <AccountBox /> Войти
+          </Button>
+        </ListItem>
+      )}
     </List>
   );
 }
