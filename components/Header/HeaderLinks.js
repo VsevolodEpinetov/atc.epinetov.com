@@ -50,6 +50,7 @@ export default function HeaderLinks(props) {
       }
     }
   };
+
   const scrollGo = (element, to, duration) => {
     var start = element.scrollTop,
       change = to - start,

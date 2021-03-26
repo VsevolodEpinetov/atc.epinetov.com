@@ -6,27 +6,27 @@ const easeInOutQuad = (t, b, c, d) => {
 };
 
 const scrollTo = (element, to, duration) => {
+  console.log(element.scrollTop);
   var start = element.scrollTop,
-    change = to - start + document.getElementById("document-body").offsetTop,
+    change = to - start + document.getElementById("document-body").offsetTop + 350,
     currentTime = 0,
     increment = 20;
 
-  console.log(start)
-  console.log(change)
-  console.log(document.documentElement.scrollHeight)
- 
+
     var animateScroll = function () {
-    currentTime += increment;
-    var val = easeInOutQuad(currentTime, start, change, duration);
-    element.scrollTop = val;
-    if (currentTime < duration) {
-      setTimeout(animateScroll, increment);
-    }
-  };
-  animateScroll();
+      currentTime += increment;
+      var val = easeInOutQuad(currentTime, start, change, duration);
+      element.scrollTop = val;
+      if (currentTime < duration) {
+        setTimeout(animateScroll, increment);
+      }
+    };
+    animateScroll();
 };
 
-export default function smoothScroll (target) {
-    var targetScroll = document.getElementById(target);
-    scrollTo(document.documentElement, targetScroll.offsetTop, 900);
+export default function smoothScroll(target) {
+  var targetScroll = document.getElementById(target);
+  var targetOffset = targetScroll.offsetTop;
+  if (target === 'start') targetOffset -= 200; // don't ask
+  scrollTo(document.documentElement, targetOffset, 900);
 }
