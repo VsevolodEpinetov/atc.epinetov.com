@@ -6,7 +6,6 @@ const easeInOutQuad = (t, b, c, d) => {
 };
 
 const scrollTo = (element, to, duration) => {
-  console.log(element.scrollTop);
   var start = element.scrollTop,
     change = to - start + document.getElementById("document-body").offsetTop + 350,
     currentTime = 0,
@@ -21,12 +20,37 @@ const scrollTo = (element, to, duration) => {
         setTimeout(animateScroll, increment);
       }
     };
+
     animateScroll();
 };
+
+
+const changeBackground = (target) => {
+  var currentTime = 0, 
+  increment = 20, 
+  opacity = 0.82, 
+  duration = 900, 
+  delay = 900;
+
+  var opacityChangingFor = opacity / (duration / increment);
+  target.style.background = `rgba(254,255,193,${opacity})`;
+
+  var animateBackground = function () {
+    currentTime += increment;
+    if (currentTime > delay) opacity -= opacityChangingFor;
+    target.style.background = `rgba(254,255,193,${opacity})`;
+    if (opacity > 0) {
+      setTimeout(animateBackground, increment);
+    }
+  }
+
+  animateBackground();
+}
 
 export default function smoothScroll(target) {
   var targetScroll = document.getElementById(target);
   var targetOffset = targetScroll.offsetTop;
   if (target === 'start') targetOffset -= 200; // don't ask
   scrollTo(document.documentElement, targetOffset, 900);
+  if (target !== 'start')  changeBackground(targetScroll);
 }

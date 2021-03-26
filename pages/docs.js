@@ -12,8 +12,11 @@ import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
 
 import docsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyle.js";
+
+import Search from "@material-ui/icons/Search";
 
 import { getSortedDocsData } from 'lib/docs'
 import Date from 'lib/date'
@@ -48,6 +51,31 @@ export default function docsPage({ allDocsData }) {
                 Все файлы взяты с различных источников, но, как правило, все интересующие документы можно найти на сайте <a href="http://www.garant.ru/" target='_blank'>Гарант</a> и <a href="http://www.consultant.ru/" target='_blank'>Консультант.Плюс</a>.
               </h5>
             </GridItem>
+            <GridItem
+              md={12}
+              className={classes.mlAuto + " " + classes.mrAuto}
+              style={{ marginBottom: '3em !important' }}
+            >
+              <div className={classes.mlAuto}>
+                <CustomInput
+                  white
+                  inputRootCustomClasses={classes.inputRootCustomClasses}
+                  formControlProps={{
+                    className: classes.formControl
+                  }}
+                  inputProps={{
+                    placeholder: "Search",
+                    inputProps: {
+                      "aria-label": "Search",
+                      className: classes.searchInput
+                    }
+                  }}
+                />
+                <Button color="white" justIcon round>
+                  <Search className={classes.searchIcon} />
+                </Button>
+              </div>
+            </GridItem>
             {
               allDocsData.map(({ id, date, title, summaryExists }) => (
                 <GridItem
@@ -70,7 +98,7 @@ export default function docsPage({ allDocsData }) {
           </GridContainer>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

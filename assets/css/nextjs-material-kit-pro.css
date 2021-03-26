@@ -1,17 +1,14 @@
 /*!
 
 =========================================================
-* NextJS Material Kit PRO v1.1.0 based on Material Kit PRO - v2.0.2 (Bootstrap 4.0.0 Final Edition) and Material Kit PRO React v1.8.0
+* Методические, учебные и просто полезные материалы для диспетчеров УВД
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/nextjs-material-kit-pro
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
+* Дизайн: NextJS Material Kit PRO v1.1.0, основано на Material Kit PRO - v2.0.2 (Bootstrap 4.0.0 Final Edition) и Material Kit PRO React v1.8.0
+* Разработка темы Creative Tim (https://www.creative-tim.com)
 
-* Coded by Creative Tim
-
+* Доработка темы/разработка бекенда Vsevolod Epinetov (https://epinetov.com)
 =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
 .btn-file {
@@ -149,7 +146,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Comfortaa", "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 300;
   line-height: 1.5em; }
 
@@ -758,7 +755,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     height: 36px;
     padding: 7px 0;
     font-size: 14px;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-family: "Comfortaa", "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: 400;
     line-height: 1.42857;
     display: block;
