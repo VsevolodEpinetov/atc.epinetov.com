@@ -58,22 +58,14 @@ export default function docsPage({ allDocsData }) {
             >
               <div className={classes.mlAuto}>
                 <CustomInput
-                  white
-                  inputRootCustomClasses={classes.inputRootCustomClasses}
-                  formControlProps={{
-                    className: classes.formControl
-                  }}
+                  id="regular"
                   inputProps={{
-                    placeholder: "Search",
-                    inputProps: {
-                      "aria-label": "Search",
-                      className: classes.searchInput
-                    }
+                    placeholder: "Поиск"
+                  }}
+                  formControlProps={{
+                    fullWidth: true
                   }}
                 />
-                <Button color="white" justIcon round>
-                  <Search className={classes.searchIcon} />
-                </Button>
               </div>
             </GridItem>
             {

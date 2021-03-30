@@ -17,6 +17,10 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import CustomLinearProgress from "components/CustomLinearProgress/CustomLinearProgress.js";
 import Footer from "components/Footer/Footer.js";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import Box from '@material-ui/core/Box';
 import Close from "@material-ui/icons/Close";
@@ -33,23 +37,61 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const useStyles = makeStyles(style);
 
 export default function AircraftPage({ allAircraftData }) {
-  const [modals, setModalsState] = React.useState({});
-
-
-  allAircraftData.forEach(({ aircraftName }) => {
-    () => addAircraftToModals(aircraftName);
-  })
-
-  function addAircraftToModals(aircraft) {
-    setModalsState((prevState) => ({ ...prevState, [aircraft]: false }));
-  }
+  //const [modals, setModalsState] = React.useState({});
+  const [modals, setModalsState] = React.useState(() => {
+    var object = {};
+    allAircraftData.forEach(({ aircraftName }) => {
+      object[aircraftName] = false;
+    })
+    console.log(allAircraftData);
+    return object;
+  });
+  const [aircraftThumbnailIsShown, setAircraftThumbnailIsShown] = React.useState(() => {
+    var object = {};
+    allAircraftData.forEach(({ aircraftName }) => {
+      object[aircraftName] = 'block';
+    })
+    return object;
+  });
+  const [simpleSelect, setSimpleSelect] = React.useState("");
 
   function openModal(aircraft) {
     setModalsState((prevState) => ({ ...prevState, [aircraft]: true }));
   }
-
   function closeModal(aircraft) {
     setModalsState((prevState) => ({ ...prevState, [aircraft]: false }));
+  }
+
+  function showAircraftThumbnail(aircraft) {
+    setAircraftThumbnailIsShown((prevState) => ({ ...prevState, [aircraft]: 'block' }));
+  }
+  function hideAircraftThumbnail(aircraft) {
+    setAircraftThumbnailIsShown((prevState) => ({ ...prevState, [aircraft]: 'none' }));
+  }
+
+
+
+  const handleSimple = event => {
+    setSimpleSelect(event.target.value);
+    showAircraftByWeight(event.target.value);
+  };
+
+
+  function showAircraftByWeight (weightType) {
+    allAircraftData.forEach(aircraft => {
+      switch (weightType) {
+        case 'heavy':
+          if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg > 136000) showAircraftThumbnail(aircraft.aircraftName);
+          else hideAircraftThumbnail(aircraft.aircraftName);
+          break;
+        case 'medium':
+          if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg > 136000) hideAircraftThumbnail(aircraft.aircraftName);
+          else showAircraftThumbnail(aircraft.aircraftName);
+          break;
+        default:
+          showAircraftThumbnail(aircraft.aircraftName);
+      }
+    })
   }
 
   const classes = useStyles();
@@ -76,18 +118,82 @@ export default function AircraftPage({ allAircraftData }) {
                 Информация взята с различных источников: от <a href="https://ru.wikipedia.org/wiki/%D0%92%D0%BE%D0%B7%D0%B4%D1%83%D1%88%D0%BD%D0%BE%D0%B5_%D1%81%D1%83%D0%B4%D0%BD%D0%BE">Википедии</a> до знаний опытных диспетчеров
               </h5>
             </GridItem>
+            <GridItem
+              md={12}
+              className={classes.mlAuto + " " + classes.mrAuto}
+              style={{ marginBottom: '3em !important' }}
+            >
+              <FormControl fullWidth className={classes.selectFormControl}>
+                <InputLabel
+                  htmlFor="simple-select"
+                  className={classes.selectLabel}
+                >
+                  По весу
+                </InputLabel>
+                <Select
+                  MenuProps={{
+                    className: classes.selectMenu
+                  }}
+                  classes={{
+                    select: classes.select
+                  }}
+                  value={simpleSelect}
+                  onChange={handleSimple}
+                  inputProps={{
+                    name: "simpleSelect",
+                    id: "simple-select"
+                  }}
+                >
+                  <MenuItem
+                    disabled
+                    classes={{
+                      root: classes.selectMenuItem
+                    }}
+                  >
+                    По весу
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="all"
+                  >
+                    Все
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="medium"
+                  >
+                    Средние
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="heavy"
+                  >
+                    Тяжёлые
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </GridItem>
             {
               allAircraftData.map(({ aircraftName, aircraftInfo }) => (
-                <GridItem xs={12} sm={6} md={3}>
+                <GridItem xs={12} sm={6} md={3} key={`${aircraftName}`} style={{ display: `${aircraftThumbnailIsShown[aircraftName]}` }}>
                   <GridContainer onClick={() => openModal(aircraftName)}>
                     <GridItem md={12}>
                       <Box
                         color="black"
-                        backgroundColor="rgba(255, 255, 255, 0)"
+                        backgroundсolor="rgba(255, 255, 255, 0)"
                       >
-                        <Image 
-                          src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)} 
-                          alt={aircraftInfo.name.plain} 
+                        <Image
+                          src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)}
+                          alt={aircraftInfo.name.plain}
                           style={{ display: "block", cursor: "pointer" }}
                           width="290px"
                           height="220px"
@@ -96,7 +202,7 @@ export default function AircraftPage({ allAircraftData }) {
                     </GridItem>
                     <GridItem style={{ cursor: "pointer" }}>
                       <h3>{aircraftInfo.name.plain}</h3>
-                      <p>{aircraftInfo.specs.engines.quantity} двигателя <br/> <span className={classes[`${getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).color}Text`]}>{getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).rus}</span></p>
+                      <p>{aircraftInfo.specs.engines.quantity} двигателя <br /> <span className={classes[`${getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).color}Text`]}>{getWeightStats(aircraftInfo.specs.maxTakeOffWeight.kg).rus}</span></p>
                     </GridItem>
                   </GridContainer>
                   <Dialog
@@ -111,77 +217,78 @@ export default function AircraftPage({ allAircraftData }) {
                     <DialogTitle id="scroll-dialog-title">
                       {aircraftInfo.name.plain}
                     </DialogTitle>
-                      <DialogContent
-                        id={`aircraft-${aircraftName}-modal-description`}
-                        className={classes.modalBody}
-                        dividers
+                    <DialogContent
+                      id={`aircraft-${aircraftName}-modal-description`}
+                      className={classes.modalBody}
+                      dividers
+                    >
+                      <DialogContentText
+                        id={`scroll-dialog-${aircraftName}-description`}
+                        component='span'
                       >
-                        <DialogContentText
-                          id={`scroll-dialog-${aircraftName}-description`}
-                        >
-                          <GridContainer>
-                            <GridItem md={12} className={classes.imageHolder}>
-                              <Image 
-                                src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
-                                alt={aircraftInfo.name.plain} 
-                                style={{ display: "block", cursor: "pointer", opacity: "0" }}
-                                width="900px"
-                                height="600px"
-                              />
-                            </GridItem>
-                            <GridItem md={12}>
-                              <h2 className={classes.title}>{aircraftInfo.name.plain}</h2>
-                              <h3>Общее</h3>
-                              <p>{aircraftInfo.commentary.summary}</p>
-                              {
-                                aircraftInfo.commentary.atc && (
-                                  <>
-                                    <h3>Особенности при ОВД</h3>
-                                    <p>{aircraftInfo.commentary.atc}</p>
-                                  </>
-                                )
-                              }
-                              {
-                                aircraftInfo.commentary.atcHtml && (
-                                  <>
-                                    <h3>Особенности при ОВД</h3>
-                                    <span dangerouslySetInnerHTML={{ __html: aircraftInfo.commentary.atcHtml }} />
-                                  </>
-                                )
-                              }
-                              <br />
-                              <p>Скорость: {rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['10']}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
-                              <CustomLinearProgress
-                                variant="determinate"
-                                color={colorForSpeed(aircraftInfo.specs.speed.cruising.kmh)}
-                                value={rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['100']}
-                              />
-                              <p>Потолок: {rankCeiling(aircraftInfo.specs.ceiling.fl)['10']}/10 (FL{aircraftInfo.specs.ceiling.fl})</p>
-                              <CustomLinearProgress
-                                variant="determinate"
-                                color={colorForCeiling(aircraftInfo.specs.ceiling.fl)}
-                                value={rankCeiling(aircraftInfo.specs.ceiling.fl)['100']}
-                              />
-                              <Button color="white" justIcon href={aircraftInfo.links.wiki}>
-                                <i className="fab fa-wikipedia-w" />
-                              </Button>
-                            </GridItem>
-                          </GridContainer>
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions
-                        className={
-                          classes.modalFooter + " " + classes.modalFooterCenter
-                        }
+                        <GridContainer>
+                          <GridItem md={12} className={classes.imageHolder}>
+                            <Image
+                              src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
+                              alt={aircraftInfo.name.plain}
+                              style={{ display: "block", cursor: "pointer", opacity: "0" }}
+                              width="900px"
+                              height="600px"
+                            />
+                          </GridItem>
+                          <GridItem md={12}>
+                            <h2 className={classes.title}>{aircraftInfo.name.plain}</h2>
+                            <h3>Общее</h3>
+                            <p>{aircraftInfo.commentary.summary}</p>
+                            {
+                              aircraftInfo.commentary.atc && (
+                                <>
+                                  <h3>Особенности при ОВД</h3>
+                                  <p>{aircraftInfo.commentary.atc}</p>
+                                </>
+                              )
+                            }
+                            {
+                              aircraftInfo.commentary.atcHtml && (
+                                <>
+                                  <h3>Особенности при ОВД</h3>
+                                  <span dangerouslySetInnerHTML={{ __html: aircraftInfo.commentary.atcHtml }} />
+                                </>
+                              )
+                            }
+                            <br />
+                            <p>Скорость: {rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['10']}/10 ({aircraftInfo.specs.speed.cruising.kmh} км/ч)</p>
+                            <CustomLinearProgress
+                              variant="determinate"
+                              color={colorForSpeed(aircraftInfo.specs.speed.cruising.kmh)}
+                              value={rankSpeed(aircraftInfo.specs.speed.cruising.kmh)['100']}
+                            />
+                            <p>Потолок: {rankCeiling(aircraftInfo.specs.ceiling.fl)['10']}/10 (FL{aircraftInfo.specs.ceiling.fl})</p>
+                            <CustomLinearProgress
+                              variant="determinate"
+                              color={colorForCeiling(aircraftInfo.specs.ceiling.fl)}
+                              value={rankCeiling(aircraftInfo.specs.ceiling.fl)['100']}
+                            />
+                            <Button color="white" justIcon href={aircraftInfo.links.wiki}>
+                              <i className="fab fa-wikipedia-w" />
+                            </Button>
+                          </GridItem>
+                        </GridContainer>
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions
+                      className={
+                        classes.modalFooter + " " + classes.modalFooterCenter
+                      }
+                    >
+                      <Button
+                        onClick={() => closeModal(aircraftName)}
+                        color="info"
+                        round
                       >
-                        <Button
-                          onClick={() => closeModal(aircraftName)}
-                          color="info"
-                          round
-                        >
-                          Закрыть
+                        Закрыть
                         </Button>
-                      </DialogActions>
+                    </DialogActions>
                   </Dialog>
                 </GridItem>
               ))
@@ -189,7 +296,7 @@ export default function AircraftPage({ allAircraftData }) {
           </GridContainer>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
