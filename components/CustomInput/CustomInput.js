@@ -23,12 +23,14 @@ export default function CustomInput(props) {
     formControlProps,
     labelText,
     id,
+    onChange,
     labelProps,
     inputProps,
     error,
     white,
     inputRootCustomClasses,
-    success
+    success,
+    fullWidth
   } = props;
   const classes = useStyles();
   const labelClasses = classNames({
@@ -57,8 +59,13 @@ export default function CustomInput(props) {
   } else {
     formControlClasses = classes.formControl;
   }
+  let classForFullWidth = ''
+  if (fullWidth) classForFullWidth = 'fullWidth'
   return (
-    <FormControl {...formControlProps} className={formControlClasses}>
+    <FormControl 
+      {...formControlProps} 
+      className={formControlClasses + " " + `${classForFullWidth}`}
+    >
       {labelText !== undefined ? (
         <InputLabel
           className={classes.labelRoot + " " + labelClasses}
@@ -76,6 +83,7 @@ export default function CustomInput(props) {
           underline: underlineClasses
         }}
         id={id}
+        onChange={onChange}
         {...inputProps}
       />
       {error ? (

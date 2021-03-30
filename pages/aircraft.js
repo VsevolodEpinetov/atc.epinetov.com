@@ -21,6 +21,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import CustomInput from "components/CustomInput/CustomInput.js";
 
 import Box from '@material-ui/core/Box';
 import Close from "@material-ui/icons/Close";
@@ -43,7 +44,6 @@ export default function AircraftPage({ allAircraftData }) {
     allAircraftData.forEach(({ aircraftName }) => {
       object[aircraftName] = false;
     })
-    console.log(allAircraftData);
     return object;
   });
   const [aircraftThumbnailIsShown, setAircraftThumbnailIsShown] = React.useState(() => {
@@ -51,9 +51,11 @@ export default function AircraftPage({ allAircraftData }) {
     allAircraftData.forEach(({ aircraftName }) => {
       object[aircraftName] = 'block';
     })
+    //console.log(allAircraftData)
     return object;
   });
-  const [simpleSelect, setSimpleSelect] = React.useState("");
+  const [filterByWeightState, setFilterByWeightState] = React.useState("");
+  const [filterByNameState, setFilterByNameState] = React.useState("");
 
   function openModal(aircraft) {
     setModalsState((prevState) => ({ ...prevState, [aircraft]: true }));
@@ -63,35 +65,54 @@ export default function AircraftPage({ allAircraftData }) {
   }
 
   function showAircraftThumbnail(aircraft) {
-    setAircraftThumbnailIsShown((prevState) => ({ ...prevState, [aircraft]: 'block' }));
+    setAircraftThumbnailIsShown((prevState) => ({ ...prevState, [aircraft]: '' }));
   }
   function hideAircraftThumbnail(aircraft) {
-    setAircraftThumbnailIsShown((prevState) => ({ ...prevState, [aircraft]: 'none' }));
+    setAircraftThumbnailIsShown((prevState) => ({ ...prevState, [aircraft]: 'filtered' }));
   }
 
+  const filterAircraftByWeight = event => {
+    setFilterByWeightState(event.target.value);
+    handleAircraftFilters(event.target.value, filterByNameState);
+  };
 
-
-  const handleSimple = event => {
-    setSimpleSelect(event.target.value);
-    showAircraftByWeight(event.target.value);
+  const filterAircraftByName = event => {
+    setFilterByNameState(event.target.value.toLowerCase());
+    handleAircraftFilters(filterByWeightState, event.target.value.toLowerCase());
   };
 
 
-  function showAircraftByWeight (weightType) {
+  function handleAircraftFilters(weightType, searchString) {
     allAircraftData.forEach(aircraft => {
-      switch (weightType) {
-        case 'heavy':
-          if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg > 136000) showAircraftThumbnail(aircraft.aircraftName);
-          else hideAircraftThumbnail(aircraft.aircraftName);
-          break;
-        case 'medium':
-          if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg > 136000) hideAircraftThumbnail(aircraft.aircraftName);
-          else showAircraftThumbnail(aircraft.aircraftName);
-          break;
-        default:
-          showAircraftThumbnail(aircraft.aircraftName);
+      let needToHide = false;
+      if (searchString.length >= 2) {
+        if (aircraft.aircraftInfo.name.plain.toLowerCase().includes(searchString)) {
+          switch (weightType) {
+            case 'heavy':
+              if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg < 136000) needToHide = true;
+              break;
+            case 'medium':
+              if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg > 136000) needToHide = true;
+              break;
+          }
+        } else {
+          needToHide = true;
+        }
+      } else {
+        switch (weightType) {
+          case 'heavy':
+            if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg < 136000) needToHide = true;
+            break;
+          case 'medium':
+            if (aircraft.aircraftInfo.specs.maxTakeOffWeight.kg > 136000) needToHide = true;
+            break;
+        }
       }
+
+      if (needToHide) hideAircraftThumbnail(aircraft.aircraftName)
+      else showAircraftThumbnail(aircraft.aircraftName)
     })
+
   }
 
   const classes = useStyles();
@@ -119,13 +140,13 @@ export default function AircraftPage({ allAircraftData }) {
               </h5>
             </GridItem>
             <GridItem
-              md={12}
+              md={6}
               className={classes.mlAuto + " " + classes.mrAuto}
               style={{ marginBottom: '3em !important' }}
             >
               <FormControl fullWidth className={classes.selectFormControl}>
                 <InputLabel
-                  htmlFor="simple-select"
+                  htmlFor="filter-by-weight"
                   className={classes.selectLabel}
                 >
                   По весу
@@ -137,11 +158,11 @@ export default function AircraftPage({ allAircraftData }) {
                   classes={{
                     select: classes.select
                   }}
-                  value={simpleSelect}
-                  onChange={handleSimple}
+                  value={filterByWeightState}
+                  onChange={filterAircraftByWeight}
                   inputProps={{
-                    name: "simpleSelect",
-                    id: "simple-select"
+                    name: "filterByWeightState",
+                    id: "filter-by-wight"
                   }}
                 >
                   <MenuItem
@@ -182,9 +203,31 @@ export default function AircraftPage({ allAircraftData }) {
                 </Select>
               </FormControl>
             </GridItem>
+            <GridItem
+              md={6}
+              className={classes.mlAuto + " " + classes.mrAuto}
+              style={{ marginBottom: '3em !important' }}
+            >
+              <CustomInput
+                inputRootCustomClasses={classes.inputRootCustomClasses}
+                formControlProps={{
+                  className: classes.formControl
+                }}
+                inputProps={{
+                  placeholder: "Фильтр по названию",
+                  inputProps: {
+                    "aria-label": "Поиск",
+                    className: classes.searchInput
+                  }
+                }}
+                value={filterByWeightState}
+                onChange={filterAircraftByName}
+                fullWidth
+              />
+            </GridItem>
             {
               allAircraftData.map(({ aircraftName, aircraftInfo }) => (
-                <GridItem xs={12} sm={6} md={3} key={`${aircraftName}`} style={{ display: `${aircraftThumbnailIsShown[aircraftName]}` }}>
+                <GridItem xs={12} sm={6} md={3} key={`${aircraftName}`} className={aircraftThumbnailIsShown[aircraftName]}>
                   <GridContainer onClick={() => openModal(aircraftName)}>
                     <GridItem md={12}>
                       <Box

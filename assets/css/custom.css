@@ -239,6 +239,9 @@ body {
     padding: .5rem 1rem;
 }
 
+.fullWidth {
+  width: 100%;
+}
 
 #document-body>div>a>h4 {
     margin-top: 3em;
@@ -293,6 +296,10 @@ body {
     left: 50%;
     bottom: 30px;
 }
+
+.filtered {
+  display: none;
+}
   
 #message-success.show {
   visibility: visible;
@@ -304,7 +311,7 @@ body {
     visibility: visible;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  }
+}
   
 @-webkit-keyframes fadein {
   from {bottom: 0; opacity: 0;}

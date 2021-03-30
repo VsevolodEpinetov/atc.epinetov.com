@@ -8,7 +8,8 @@ import {
     infoColor,
     successColor,
     warningColor,
-    dangerColor
+    dangerColor,
+    grayColor
   } from "assets/jss/nextjs-material-kit-pro.js";
 
   import modalStyle from "assets/jss/nextjs-material-kit-pro/modalStyle.js";
@@ -37,6 +38,17 @@ import {
         color: warningColor[0],
         display: "inline-block"
       }
+    },
+    inputRootCustomClasses: {
+      margin: "0!important"
+    },
+    formControl: {
+      [theme.breakpoints.down("md")]: {
+        color: grayColor[0],
+      },
+      margin: "0 !important",
+      paddingTop: "15px",
+      paddingBottom: "7px"
     },
     dangerText: {
       "&, & *": {
