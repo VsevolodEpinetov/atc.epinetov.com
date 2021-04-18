@@ -57,10 +57,7 @@ export default function docsPage({ allPostsData }) {
             >
               <h2 className={classes.title}>Полезные материалы</h2>
               <h5 className={classes.description}>
-                Текст для полезностей
-              </h5>
-              <h5 className={classes.description}>
-                Ещё текст, видимо, бле
+                То, что кажется полезным, но не подошло под другие категории
               </h5>
             </GridItem>
           </GridContainer>
@@ -104,7 +101,7 @@ export default function docsPage({ allPostsData }) {
                       }
                       { 
                         type == 'yt' && (
-                          <Button simple color="white" href={`${link}`}>
+                          <Button simple color="white" href={`${link}`} target="_blank">
                             <YouTube /> Смотреть
                           </Button>
                         )

@@ -51,23 +51,6 @@ export default function docsPage({ allDocsData }) {
                 Все файлы взяты с различных источников, но, как правило, все интересующие документы можно найти на сайте <a href="http://www.garant.ru/" target='_blank'>Гарант</a> и <a href="http://www.consultant.ru/" target='_blank'>Консультант.Плюс</a>.
               </h5>
             </GridItem>
-            <GridItem
-              md={12}
-              className={classes.mlAuto + " " + classes.mrAuto}
-              style={{ marginBottom: '3em !important' }}
-            >
-              <div className={classes.mlAuto}>
-                <CustomInput
-                  id="regular"
-                  inputProps={{
-                    placeholder: "Поиск"
-                  }}
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                />
-              </div>
-            </GridItem>
             {
               allDocsData.map(({ id, date, title, summaryExists }) => (
                 <GridItem

@@ -45,7 +45,7 @@ export default function DocPage({ postData }) {
     return (
       <div>
         <h5>Ссылки</h5>
-        <Link href='/docs'><a>📄 К документам</a></Link> <br />
+        <Link href='/posts'><a>⭐️ К полезностям</a></Link> <br />
         <Link href='/'><a>🏠 На главную</a></Link>
       </div>
     )

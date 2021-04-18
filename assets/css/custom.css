@@ -300,6 +300,48 @@ body {
 .filtered {
   display: none;
 }
+
+.opened-0 {
+  height: 200px !important;
+  animation-duration: 0.3s;
+  animation-name: lineInserted;
+  transition: height 0.3s;
+}
+
+.uuee {
+  height: calc(100% + 200px) !important;
+  animation-duration: 0.3s;
+  animation-name: lineInserted;
+  transition: height 0.3s;
+}
+
+.opened-1 {
+  height: 500px !important;
+  animation-duration: 0.3s;
+  animation-name: lineInserted;
+  transition: height 0.3s;
+}
+
+.opened-2 {
+  height: 1000px !important;
+  animation-duration: 0.3s;
+  animation-name: lineInserted;
+  transition: height 0.3s;
+}
+
+.opened-3 {
+  height: 1300px !important;
+  animation-duration: 0.3s;
+  animation-name: lineInserted;
+  transition: height 0.3s;
+}
+
+.opened-4 {
+  height: 1250px !important;
+  animation-duration: 0.3s;
+  animation-name: lineInserted;
+  transition: height 0.3s;
+}
   
 #message-success.show {
   visibility: visible;

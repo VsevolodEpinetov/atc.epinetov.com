@@ -16,6 +16,7 @@ import AirplanemodeActive from "@material-ui/icons/AirplanemodeActive";
 import DescriptionOutlined from "@material-ui/icons/DescriptionOutlined";
 import AccountBox from "@material-ui/icons/AccountBox";
 import Home from "@material-ui/icons/Home";
+import Star from "@material-ui/icons/Star";
 
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
@@ -57,7 +58,7 @@ export default function HeaderLinks(props) {
       currentTime = 0,
       increment = 20;
 
-    var animateScroll = function() {
+    var animateScroll = function () {
       currentTime += increment;
       var val = easeInOutQuad(currentTime, start, change, duration);
       element.scrollTop = val;
@@ -115,9 +116,23 @@ export default function HeaderLinks(props) {
               <a className={classes.dropdownLink}>
                 AIP
               </a>
+            </Link>,
+            <Link href="/trd">
+              <a className={classes.dropdownLink}>
+                ТРД
+              </a>
             </Link>
           ]}
         />
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+          href="/posts"
+          className={classes.navLink}
+          color="transparent"
+        >
+          <Star /> Полезное
+        </Button>
       </ListItem>
       {
         user && (

@@ -20,6 +20,8 @@ import indexPageStyle from "assets/jss/nextjs-material-kit-pro/pages/indexPageSt
 import aircraftBG from "assets/img/aircraft-bg.webp";
 import docsBG from "assets/img/docs-bg.webp";
 import aipBG from "assets/img/aip-bg.webp";
+import trdBG from "assets/img/trd-bg.webp";
+import postsBG from "assets/img/posts-bg.webp";
 
 const useStyles = makeStyles(indexPageStyle);
 
@@ -111,6 +113,60 @@ export default function IndexPage() {
                     </p>
                   <Button
                     href="/aip"
+                    round
+                    color="blue"
+                  >
+                    <Subject /> Перейти
+                    </Button>
+                </CardBody>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={6} md={6}>
+              <Card
+                raised
+                background
+                style={{ backgroundImage: `url(${postsBG})` }}
+              >
+                <CardBody background>
+                  <Link href="/posts">
+                    <a>
+                      <h3 className={classes.cardTitleWhite}>
+                        Полезное
+                    </h3>
+                    </a>
+                  </Link>
+                  <p className={classes.cardDescription}>
+                    То, что может оказаться полезным, но не подходит под другие категории
+                  </p>
+                  <Button
+                    href="/posts"
+                    round
+                    color="blue"
+                  >
+                    <Subject /> Перейти
+                    </Button>
+                </CardBody>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={6} md={6}>
+              <Card
+                raised
+                background
+                style={{ backgroundImage: `url(${trdBG})` }}
+              >
+                <CardBody background>
+                  <Link href="/trd">
+                    <a>
+                      <h3 className={classes.cardTitleWhite}>
+                        ТРД
+                    </h3>
+                    </a>
+                  </Link>
+                  <p className={classes.cardDescription}>
+                    ТРД МАДЦ
+                    </p>
+                  <Button
+                    href="/trd"
                     round
                     color="blue"
                   >
