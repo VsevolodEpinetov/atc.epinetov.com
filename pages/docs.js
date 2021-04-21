@@ -43,6 +43,7 @@ export default function docsPage({ allDocsData }) {
               md={12}
               className={classes.mlAuto + " " + classes.mrAuto}
               style={{ marginBottom: '3em !important' }}
+              key='docs-header'
             >
               <h2 className={classes.title}>Актуальная документация</h2>
               <h5 className={classes.description}>
@@ -59,6 +60,7 @@ export default function docsPage({ allDocsData }) {
                   className={
                     classes.textCenter
                   }
+                  key={`card-${id}`}
                 >
                   <Card>
                     <CardBody>

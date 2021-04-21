@@ -54,6 +54,7 @@ export default function docsPage({ allPostsData }) {
               md={12}
               className={classes.mlAuto + " " + classes.mrAuto}
               style={{ marginBottom: '3em !important' }}
+              key='posts-header'
             >
               <h2 className={classes.title}>Полезные материалы</h2>
               <h5 className={classes.description}>
@@ -70,6 +71,7 @@ export default function docsPage({ allPostsData }) {
                     classes.textCenter
                   }
                   item
+                  key={`card-${id}`}
                 >
                   <Card
                     background

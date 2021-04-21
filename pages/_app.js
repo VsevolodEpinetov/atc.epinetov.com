@@ -61,7 +61,7 @@ export default class MyApp extends App {
 `);
     document.insertBefore(comment, document.documentElement);
   }
-  
+
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
 
@@ -79,7 +79,11 @@ export default class MyApp extends App {
         <React.Fragment>
           <Head>
             <title>Информация по ОВД | ATC</title>
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S"/>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            />
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
             <script
               dangerouslySetInnerHTML={{
                 __html: `
