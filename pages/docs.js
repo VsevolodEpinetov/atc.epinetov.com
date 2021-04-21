@@ -13,6 +13,7 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import docsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyle.js";
 
@@ -52,7 +53,7 @@ export default function docsPage({ allDocsData }) {
               </h5>
             </GridItem>
             {
-              allDocsData.map(({ id, date, title, summaryExists }) => (
+              allDocsData.map(({ id, date, title, summaryExists, fullName }) => (
                 <GridItem
                   md={4}
                   className={
@@ -61,7 +62,14 @@ export default function docsPage({ allDocsData }) {
                 >
                   <Card>
                     <CardBody>
-                      <h4 className={classes.cardTitle}>{title}</h4>
+                      <Tooltip
+                        id={`tooltip-${id}`}
+                        title={`${fullName}`}
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <h4 className={classes.cardTitle}>{title}</h4>
+                      </Tooltip>
                       <p>Ред. от <Date dateString={date} /></p>
                       <Button color="blue" href={`/docs/${id}`}>Смотреть</Button> {" "}
                       {summaryExists && <Button color="success" href={`/docs/summary/${id}`}>Кратко</Button>}

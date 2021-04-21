@@ -7,10 +7,13 @@ import {
     main
 } from "assets/jss/nextjs-material-kit-pro.js";
 
+import tooltipsStyle from "assets/jss/nextjs-material-kit-pro/tooltipsStyle.js";
+
 const docsPageStyle = {
     main,
     mlAuto,
     mrAuto,
+    ...tooltipsStyle,
     container: {
         ...container,
         zIndex: "2"
