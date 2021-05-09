@@ -20,6 +20,8 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 
 import PageChange from "components/PageChange/PageChange.js";
 
+import withDarkMode from 'next-dark-mode'
+
 import "assets/scss/nextjs-material-kit-pro.scss?v=1.1.0";
 
 import "assets/css/react-demo.css";
@@ -45,7 +47,7 @@ Router.events.on("routeChangeError", () => {
   document.body.classList.remove("body-page-transition");
 });
 
-export default class MyApp extends App {
+class MyApp extends App {
   componentDidMount() {
     let comment = document.createComment(`
 =========================================================
@@ -102,3 +104,5 @@ export default class MyApp extends App {
     );
   }
 }
+
+export default withDarkMode(MyApp);
