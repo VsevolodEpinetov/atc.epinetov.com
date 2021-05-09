@@ -20,8 +20,6 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 
 import PageChange from "components/PageChange/PageChange.js";
 
-import withDarkMode from 'next-dark-mode'
-
 import "assets/scss/nextjs-material-kit-pro.scss?v=1.1.0";
 
 import "assets/css/react-demo.css";
@@ -105,4 +103,4 @@ class MyApp extends App {
   }
 }
 
-export default withDarkMode(MyApp);
+export default MyApp;
