@@ -225,7 +225,7 @@ export default function AircraftPage({ allAircraftData }) {
                 fullWidth
               />
             </GridItem>
-            {
+            { 
               allAircraftData.map(({ aircraftName, aircraftInfo }) => (
                 <GridItem xs={12} sm={6} md={3} key={`${aircraftName}`} className={aircraftThumbnailIsShown[aircraftName]}>
                   <GridContainer onClick={() => openModal(aircraftName)}>
