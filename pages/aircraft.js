@@ -51,7 +51,6 @@ export default function AircraftPage({ allAircraftData }) {
     allAircraftData.forEach(({ aircraftName }) => {
       object[aircraftName] = 'block';
     })
-    //console.log(allAircraftData)
     return object;
   });
   const [filterByWeightState, setFilterByWeightState] = React.useState("");

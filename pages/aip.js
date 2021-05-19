@@ -26,15 +26,7 @@ const createAIPDate = (allAIPData) => {
   allAIPData.forEach(airportData => {
     var row = [airportData.aeroportICAOCode, airportData.aeroportInfo.name, airportData.aeroportInfo.country];
 
-    /*aeroportData.availableAIPList.forEach((aip, id) => {
-      if (aip.type === 'full') fullID = id;
-      if (aip.type === 'STAR') starID = id;
-      if (aip.type === 'SID') sidID = id;
-    });*/
-
     let possibleAIPTypes = ["full", "STAR", "SID"];
-
-    //console.log(airportData);
 
     possibleAIPTypes.forEach(type => {
       if (airportData.availableAIPTypes[type]) {
@@ -46,22 +38,9 @@ const createAIPDate = (allAIPData) => {
 
     })
 
-    /*if (aeroportData.availableAIPTypes.full) row.push(<Button href={aeroportData.availableAIPList[fullID].link} color="blue"> <GetApp /> Полный </Button>)
-    else row.push(<Button disabled color="blue"> <GetApp /> Полный </Button>)
-
-    if (fullID > -1) row.push(<Button href={aeroportData.availableAIPList[fullID].link} color="blue"> <GetApp /> Полный </Button>)
-    else row.push(<Button disabled color="blue"> <GetApp /> Полный </Button>)
-
-    if (starID > -1) row.push(<Button href={aeroportData.availableAIPList[starID].link} color="blue"> <GetApp /> STAR </Button>)
-    else row.push(<Button disabled color="blue"> <GetApp /> STAR </Button>)
-
-    if (sidID > -1) row.push(<Button href={aeroportData.availableAIPList[sidID].link} color="blue"> <GetApp /> SID </Button>)
-    else row.push(<Button disabled color="blue"> <GetApp /> SID </Button>)*/
-
     fullTable.push(row);
   })
 
-  console.log(fullTable)
   return fullTable;
 }
 
