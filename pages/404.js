@@ -10,8 +10,6 @@ import GridItem from "components/Grid/GridItem.js";
 
 import errorPageStyle from "assets/jss/nextjs-material-kit-pro/pages/errorPageStyles.js";
 
-import image from "assets/img/pattern-bg.webp";
-
 const useStyles = makeStyles(errorPageStyle);
 
 export default function ErrorPage({ ...rest }) {
@@ -31,7 +29,7 @@ export default function ErrorPage({ ...rest }) {
       <div
         className={classes.pageHeader}
         style={{
-          backgroundImage: "url(" + image + ")",
+          backgroundImage: "url(https://storage.googleapis.com/atc.epinetov.com/public/img/pattern-bg.webp)",
           backgroundSize: "cover",
           backgroundPosition: "top center"
         }}

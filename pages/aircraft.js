@@ -235,7 +235,8 @@ export default function AircraftPage({ allAircraftData }) {
                         backgroundсolor="rgba(255, 255, 255, 0)"
                       >
                         <Image
-                          src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)}
+                          //src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)}
+                          src={`https://storage.googleapis.com/atc.epinetov.com/public/aircraft/${aircraftName}/thumbnail.webp`}
                           alt={aircraftInfo.name.plain}
                           style={{ display: "block", cursor: "pointer" }}
                           width="290px"
@@ -272,7 +273,8 @@ export default function AircraftPage({ allAircraftData }) {
                         <GridContainer>
                           <GridItem md={12} className={classes.imageHolder}>
                             <Image
-                              src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
+                              //src={require(`assets/data/aircraft/${aircraftName}/main.webp`)}
+                              src={`https://storage.googleapis.com/atc.epinetov.com/public/aircraft/${aircraftName}/main.webp`}
                               alt={aircraftInfo.name.plain}
                               style={{ display: "block", cursor: "pointer", opacity: "0" }}
                               width="900px"

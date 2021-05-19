@@ -27,3 +27,23 @@ yarn-error.log*
 /dist
 /.next
 /.vscode
+
+#example pages
+/pages/about-us.js
+/pages/blog-posts.js
+/pages/blog-post.js
+/pages/components.js
+/pages/contact-us.js
+/pages/ecommerce.js
+/pages/landing-page.js
+/pages/login.js
+/pages/pricing.js
+/pages/product.js
+/pages/profile.js
+/pages/sections.js
+/pages/shopping-cart.js
+/pages/signup.js
+/pages-sections
+
+#images (because all of them are hosted in google storage now)
+/assets/img
