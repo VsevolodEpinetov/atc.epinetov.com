@@ -147,7 +147,7 @@ export default function HeaderLinks(props) {
           }}
           buttonIcon={EmojiEvents}
           dropdownList={[
-            <Link href="/tests/cities">
+            <Link href="/tests/cities" prefetch>
               <a className={classes.dropdownLink}>
                 Аэропорты РФ
               </a>

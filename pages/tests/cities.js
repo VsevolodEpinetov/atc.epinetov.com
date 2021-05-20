@@ -188,7 +188,6 @@ export default function docsPage({ testData }) {
             <GridItem
               md={12}
               className={classes.mlAuto + " " + classes.mrAuto}
-              style={{ marginBottom: '3em !important' }}
               key='test-cities-header'
             >
               <h2 className={classes.title}>Тестирование. Аэропорты России</h2>
@@ -201,7 +200,7 @@ export default function docsPage({ testData }) {
             </GridItem>
             <GridItem
               md={6}
-              className={classes.mlAuto + " " + classes.mrAuto}
+              className={classes.mlAuto + " " + classes.mrAuto + ' margin-bottom-fix'}
               style={{ marginBottom: '3em !important' }}
               key='test-cities-settings-number'
             >
@@ -266,8 +265,7 @@ export default function docsPage({ testData }) {
             </GridItem>
             <GridItem
               md={6}
-              className={classes.mlAuto + " " + classes.mrAuto}
-              style={{ marginBottom: '3em !important' }}
+              className={classes.mlAuto + " " + classes.mrAuto + ' margin-bottom-fix'}
               key='test-cities-settings-areas'
             >
               <FormControl fullWidth className={classes.selectFormControl}>
