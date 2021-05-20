@@ -17,6 +17,7 @@ import DescriptionOutlined from "@material-ui/icons/DescriptionOutlined";
 import AccountBox from "@material-ui/icons/AccountBox";
 import Home from "@material-ui/icons/Home";
 import Star from "@material-ui/icons/Star";
+import EmojiEvents from "@material-ui/icons/EmojiEvents";
 
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
@@ -133,6 +134,26 @@ export default function HeaderLinks(props) {
         >
           <Star /> Полезное
         </Button>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <CustomDropdown
+          noLiPadding
+          navDropdown
+          hoverColor={dropdownHoverColor}
+          buttonText="Тесты"
+          buttonProps={{
+            className: classes.navLink,
+            color: "transparent"
+          }}
+          buttonIcon={EmojiEvents}
+          dropdownList={[
+            <Link href="/tests/cities">
+              <a className={classes.dropdownLink}>
+                Аэропорты РФ
+              </a>
+            </Link>
+          ]}
+        />
       </ListItem>
       {
         user && (
