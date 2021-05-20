@@ -24,7 +24,7 @@ const docsPageStyle = {
     textAlign: "center"
   },
   root: {
-    height: 264,
+    height: "auto",
     flexGrow: 1,
     maxWidth: 400,
   }

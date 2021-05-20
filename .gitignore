@@ -36,6 +36,7 @@ yarn-error.log*
 /pages/components.js
 /pages/contact-us.js
 /pages/ecommerce.js
+/pages/error-page.js
 /pages/landing-page.js
 /pages/login.js
 /pages/pricing.js
