@@ -10,10 +10,7 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
 
 import trdPageStyle from "assets/jss/nextjs-material-kit-pro/pages/trdPageStyle.js";
 
@@ -124,17 +121,8 @@ StyledTreeItem.propTypes = {
   labelText: PropTypes.string.isRequired,
 };
 
-function getMinHeight(numberOfOpenedAirports) {
-  return ` ${1 + numberOfOpenedAirports * 300}px !important`;
-}
-
-function setAirportOpened(e) {
-  console.log(e)
-}
-
 function parseAirportStructure (airportStructure) {
   let structure = [];
-  let test, testN = 1;
   let nodeID = 1;
   let rootID = 0;
   for (const airportICAO in airportStructure) {
@@ -165,7 +153,6 @@ function parseAirportStructure (airportStructure) {
 }
 
 export default function docsPage({ allTrdData }) {
-  const [airportCategoriesOpened, setAirportCategoriesOpened] = React.useState(0);
   React.useEffect(() => {
   });
   const classes = useStyles();
@@ -192,7 +179,6 @@ export default function docsPage({ allTrdData }) {
                 <GridItem
                   md={12}
                   className={classes.mlAuto + " " + classes.mrAuto}
-                  id='categories'
                 >
                   <TreeView
                     className={classes.root}
@@ -200,17 +186,6 @@ export default function docsPage({ allTrdData }) {
                     defaultCollapseIcon={<ArrowDropDownIcon />}
                     defaultExpandIcon={<ArrowRightIcon />}
                     defaultEndIcon={<div style={{ width: 24 }} />}
-                    onNodeToggle={(event, nodeIds) => {
-                      /*let height = document.getElementById('root-0').offsetHeight + document.getElementById('root-1').offsetHeight + document.getElementById('root-2').offsetHeight + document.getElementById('root-3').offsetHeight + 150;
-                      let e = document.getElementById('categories');
-                      e.style.height = `${height}px !important`;
-                      e.setAttribute('style', `height: ${height}px !important`)*/
-                      //console.log(document.getElementById('root-1').offsetHeight);
-                      //console.log(nodeIds)
-
-                      //console.log(height)
-                      //setAirportCategoriesOpened(i);
-                    }}
                   >
                     {parseAirportStructure(city.structure.adc.structure)}
                   </TreeView>
