@@ -17,12 +17,6 @@ import Subject from "@material-ui/icons/Subject";
 
 import indexPageStyle from "assets/jss/nextjs-material-kit-pro/pages/indexPageStyle.js";
 
-import aircraftBG from "assets/img/aircraft-bg.webp";
-import docsBG from "assets/img/docs-bg.webp";
-import aipBG from "assets/img/aip-bg.webp";
-import trdBG from "assets/img/trd-bg.webp";
-import postsBG from "assets/img/posts-bg.webp";
-
 const useStyles = makeStyles(indexPageStyle);
 
 export default function IndexPage() {
@@ -44,7 +38,7 @@ export default function IndexPage() {
               <Card
                 raised
                 background
-                style={{ backgroundImage: `url(${aircraftBG})` }}
+                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/aircraft-bg.webp)` }}
               >
                 <CardBody background>
                   <Link href="/aircraft">
@@ -71,7 +65,7 @@ export default function IndexPage() {
               <Card
                 raised
                 background
-                style={{ backgroundImage: `url(${docsBG})` }}
+                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/docs-bg.webp)` }}
               >
                 <CardBody background>
                   <Link href="/docs">
@@ -98,7 +92,7 @@ export default function IndexPage() {
               <Card
                 raised
                 background
-                style={{ backgroundImage: `url(${aipBG})` }}
+                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/aip-bg.webp)` }}
               >
                 <CardBody background>
                   <Link href="/aip">
@@ -125,7 +119,7 @@ export default function IndexPage() {
               <Card
                 raised
                 background
-                style={{ backgroundImage: `url(${postsBG})` }}
+                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/posts-bg.webp)` }}
               >
                 <CardBody background>
                   <Link href="/posts">
@@ -152,7 +146,7 @@ export default function IndexPage() {
               <Card
                 raised
                 background
-                style={{ backgroundImage: `url(${trdBG})` }}
+                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/trd-bg.webp)` }}
               >
                 <CardBody background>
                   <Link href="/trd">

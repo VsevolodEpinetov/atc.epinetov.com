@@ -21,8 +21,6 @@ import docPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docPageStyle.
 import { getAllPostsIds, getPostData } from 'lib/posts'
 import Date from 'lib/date'
 // images
-import patternBG from "assets/img/pattern-bg.webp";
-
 
 const useStyles = makeStyles(docPageStyle);
 
@@ -76,7 +74,7 @@ export default function DocPage({ postData }) {
           color: "white"
         }}
       />
-      <Parallax image={patternBG} small filter="light">
+      <Parallax image='https://storage.googleapis.com/atc.epinetov.com/public/img/pattern-bg.webp' small filter="light">
         <div className={classes.container} id="start">
           <GridContainer justify="center">
             <GridItem md={8} className={classes.textCenter}>

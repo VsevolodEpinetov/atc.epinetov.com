@@ -24,7 +24,7 @@ export default function Footer(props) {
       копирайт бгг &copy; {" "}
       <a href="http://epinetov.com" target="_blank" > Vsevolod Epinetov </a>
       {" "}
-      <a href={require(`assets/img/rights-reserved.webp`)} target='_blank'>Все права защищены</a>
+      <a href='https://storage.googleapis.com/atc.epinetov.com/public/img/rights-reserved.webp' target='_blank'>Все права защищены</a>
     </div>
   )
   const classes = useStyles();
