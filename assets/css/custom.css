@@ -393,3 +393,32 @@ body {
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
+
+.btn-disabled {
+  background-color: #a2a2a2 !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.test-step {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.test-question {
+  font-size: 3em;
+  text-align: center;
+}
+
+.test-results {
+  font-size: 2em;
+  text-align: center;
+}
+
+.test-results-substring {
+  font-size: 1em;
+  text-align: center;
+}
