@@ -411,16 +411,19 @@ body {
 .test-question {
   font-size: 3em;
   text-align: center;
+  line-height: normal;
 }
 
 .test-results {
   font-size: 2em;
   text-align: center;
+  line-height: normal;
 }
 
 .test-results-substring {
   font-size: 1em;
   text-align: center;
+  line-height: normal;
 }
 
 .margin-bottom-fix {
