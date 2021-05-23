@@ -48,12 +48,11 @@ function getRandomQuestionsFromData(testData, amountOfQuestions, areas) {
 
 function getPhraseForTestResults(goal, result) {
   const mark = parseInt(result) / parseInt(goal);
-  let message = '';
-  if (mark == 0) message = '🙈'
+  let message = '🙈';
   if (mark > 0.3) message = 'Не то, чтобы прям плохо, но есть куда стремиться 🌚'
   if (mark >= 0.6) message = 'В целом неплохо, но ты точно можешь лучше! 💪'
   if (mark >= 0.8) message = 'Так держать, горжусь тобой! 🥰'
-  if (mark == 1) message = 'Вау, ты верно назвал абсолютно всё. Чемпион! 🥇'
+  if (mark >= 1) message = 'Вау, ты верно назвал абсолютно всё. Чемпион! 🥇'
 
   return message;
 }
@@ -111,6 +110,9 @@ export default function docsPage({ testData }) {
       document.getElementById('answer-field').classList.remove('textRed')
       document.getElementById('answer-field').classList.remove('textGreen')
     }
+    
+    if (document.getElementById('test-answer')) if (!document.getElementById('test-answer').classList.contains('is-hidden')) document.getElementById('test-answer').classList.add('is-hidden')
+
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
   };
@@ -131,11 +133,31 @@ export default function docsPage({ testData }) {
       document.getElementById('answer-field').classList.remove('textRed')
       document.getElementById('answer-field').classList.remove('textGreen')
     }
+    if (document.getElementById('test-answer')) if (!document.getElementById('test-answer').classList.contains('is-hidden')) document.getElementById('test-answer').classList.add('is-hidden')
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
   };
 
-  const [fontSize, setFontSize] = React.useState(3);
+  const startAgain = event => {
+    setCurrentQuestion(0);
+    setPts(0);
+    setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions, areas));
+    setHint('Подсказка');
+    setHintColor('info');
+    document.getElementById('hint-button') && document.getElementById('hint-button').classList.remove('btn-disabled')
+    document.getElementById('check-button') && document.getElementById('check-button').classList.remove('btn-disabled')
+    if (document.getElementById('answer-field')) {
+      document.getElementById('answer-field').value = '';
+      document.getElementById('answer-field').disabled = false;
+      document.getElementById('answer-field').classList.remove('textRed')
+      document.getElementById('answer-field').classList.remove('textGreen')
+    }
+    
+    if (document.getElementById('test-answer')) if (!document.getElementById('test-answer').classList.contains('is-hidden')) document.getElementById('test-answer').classList.add('is-hidden')
+
+    setTextFieldValidationError(false);
+    setTextFieldValidationSuccess(false);
+  };
 
   React.useEffect(() => {
     if (quiz.length == 0) setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions, areas));
@@ -156,6 +178,7 @@ export default function docsPage({ testData }) {
       }  else {
        setTextFieldValidationError(true)
        document.getElementById('answer-field').classList.add('textRed')
+       document.getElementById('test-answer').classList.remove('is-hidden')
       }
 
     }
@@ -185,6 +208,7 @@ export default function docsPage({ testData }) {
     document.getElementById('answer-field').value = '';
     document.getElementById('answer-field').classList.remove('textRed')
     document.getElementById('answer-field').classList.remove('textGreen')
+    document.getElementById('test-answer').classList.add('is-hidden')
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
     document.getElementById('answer-field').disabled = false;
@@ -405,6 +429,7 @@ export default function docsPage({ testData }) {
                   >
                     <p className='test-step' dangerouslySetInnerHTML={{ __html: `${currentQuestion + 1}/${quiz.length}` }}></p>
                     <p className='test-question' dangerouslySetInnerHTML={{ __html: `${quiz[currentQuestion].question}` }}></p>
+                    <p className='test-answer is-hidden' id='test-answer' dangerouslySetInnerHTML={{ __html: `${quiz[currentQuestion].answer}` }}></p>
                   </GridItem>
 
                   <GridItem
@@ -451,6 +476,9 @@ export default function docsPage({ testData }) {
                 <>
                   <p className='test-results' dangerouslySetInnerHTML={{ __html: `Из ${quiz.length} возможных баллов ты получил ${pts}.` }}></p>
                   <p className='test-results-substring' dangerouslySetInnerHTML={{ __html: `${getPhraseForTestResults(quiz.length, pts)}` }}></p>
+                  <Button color="primary" size="sm" fullWidth onClick={startAgain} id='start-again'>
+                    Давай по новой
+                  </Button>
                 </>
               }
             </GridItem>

@@ -408,10 +408,21 @@ body {
   margin-bottom: 1em;
 }
 
+.test-answer {
+  font-size: 1em;
+  text-align: center;
+}
+
 .test-question {
   font-size: 3em;
   text-align: center;
   line-height: normal;
+}
+
+@media only screen and (max-width: 425px) {
+  .test-question {
+    font-size: 2em;
+  }
 }
 
 .test-results {
