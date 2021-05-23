@@ -33,6 +33,15 @@ const citiesPageStyle = {
     },
     textGreen: {
       color: "green !important"
+    },
+    textCenter: {
+      textAlign: "center"
+    },
+    textRight: {
+      textAlign: "right"
+    },
+    floatRight: {
+      float: "right"
     }
 };
 

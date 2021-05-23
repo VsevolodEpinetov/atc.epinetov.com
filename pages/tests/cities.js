@@ -20,10 +20,13 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Chip from '@material-ui/core/Chip';
+import Table from "components/Table/Table.js";
 
 import citiesPageStyle from "assets/jss/nextjs-material-kit-pro/pages/citiesPageStyle.js";
 
 import Search from "@material-ui/icons/Search";
+import Done from "@material-ui/icons/Done";
+import Close from "@material-ui/icons/Close";
 
 import { getAllCitiesTestData } from 'lib/cities'
 import { string } from "prop-types";
@@ -57,32 +60,77 @@ function getPhraseForTestResults(goal, result) {
   return message;
 }
 
-/*function computeFontSize (stringLength) {
-  const screenWidth = window.screen.width;
-  
-  if (screenWidth <= 425) {
-    if (screenWidth <= 375) type = "sm";
-    if (screenWidth < 320) type = "xs";
+function getTableWithResults (results) {
+  let data = [];
+  let questionNumber = 1;
+  results.forEach(result => {
+    let classForText = 'textRed';
+    let ResultIcon = Close;
+    let pointsGot = 0;
+    console.log(result)
+    if (result.correctAnswer.includes(result.userAnswer)) {
+      console.log(result.hintUses)
+      if (result.hintUses != 3) ResultIcon = Done;
+      if (result.hintUses == 1) {
+        classForText = 'textOrange';
+        pointsGot = 0.5;
+      }
+      if (result.hintUses == 2) {
+        classForText = 'textOrange';
+        pointsGot = 0.25;
+      }
+      if (result.hintUses == 0) {
+        classForText = 'textGreen';
+        pointsGot = 1;
+      }
+    }
+    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText}>{result.correctAnswer[0]}/{result.correctAnswer[1]}</span>, <span className={classForText}>{result.userAnswer}</span>, <span className={classForText}><ResultIcon/></span>, `${pointsGot}`])
+    questionNumber++;
+  })
+  return data;
+}
 
-    const baseFontSize = 3;
-    const baseStringSize = {
-      "xs": 7,
-      "sm": 8,
-      "sm-l": 10
-    };
-    let type = "sm-l", fontSize = baseFontSize;
-
-    if string.length 
+const allAreas = [
+  {
+    "name": 'Хабаровский РЦ',
+    "icao": 'UH'
+  },
+  {
+    "name": 'Якутский РЦ',
+    "icao": 'UE'
+  },
+  {
+    "name": 'Иркутский РЦ',
+    "icao": 'UI'
+  },
+  {
+    "name": 'Новосибирский РЦ',
+    "icao": 'UN'
+  },
+  {
+    "name": 'Норильский РЦ',
+    "icao": 'UO'
+  },
+  {
+    "name": 'Самарский РЦ',
+    "icao": 'UW'
+  },
+  {
+    "name": 'Екатеринбургский РЦ',
+    "icao": 'US'
+  },
+  {
+    "name": 'Московский РЦ',
+    "icao": 'UU'
   }
-  
-
-
-
-}*/
+]
 
 export default function docsPage({ testData }) {
 
+  // ---------------------------------
+  // Start of Quiz Variables and Handlers
   const [quiz, setQuiz] = React.useState([]);
+  const [quizResults, setQuizResults] = React.useState([]);
   const [pts, setPts] = React.useState(0);
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
 
@@ -93,76 +141,76 @@ export default function docsPage({ testData }) {
   const [textFieldValidationError, setTextFieldValidationError] = React.useState(false);
 
 
+  // Resets current state of the quiz
+  const resetQuiz = (amOfQuestions, chAreas) => {
+    setQuiz(getRandomQuestionsFromData(testData, amOfQuestions, chAreas));
+    setCurrentQuestion(0);
+    setPts(0);
+
+    setHint('Подсказка');
+    setHintColor('info');
+
+    document.getElementById('hint-button') && document.getElementById('hint-button').classList.remove('btn-disabled')
+    document.getElementById('check-button') && document.getElementById('check-button').classList.remove('btn-disabled')
+
+    let answerField = document.getElementById('answer-field');
+    if (answerField) {
+      answerField.value = '';
+      answerField.disabled = false;
+      answerField.classList.remove('textRed')
+      answerField.classList.remove('textGreen')
+    }
+
+    let testAnswer = document.getElementById('test-answer');
+    if (testAnswer)
+      if (!testAnswer.classList.contains('is-hidden'))
+        testAnswer.classList.add('is-hidden')
+
+    setTextFieldValidationError(false);
+    setTextFieldValidationSuccess(false);
+  }
+
+  const fillButtons = [
+    { color: "info", icon: Search },
+    { color: "success", icon: Search },
+    { color: "danger", icon: Search }
+  ].map((prop, key) => {
+    return (
+      <Button justIcon size="sm" color={prop.color} key={key}>
+        <prop.icon />
+      </Button>
+    );
+  });
+
   const [amountOfQuestions, setAmountOfQuestions] = React.useState(5);
   const [simpleSelect, setSimpleSelect] = React.useState("5");
   const handleAmountOfQuestionsSelector = event => {
     setAmountOfQuestions(parseInt(event.target.value));
-    setCurrentQuestion(0);
-    setPts(0);
-    setQuiz(getRandomQuestionsFromData(testData, parseInt(event.target.value), areas));
-    setHint('Подсказка');
-    setHintColor('info');
-    document.getElementById('hint-button') && document.getElementById('hint-button').classList.remove('btn-disabled')
-    document.getElementById('check-button') && document.getElementById('check-button').classList.remove('btn-disabled')
-    if (document.getElementById('answer-field')) {
-      document.getElementById('answer-field').value = '';
-      document.getElementById('answer-field').disabled = false;
-      document.getElementById('answer-field').classList.remove('textRed')
-      document.getElementById('answer-field').classList.remove('textGreen')
-    }
-    
-    if (document.getElementById('test-answer')) if (!document.getElementById('test-answer').classList.contains('is-hidden')) document.getElementById('test-answer').classList.add('is-hidden')
-
-    setTextFieldValidationError(false);
-    setTextFieldValidationSuccess(false);
+    resetQuiz(parseInt(event.target.value), areas);
   };
+
 
   const [areas, setAreas] = React.useState(["UH", "UE", "UI", "UN", "UO", "UW", "US", "UU"]);
   const handleAreasSelector = event => {
     setAreas(event.target.value);
-    setCurrentQuestion(0);
-    setPts(0);
-    setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions, event.target.value));
-    setHint('Подсказка');
-    setHintColor('info');
-    document.getElementById('hint-button') && document.getElementById('hint-button').classList.remove('btn-disabled')
-    document.getElementById('check-button') && document.getElementById('check-button').classList.remove('btn-disabled')
-    if (document.getElementById('answer-field')) {
-      document.getElementById('answer-field').value = '';
-      document.getElementById('answer-field').disabled = false;
-      document.getElementById('answer-field').classList.remove('textRed')
-      document.getElementById('answer-field').classList.remove('textGreen')
-    }
-    if (document.getElementById('test-answer')) if (!document.getElementById('test-answer').classList.contains('is-hidden')) document.getElementById('test-answer').classList.add('is-hidden')
-    setTextFieldValidationError(false);
-    setTextFieldValidationSuccess(false);
+    resetQuiz(amountOfQuestions, event.target.value);
   };
+
 
   const startAgain = event => {
-    setCurrentQuestion(0);
-    setPts(0);
-    setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions, areas));
-    setHint('Подсказка');
-    setHintColor('info');
-    document.getElementById('hint-button') && document.getElementById('hint-button').classList.remove('btn-disabled')
-    document.getElementById('check-button') && document.getElementById('check-button').classList.remove('btn-disabled')
-    if (document.getElementById('answer-field')) {
-      document.getElementById('answer-field').value = '';
-      document.getElementById('answer-field').disabled = false;
-      document.getElementById('answer-field').classList.remove('textRed')
-      document.getElementById('answer-field').classList.remove('textGreen')
-    }
-    
-    if (document.getElementById('test-answer')) if (!document.getElementById('test-answer').classList.contains('is-hidden')) document.getElementById('test-answer').classList.add('is-hidden')
-
-    setTextFieldValidationError(false);
-    setTextFieldValidationSuccess(false);
+    resetQuiz(amountOfQuestions, areas);
   };
 
+  // Initiate a quiz
   React.useEffect(() => {
     if (quiz.length == 0) setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions, areas));
   })
+  // End of Quiz Variables and Handlers
+  // ---------------------------------
 
+
+  // ---------------------------------
+  // Start of Quiz Functions
   const checkAnswer = (e) => {
     let userAnswer = document.getElementById('answer-field').value.toUpperCase();
 
@@ -173,12 +221,12 @@ export default function docsPage({ testData }) {
       document.getElementById('next-button').classList.remove('btn-disabled');
 
       if (quiz[currentQuestion].answer.includes(userAnswer)) {
-        setTextFieldValidationSuccess(true) 
+        setTextFieldValidationSuccess(true)
         document.getElementById('answer-field').classList.add('textGreen')
-      }  else {
-       setTextFieldValidationError(true)
-       document.getElementById('answer-field').classList.add('textRed')
-       document.getElementById('test-answer').classList.remove('is-hidden')
+      } else {
+        setTextFieldValidationError(true)
+        document.getElementById('answer-field').classList.add('textRed')
+        document.getElementById('test-answer').classList.remove('is-hidden')
       }
 
     }
@@ -186,6 +234,7 @@ export default function docsPage({ testData }) {
 
   const nextQuestion = (e) => {
     let userAnswer = document.getElementById('answer-field').value.toUpperCase();
+    let hintUses = 0;
 
     if (quiz[currentQuestion].answer.includes(userAnswer)) {
       switch (hint) {
@@ -194,24 +243,52 @@ export default function docsPage({ testData }) {
           break;
         case 'Ещё плз':
           setPts(pts + 0.5);
+          hintUses = 1;
           break;
         case 'Весь ответ 🙏':
           setPts(pts + 0.25);
+          hintUses = 2;
+          break;
+        case 'Всё!':
+          hintUses = 3;
+          break;
+      }
+    } else {
+      switch (hint) {
+        case 'Ещё плз':
+          hintUses = 1;
+          break;
+        case 'Весь ответ 🙏':
+          hintUses = 2;
           break;
       }
     }
 
     setHint('Подсказка');
     setHintColor('info');
+
     document.getElementById('hint-button').classList.remove('btn-disabled')
     document.getElementById('next-button').classList.add('btn-disabled')
+
     document.getElementById('answer-field').value = '';
     document.getElementById('answer-field').classList.remove('textRed')
     document.getElementById('answer-field').classList.remove('textGreen')
+    document.getElementById('answer-field').disabled = false;
+
     document.getElementById('test-answer').classList.add('is-hidden')
+
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
-    document.getElementById('answer-field').disabled = false;
+
+    let newResults = quizResults;
+    newResults.push({
+      "question": quiz[currentQuestion].question,
+      "correctAnswer": quiz[currentQuestion].answer,
+      "userAnswer": userAnswer,
+      "hintUses": hintUses
+    })
+    setQuizResults(newResults)
+
     setCurrentQuestion(currentQuestion + 1);
   }
 
@@ -237,40 +314,8 @@ export default function docsPage({ testData }) {
     }
   }
 
-  const allAreas = [
-    {
-      "name": 'Хабаровский РЦ',
-      "icao": 'UH'
-    },
-    {
-      "name": 'Якутский РЦ',
-      "icao": 'UE'
-    },
-    {
-      "name": 'Иркутский РЦ',
-      "icao": 'UI'
-    },
-    {
-      "name": 'Новосибирский РЦ',
-      "icao": 'UN'
-    },
-    {
-      "name": 'Норильский РЦ',
-      "icao": 'UO'
-    },
-    {
-      "name": 'Самарский РЦ',
-      "icao": 'UW'
-    },
-    {
-      "name": 'Екатеринбургский РЦ',
-      "icao": 'US'
-    },
-    {
-      "name": 'Московский РЦ',
-      "icao": 'UU'
-    }
-  ]
+  // ---------------------------------
+  // End of Quiz Functions
 
   const classes = useStyles();
   return (
@@ -448,7 +493,7 @@ export default function docsPage({ testData }) {
                       success={textFieldValidationSuccess}
                       error={textFieldValidationError}
                       onChange={checkAnswer}
-                      className = {classes.textRed}
+                      className={classes.textRed}
                     />
                   </GridItem>
                   <GridItem
@@ -474,8 +519,13 @@ export default function docsPage({ testData }) {
               }
               {currentQuestion == quiz.length &&
                 <>
-                  <p className='test-results' dangerouslySetInnerHTML={{ __html: `Из ${quiz.length} возможных баллов ты получил ${pts}.` }}></p>
-                  <p className='test-results-substring' dangerouslySetInnerHTML={{ __html: `${getPhraseForTestResults(quiz.length, pts)}` }}></p>
+                  <p className='test-results'>Из {quiz.length} возможных баллов ты получил {pts}.</p>
+                  <p className='test-results-substring'>{getPhraseForTestResults(quiz.length, pts)}</p>
+                  <Table
+                    striped
+                    tableHead={["#", "Вопрос", "Верный ответ", "Твой ответ", "Результат", "Баллы"]}
+                    tableData={getTableWithResults(quizResults)}
+                  />
                   <Button color="primary" size="sm" fullWidth onClick={startAgain} id='start-again'>
                     Давай по новой
                   </Button>
