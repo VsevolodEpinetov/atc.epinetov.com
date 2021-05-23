@@ -27,6 +27,12 @@ const citiesPageStyle = {
     },
     textCenter: {
         textAlign: "center"
+    },
+    textRed: {
+      color: "red !important"
+    },
+    textGreen: {
+      color: "green !important"
     }
 };
 

@@ -26,6 +26,7 @@ import citiesPageStyle from "assets/jss/nextjs-material-kit-pro/pages/citiesPage
 import Search from "@material-ui/icons/Search";
 
 import { getAllCitiesTestData } from 'lib/cities'
+import { string } from "prop-types";
 
 const useStyles = makeStyles(citiesPageStyle);
 
@@ -45,7 +46,7 @@ function getRandomQuestionsFromData(testData, amountOfQuestions, areas) {
 }
 
 
-function getPhraseForTestResults (goal, result) {
+function getPhraseForTestResults(goal, result) {
   const mark = parseInt(result) / parseInt(goal);
   let message = '';
   if (mark == 0) message = '🙈'
@@ -56,6 +57,29 @@ function getPhraseForTestResults (goal, result) {
 
   return message;
 }
+
+/*function computeFontSize (stringLength) {
+  const screenWidth = window.screen.width;
+  
+  if (screenWidth <= 425) {
+    if (screenWidth <= 375) type = "sm";
+    if (screenWidth < 320) type = "xs";
+
+    const baseFontSize = 3;
+    const baseStringSize = {
+      "xs": 7,
+      "sm": 8,
+      "sm-l": 10
+    };
+    let type = "sm-l", fontSize = baseFontSize;
+
+    if string.length 
+  }
+  
+
+
+
+}*/
 
 export default function docsPage({ testData }) {
 
@@ -84,6 +108,8 @@ export default function docsPage({ testData }) {
     if (document.getElementById('answer-field')) {
       document.getElementById('answer-field').value = '';
       document.getElementById('answer-field').disabled = false;
+      document.getElementById('answer-field').classList.remove('textRed')
+      document.getElementById('answer-field').classList.remove('textGreen')
     }
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
@@ -102,10 +128,14 @@ export default function docsPage({ testData }) {
     if (document.getElementById('answer-field')) {
       document.getElementById('answer-field').value = '';
       document.getElementById('answer-field').disabled = false;
+      document.getElementById('answer-field').classList.remove('textRed')
+      document.getElementById('answer-field').classList.remove('textGreen')
     }
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
   };
+
+  const [fontSize, setFontSize] = React.useState(3);
 
   React.useEffect(() => {
     if (quiz.length == 0) setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions, areas));
@@ -120,7 +150,13 @@ export default function docsPage({ testData }) {
       document.getElementById('answer-field').disabled = true;
       document.getElementById('next-button').classList.remove('btn-disabled');
 
-      quiz[currentQuestion].answer.includes(userAnswer) ? setTextFieldValidationSuccess(true) : setTextFieldValidationError(true)
+      if (quiz[currentQuestion].answer.includes(userAnswer)) {
+        setTextFieldValidationSuccess(true) 
+        document.getElementById('answer-field').classList.add('textGreen')
+      }  else {
+       setTextFieldValidationError(true)
+       document.getElementById('answer-field').classList.add('textRed')
+      }
 
     }
   }
@@ -147,6 +183,8 @@ export default function docsPage({ testData }) {
     document.getElementById('hint-button').classList.remove('btn-disabled')
     document.getElementById('next-button').classList.add('btn-disabled')
     document.getElementById('answer-field').value = '';
+    document.getElementById('answer-field').classList.remove('textRed')
+    document.getElementById('answer-field').classList.remove('textGreen')
     setTextFieldValidationError(false);
     setTextFieldValidationSuccess(false);
     document.getElementById('answer-field').disabled = false;
@@ -174,6 +212,41 @@ export default function docsPage({ testData }) {
         break;
     }
   }
+
+  const allAreas = [
+    {
+      "name": 'Хабаровский РЦ',
+      "icao": 'UH'
+    },
+    {
+      "name": 'Якутский РЦ',
+      "icao": 'UE'
+    },
+    {
+      "name": 'Иркутский РЦ',
+      "icao": 'UI'
+    },
+    {
+      "name": 'Новосибирский РЦ',
+      "icao": 'UN'
+    },
+    {
+      "name": 'Норильский РЦ',
+      "icao": 'UO'
+    },
+    {
+      "name": 'Самарский РЦ',
+      "icao": 'UW'
+    },
+    {
+      "name": 'Екатеринбургский РЦ',
+      "icao": 'US'
+    },
+    {
+      "name": 'Московский РЦ',
+      "icao": 'UU'
+    }
+  ]
 
   const classes = useStyles();
   return (
@@ -288,13 +361,13 @@ export default function docsPage({ testData }) {
                     name: "areasSelector",
                     id: "areas-selector"
                   }}
-                  /*renderValue={(selected) => (
-                    <div className={classes.chips}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} className={classes.chip} />
-                      ))}
-                    </div>
-                  )}*/
+                /*renderValue={(selected) => (
+                  <div className={classes.chips}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} className={classes.chip} />
+                    ))}
+                  </div>
+                )}*/
                 >
                   <MenuItem
                     disabled
@@ -304,78 +377,15 @@ export default function docsPage({ testData }) {
                   >
                     Зоны
                       </MenuItem>
-                  <MenuItem
-                    classes={{
+
+                  {allAreas.map(area => (
+                    <MenuItem key={area.icao} value={area.icao} classes={{
                       root: classes.selectMenuItem,
                       selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UH"
-                  >
-                    Хабаровский РЦ
-                      </MenuItem>
-                  <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UE"
-                  >
-                    Якутский РЦ
-                      </MenuItem>
-                  <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UI"
-                  >
-                    Иркутский РЦ
-                      </MenuItem>
-                      <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UN"
-                  >
-                    Новосибирский  РЦ
-                      </MenuItem>
-                      <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UO"
-                  >
-                    Норильский  РЦ
-                      </MenuItem>
-                      <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UW"
-                  >
-                    Самарский  РЦ
-                      </MenuItem>
-                      <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="US"
-                  >
-                    Екатеринбургский  РЦ
-                      </MenuItem>
-                      <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelectedMultiple
-                    }}
-                    value="UU"
-                  >
-                    Московский РЦ
-                      </MenuItem>
+                    }}>
+                      {area.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </GridItem>
@@ -399,7 +409,7 @@ export default function docsPage({ testData }) {
 
                   <GridItem
                     md={12}
-                    className={classes.mlAuto + " " + classes.mrAuto}
+                    className={classes.mlAuto + " " + classes.mrAuto + " " + classes.textRed}
                     key='13'
                   >
                     <CustomInput
@@ -413,6 +423,7 @@ export default function docsPage({ testData }) {
                       success={textFieldValidationSuccess}
                       error={textFieldValidationError}
                       onChange={checkAnswer}
+                      className = {classes.textRed}
                     />
                   </GridItem>
                   <GridItem

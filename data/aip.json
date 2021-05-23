@@ -34,5 +34,14 @@
       "STAR": true,
       "SID": true
     }
+  },
+  "UUMO": {
+    "name": "Остафьево",
+    "country": "Россия",
+    "availableTypes": {
+      "full": true,
+      "STAR": true,
+      "SID": true
+    }
   }
 }

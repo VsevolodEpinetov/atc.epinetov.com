@@ -44,6 +44,7 @@
     "remark-parse": "^9.0.0",
     "remark-react": "^8.0.0",
     "unified": "^9.2.0",
+    "use-fit-text": "^2.4.0",
     "webpack": "4.43.0"
   },
   "scripts": {
