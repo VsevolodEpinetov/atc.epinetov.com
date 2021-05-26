@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React from "react";
 import Link from "next/link";
+import Image from 'next/image'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -15,6 +16,10 @@ import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
 import BackToTopButton from "components/BackToTopButton/BackToTopButton.js"
 import smoothScroll from "components/SmoothScroll/SmoothScroll.js"
+import PostImage from "components/PostImage/PostImage.js"
+import Snackbar from '@material-ui/core/Snackbar';
+import { MDXRemote } from 'next-mdx-remote'
+import { Alert, AlertTitle } from '@material-ui/lab';
 // styles
 import docPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docPageStyle.js";
 // libraries
@@ -22,12 +27,12 @@ import { getAllPostsIds, getPostData } from 'lib/posts'
 import Date from 'lib/date'
 // images
 
+const components = { PostImage, Alert, AlertTitle, Snackbar }
+
 const useStyles = makeStyles(docPageStyle);
 
 export default function DocPage({ postData }) {
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
   });
 
   const structureList = (structure) => {
@@ -78,8 +83,8 @@ export default function DocPage({ postData }) {
         <div className={classes.container} id="start">
           <GridContainer justify="center">
             <GridItem md={8} className={classes.textCenter}>
-              <h1 className={classes.title}> {postData.title} </h1>
-              <h4 className={classes.subtitle}> Редакция от <Date dateString={postData.date} /> </h4>
+              <h1 className={classes.title}> {postData.data.title} </h1>
+              <h4 className={classes.subtitle}> Редакция от <Date dateString={postData.data.date}/> </h4>
             </GridItem>
           </GridContainer>
         </div>
@@ -95,7 +100,9 @@ export default function DocPage({ postData }) {
               </Hidden>
 
               <GridItem xs={12} sm={12} md={8} id="document-body">
-                  <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+                  <>
+                    <MDXRemote {...postData.contentWithLinksInHeaders} components={components} />
+                  </>
               </GridItem>
 
               <Hidden smDown>
