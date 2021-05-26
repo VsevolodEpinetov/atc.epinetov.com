@@ -18,8 +18,6 @@ import YouTube from "@material-ui/icons/YouTube";
 
 import postsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/postsPageStyle.js";
 
-import { MDXRemote } from 'next-mdx-remote'
-
 import { getSortedPostsData } from 'lib/posts'
 import Date from 'lib/date'
 
