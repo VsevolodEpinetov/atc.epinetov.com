@@ -68,7 +68,7 @@ const docPageStyle = {
     backgroundSize: "cover",
     padding: "70px 0",
     "& p": {
-      fontSize: "1.188rem",
+      fontSize: "1rem",
       lineHeight: "1.5em",
       color: grayColor[15],
       marginBottom: "30px"

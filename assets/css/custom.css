@@ -253,35 +253,35 @@ body {
     color: #e95656 !important;
 }
 
-#message-success {
-    visibility: hidden; 
-    min-width: 250px;
-    margin-left: -125px; 
-    background-color: #4caf50;
-    color: #fff;
-    text-align: center;
-    border-radius: 2px;
-    padding: 16px;
-    position: fixed;
-    z-index: 1;
-    left: 50%;
-    bottom: 30px;
+.snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px; 
+  box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
 }
 
-#message-error {
-    visibility: hidden; 
-    min-width: 250px;
-    margin-left: -125px; 
-    background-color: #f44336;
-    color: #fff;
-    text-align: center;
-    border-radius: 2px;
-    padding: 16px;
-    position: fixed;
-    z-index: 1;
-    left: 50%;
-    bottom: 30px;
+.snackbar.success {
+  background-color: #4caf50;
 }
+
+.snackbar.error {
+  background-color: #f44336;
+}
+
+.snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
 
 .filtered {
   display: none;
@@ -304,18 +304,6 @@ body {
 
 .article-image {
   width: 100% !important;
-}
-  
-#message-success.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
-#message-error.show {
-    visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
   
 @-webkit-keyframes fadein {

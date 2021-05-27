@@ -18,6 +18,8 @@ import Head from "next/head";
 import Router from "next/router";
 import { UserProvider } from '@auth0/nextjs-auth0';
 
+import SimpleReactLightbox from 'simple-react-lightbox-pro'
+
 import PageChange from "components/PageChange/PageChange.js";
 
 import "assets/scss/nextjs-material-kit-pro.scss?v=1.1.0";
@@ -76,28 +78,30 @@ class MyApp extends App {
 
     return (
       <UserProvider>
-        <React.Fragment>
-          <Head>
-            <title>Информация по ОВД | ATC</title>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            />
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
+        <SimpleReactLightbox>
+          <React.Fragment>
+            <Head>
+              <title>Информация по ОВД | ATC</title>
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1, shrink-to-fit=no"
+              />
+              <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
                   gtag('config', 'G-SPEBEGWV0S');
                   
                   `
-              }}
-            />
-          </Head>
-          <Component {...pageProps} />
-        </React.Fragment>
+                }}
+              />
+            </Head>
+            <Component {...pageProps} />
+          </React.Fragment>
+        </SimpleReactLightbox>
       </UserProvider>
     );
   }
