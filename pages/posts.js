@@ -15,6 +15,7 @@ import Footer from "components/Footer/Footer.js";
 
 import Subject from "@material-ui/icons/Subject";
 import YouTube from "@material-ui/icons/YouTube";
+import Pageview from "@material-ui/icons/Pageview";
 
 import postsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/postsPageStyle.js";
 
@@ -105,6 +106,13 @@ export default function docsPage({ allPostsData }) {
                         type == 'yt' && (
                           <Button simple color="white" href={`${link}`} target="_blank">
                             <YouTube /> Смотреть
+                          </Button>
+                        )
+                      }
+                      { 
+                        type == 'link' && (
+                          <Button simple color="white" href={`${link}`}>
+                            <Pageview /> Перейти
                           </Button>
                         )
                       }
