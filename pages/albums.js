@@ -18,6 +18,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AlbumsGallery from 'components/AlbumsGallery/AlbumsGallery.js'
 import { SRLWrapper } from 'simple-react-lightbox-pro'
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 import docsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyle.js";
 
@@ -80,19 +81,21 @@ export default function docsPage({ albums }) {
                     <h4>Круг</h4>
                   </GridItem>
                   <SRLWrapper options={lighbtoxOptions}>
-                    <GridContainer justify="flex-start" alignItems="flex-start">
+                    <GridContainer justify="flex-start" alignItems="flex-start" style={{ marginLeft: '0.1em', marginRight: '0.1em' }}>
                       {
                         area.radar.map(imageName => (
-                          <GridItem xs={12} sm={6} md={3}>
-                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}>
-                              <Image
-                                src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}
-                                width="320px"
-                                height="200px"
-                                alt={imageName}
-                                srl_gallery_image="true"
-                              />
-                            </a>
+                          <GridItem xs={12} sm={6} md={3} style={{ marginBottom: '1em' }}>
+                            <Paper elevation={2}>
+                              <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}>
+                                <Image
+                                  src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}
+                                  width="320px"
+                                  height="200px"
+                                  alt={imageName}
+                                  srl_gallery_image="true"
+                                />
+                              </a>
+                            </Paper>
                           </GridItem>
                         ))
                       }
@@ -106,19 +109,21 @@ export default function docsPage({ albums }) {
                     <h4>Подход</h4>
                   </GridItem>
                   <SRLWrapper options={lighbtoxOptions}>
-                    <GridContainer>
+                    <GridContainer justify="flex-start" alignItems="flex-start" style={{ marginLeft: '0.1em', marginRight: '0.1em' }}>
                       {
                         area.approach.map(imageName => (
-                          <GridItem xs={12} sm={6} md={3}>
-                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}>
-                              <Image
-                                src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}
-                                width="320px"
-                                height="200px"
-                                alt={imageName}
-                                srl_gallery_image="true"
-                              />
-                            </a>
+                          <GridItem xs={12} sm={6} md={3} style={{ marginBottom: '1em' }}>
+                            <Paper elevation={2}>
+                              <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}>
+                                <Image
+                                  src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}
+                                  width="320px"
+                                  height="200px"
+                                  alt={imageName}
+                                  srl_gallery_image="true"
+                                />
+                              </a>
+                            </Paper>
                           </GridItem>
                         ))
                       }
