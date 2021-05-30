@@ -85,17 +85,16 @@ export default function docsPage({ albums }) {
                       {
                         area.radar.map(imageName => (
                           <GridItem xs={12} sm={6} md={3} style={{ marginBottom: '1em' }}>
-                            <Paper elevation={2}>
-                              <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}>
-                                <Image
-                                  src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}
-                                  width="320px"
-                                  height="200px"
-                                  alt={imageName}
-                                  srl_gallery_image="true"
-                                />
-                              </a>
-                            </Paper>
+                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}>
+                              <Image
+                                src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}
+                                width="320px"
+                                height="200px"
+                                alt={imageName}
+                                srl_gallery_image="true"
+                                className='image-shadow'
+                              />
+                            </a>
                           </GridItem>
                         ))
                       }
@@ -113,17 +112,16 @@ export default function docsPage({ albums }) {
                       {
                         area.approach.map(imageName => (
                           <GridItem xs={12} sm={6} md={3} style={{ marginBottom: '1em' }}>
-                            <Paper elevation={2}>
-                              <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}>
-                                <Image
-                                  src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}
-                                  width="320px"
-                                  height="200px"
-                                  alt={imageName}
-                                  srl_gallery_image="true"
-                                />
-                              </a>
-                            </Paper>
+                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}>
+                              <Image
+                                src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}
+                                width="320px"
+                                height="200px"
+                                alt={imageName}
+                                srl_gallery_image="true"
+                                className='image-shadow'
+                              />
+                            </a>
                           </GridItem>
                         ))
                       }
