@@ -25,9 +25,24 @@ import Date from 'lib/date'
 const useStyles = makeStyles(docPageStyle);
 
 export default function DocPage({ docData }) {
+  const [mainWidthForMD, setMainWidthMD] = React.useState(8)
+  const [navigationBarIsSeen, setNavigationBarIsSeen] = React.useState('')
+  const [navBarHeight, setNavBarHeight] = React.useState(9999)
+
+
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+    const onScroll = e => {
+      if (navBarHeight === 9999) setNavBarHeight(document.getElementById('navigation-bar').offsetHeight + 500)
+      if (e.target.documentElement.scrollTop > navBarHeight) {
+        setMainWidthMD(12);
+        setNavigationBarIsSeen('filtered')
+      } else {
+        setMainWidthMD(8);
+        setNavigationBarIsSeen('')
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   });
 
   const structureList = (structure) => {
@@ -57,7 +72,7 @@ export default function DocPage({ docData }) {
 
   const navigationElements = (docData) => {
     return (
-      <Card>
+      <Card id='navigation-bar'>
         <CardBody>
           {navigationLinks(docData)}
           <br />
@@ -100,12 +115,12 @@ export default function DocPage({ docData }) {
                 </GridItem>
               </Hidden>
 
-              <GridItem xs={12} sm={12} md={8} id="document-body">
-                  <div dangerouslySetInnerHTML={{ __html: docData.contentHtml }} />
+              <GridItem xs={12} sm={12} md={mainWidthForMD} id="document-body">
+                <div dangerouslySetInnerHTML={{ __html: docData.contentHtml }} />
               </GridItem>
 
               <Hidden smDown>
-                <GridItem md={4}>
+                <GridItem md={4} className={navigationBarIsSeen}>
                   {navigationElements(docData)}
                 </GridItem>
               </Hidden>
@@ -113,8 +128,8 @@ export default function DocPage({ docData }) {
           </div>
         </div>
       </div>
-      <BackToTopButton/>
-      <Footer/>
+      <BackToTopButton />
+      <Footer />
     </div>
   );
 }
