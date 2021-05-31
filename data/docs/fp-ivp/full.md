@@ -4,6 +4,7 @@ fullName: 'Постановление Правительства РФ от 11.03
 tags: ''
 date: '2020-12-17'
 summaryExists: true
+active: true
 ---
 
 ### I. Общие положения ###

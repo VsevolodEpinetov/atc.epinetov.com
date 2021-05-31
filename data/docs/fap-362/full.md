@@ -4,6 +4,7 @@ fullName: 'Приказ Минтранса РФ от 26 сентября 2012 г
 tags: ''
 date: '2018-05-10'
 summaryExists: true
+active: true
 ---
 
 ### I. Общие положения

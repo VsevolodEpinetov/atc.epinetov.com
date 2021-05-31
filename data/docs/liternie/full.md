@@ -4,6 +4,7 @@ fullName: 'Приказ Федеральной аэронавигационно�
 tags: ''
 date: '2007-09-12'
 summaryExists: false
+active: true
 ---
 
 ### Раздел I. Общие положения ###

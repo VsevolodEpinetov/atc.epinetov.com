@@ -4,6 +4,7 @@ fullName: 'Федеральные авиационные правила полё
 tags: ''
 date: '2017-02-14'
 summaryExists: false
+active: false
 ---
 
 ### 0. Предисловие

@@ -19,12 +19,12 @@ import docsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyl
 
 import Search from "@material-ui/icons/Search";
 
-import { getSortedDocsData } from 'lib/docs'
+import { getSortedDocsIDs } from 'lib/docs'
 import Date from 'lib/date'
 
 const useStyles = makeStyles(docsPageStyle);
 
-export default function docsPage({ allDocsData }) {
+export default function docsPage({ allDocs }) {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -42,19 +42,59 @@ export default function docsPage({ allDocsData }) {
             <GridItem
               md={12}
               className={classes.mlAuto + " " + classes.mrAuto}
-              style={{ marginBottom: '3em !important' }}
               key='docs-header'
             >
-              <h2 className={classes.title}>Актуальная документация</h2>
+              <h2 className={classes.title}>Документация по ОВД</h2>
               <h5 className={classes.description}>
-                Здесь находятся актуальные версии важных для ОВД документов. В некоторых документах имеется "краткая версия", которая содержит выжимку из документа только с важными частями. На странице всех документов снизу справа имеется кнопка для быстрого возврата в начало документа.
+                Здесь находятся актуальные (и не очень) версии важных для ОВД документов. В некоторых документах имеется "краткая версия", которая содержит выжимку из документа только с важными частями. На странице всех документов снизу справа имеется кнопка для быстрого возврата в начало документа.
               </h5>
               <h5 className={classes.description}>
                 Все файлы взяты с различных источников, но, как правило, все интересующие документы можно найти на сайте <a href="http://www.garant.ru/" target='_blank'>Гарант</a> и <a href="http://www.consultant.ru/" target='_blank'>Консультант.Плюс</a>.
               </h5>
             </GridItem>
+            <GridItem
+              md={12}
+              className={classes.mlAuto + " " + classes.mrAuto}
+              key='docs-active-header'
+            >
+              <h3>Актуальная документация</h3>
+            </GridItem>
             {
-              allDocsData.map(({ id, date, title, summaryExists, fullName }) => (
+              allDocs.active.map(({ id, date, title, summaryExists, fullName }) => (
+                <GridItem
+                  md={4}
+                  className={
+                    classes.textCenter
+                  }
+                  key={`card-${id}`}
+                >
+                  <Card>
+                    <CardBody>
+                      <Tooltip
+                        id={`tooltip-${id}`}
+                        title={`${fullName}`}
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <h4 className={classes.cardTitle}>{title}</h4>
+                      </Tooltip>
+                      <p>Ред. от <Date dateString={date} /></p>
+                      <Button color="blue" href={`/docs/${id}`}>Смотреть</Button> {" "}
+                      {summaryExists && <Button color="success" href={`/docs/summary/${id}`}>Кратко</Button>}
+                    </CardBody>
+                  </Card>
+                </GridItem>
+              ))
+            }
+            <GridItem
+              md={12}
+              className={classes.mlAuto + " " + classes.mrAuto}
+              key='docs-not-active-header'
+            >
+              <h3>Утратившая силу документация</h3>
+            </GridItem>
+            {
+              allDocs.notActive.map(({ id, date, title, summaryExists, fullName }) => (
                 <GridItem
                   md={4}
                   className={
@@ -89,10 +129,10 @@ export default function docsPage({ allDocsData }) {
 }
 
 export async function getStaticProps() {
-  const allDocsData = getSortedDocsData()
+  const allDocs = getSortedDocsIDs()
   return {
     props: {
-      allDocsData
+      allDocs
     }
   }
 }

@@ -4,6 +4,7 @@ fullName: 'Приказ Минтранса РФ от 25 ноября 2011 г. N 
 tags: ''
 date: '2017-02-14'
 summaryExists: false
+active: true
 ---
 
 ### I. Общие положения
