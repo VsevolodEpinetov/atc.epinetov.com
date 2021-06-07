@@ -455,37 +455,14 @@ body {
 	transform: translateY(0);
 }
 
-
-@-webkit-keyframes scale-up-hor-left {
-  0% {
-    -webkit-transform: scaleX(0.4);
-            transform: scaleX(0.4);
-    -webkit-transform-origin: 0% 0%;
-            transform-origin: 0% 0%;
-  }
-  100% {
-    -webkit-transform: scaleX(1);
-            transform: scaleX(1);
-    -webkit-transform-origin: 0% 0%;
-            transform-origin: 0% 0%;
-  }
-}
-@keyframes scale-up-hor-left {
-  0% {
-    -webkit-transform: scaleX(0.4);
-            transform: scaleX(0.4);
-    -webkit-transform-origin: 0% 0%;
-            transform-origin: 0% 0%;
-  }
-  100% {
-    -webkit-transform: scaleX(1);
-            transform: scaleX(1);
-    -webkit-transform-origin: 0% 0%;
-            transform-origin: 0% 0%;
-  }
+.cursor-pointer {
+  cursor: pointer;
 }
 
-.document-text-animation {
-	-webkit-animation: scale-up-hor-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-hor-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+.accordion-root {
+  display: block !important;
+}
+
+.search-content-result {
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(235,235,235,0) 15%, rgba(255,255,255,0) 85%, rgba(255,255,255,1) 100%);
 }

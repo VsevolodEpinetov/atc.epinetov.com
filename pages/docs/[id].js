@@ -47,11 +47,11 @@ export default function DocPage({ docData }) {
 
   const structureList = (structure) => {
     const headersLinks = Object.keys(structure).map(id => {
-      var subheaderLinks;
-      if (structure[id].subheaders) subheaderLinks = structure[id].subheaders.map((subheader, subheaderID) => <li><a href={`#${id}-${subheaderID}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}-${subheaderID}`); }}>{subheader}</a></li>)
-      return <span><li><a href={`#${id}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}`); }}>{structure[id].name}</a></li><ul className='nav-sidebar-subheaders'>{subheaderLinks}</ul></span>;
+      let subheaderLinks;
+      if (structure[id].subheaders) subheaderLinks = structure[id].subheaders.map((subheader, subheaderID) => <li key={`link-${id}-${subheaderID}`}><a href={`#${id}-${subheaderID}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}-${subheaderID}`); }}>{subheader}</a></li>)
+      return <span><li key={`link-${id}`}><a href={`#${id}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}`); }}>{structure[id].name}</a></li><ul className='nav-sidebar-subheaders'>{subheaderLinks}</ul></span>;
     });
-    return (<ul class='nav-sidebar-headers'>{headersLinks}</ul>);
+    return (<ul className='nav-sidebar-headers'>{headersLinks}</ul>);
   }
 
   const navigationLinks = (docData) => {
@@ -63,7 +63,7 @@ export default function DocPage({ docData }) {
       <div>
         <h5>Ссылки</h5>
         {summaryLink}<br />
-        <a href="#" class='link-is-disabled'>✅ Скачать документ</a> <br />
+        <a href="#" className='link-is-disabled'>✅ Скачать документ</a> <br />
         <Link href='/docs'><a>📄 К документам</a></Link> <br />
         <Link href='/'><a>🏠 На главную</a></Link>
       </div>
@@ -98,7 +98,7 @@ export default function DocPage({ docData }) {
       <Parallax image='https://storage.googleapis.com/atc.epinetov.com/public/img/pattern-bg.webp' small filter="light">
         <div className={classes.container} id="start">
           <GridContainer justify="center">
-            <GridItem md={8} className={classes.textCenter}>
+            <GridItem md={8} className={classes.textCenter} key='document-header'>
               <h1 className={classes.title}> {docData.title} </h1>
               <h4 className={classes.subtitle}> Редакция от <Date dateString={docData.date} /> </h4>
             </GridItem>
@@ -110,17 +110,17 @@ export default function DocPage({ docData }) {
           <div className={classes.section}>
             <GridContainer justify="center">
               <Hidden mdUp>
-                <GridItem sm={12}>
+                <GridItem sm={12} key='document-nav-sm-devices'>
                   {navigationElements(docData)}
                 </GridItem>
               </Hidden>
 
-              <GridItem xs={12} sm={12} md={mainWidthForMD} id="document-body">
+              <GridItem xs={12} sm={12} md={mainWidthForMD} id="document-body" key='document-header'>
                 <div dangerouslySetInnerHTML={{ __html: docData.contentHtml }} />
               </GridItem>
 
               <Hidden smDown>
-                <GridItem md={4} className={navigationBarIsSeen}>
+                <GridItem md={4} className={navigationBarIsSeen} key='document-nav-md-devices'>
                   {navigationElements(docData)}
                 </GridItem>
               </Hidden>

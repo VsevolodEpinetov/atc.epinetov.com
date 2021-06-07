@@ -237,7 +237,7 @@ export default function AircraftPage({ allAircraftData }) {
                           //src={require(`assets/data/aircraft/${aircraftName}/thumbnail.webp`)}
                           src={`https://storage.googleapis.com/atc.epinetov.com/public/aircraft/${aircraftName}/thumbnail.webp`}
                           alt={aircraftInfo.name.plain}
-                          style={{ display: "block", cursor: "pointer" }}
+                          className={'cursor-pointer'}
                           width="290px"
                           height="220px"
                         />
