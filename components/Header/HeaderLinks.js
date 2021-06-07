@@ -151,6 +151,11 @@ export default function HeaderLinks(props) {
               <a className={classes.dropdownLink}>
                 Аэропорты РФ
               </a>
+            </Link>,
+            <Link href="/tests/aircraft" prefetch>
+              <a className={classes.dropdownLink}>
+                ЛТХ ВС
+              </a>
             </Link>
           ]}
         />

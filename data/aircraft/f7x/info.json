@@ -5,7 +5,8 @@
   },
   "specs": {
     "engines": {
-      "quantity": 3
+      "quantity": 3,
+      "type": "J"
     },
     "speed": {
       "cruising": {
