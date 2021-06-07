@@ -647,7 +647,8 @@ export default function docsPage({ testData }) {
                         valueLabel: classes.sliderValueLabel,
                         track: classes.sliderTrack,
                         rail: classes.sliderRail,
-                        markLabel: classes.sliderMarkLabel
+                        markLabel: classes.sliderMarkLabel,
+                        disabled: classes.sliderDisabled
                       }}
                       style={{
                         color: ceilingSliderColor

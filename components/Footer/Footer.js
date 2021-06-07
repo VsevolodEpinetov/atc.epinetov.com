@@ -21,7 +21,7 @@ export default function Footer(props) {
   const theme = 'transparent';
   const content = (
     <div style={{ fontSize: '0.8em' }}>
-      копирайт бгг &copy; {" "}
+      копирайт типа &copy; {" "}
       <a href="http://epinetov.com" target="_blank" > Vsevolod Epinetov </a>
       {" "}
       <a href='https://storage.googleapis.com/atc.epinetov.com/public/img/rights-reserved.webp' target='_blank'>Все права защищены</a>

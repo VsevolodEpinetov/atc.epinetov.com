@@ -48,13 +48,13 @@ const citiesPageStyle = {
     height: 8
   },
   sliderThumb: {
-    height: 24,
-    width: 24,
+    height: '24px !important',
+    width: '24px !important',
     backgroundColor: '#fff',
     border: '2px solid currentColor',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus, &:hover, &$active': {
+    marginTop: '-8px !important',
+    marginLeft: '-12 !important',
+    '&:focus, &:hover, &:active': {
       boxShadow: 'inherit',
     },
   },
@@ -75,11 +75,6 @@ const citiesPageStyle = {
   },
   mb3em: {
     marginBottom: '3em !important'
-  },
-  errorSelect: {
-    '&after': {
-      borderBottomColor: '#62f436 !important'
-    }
   }
 };
 
