@@ -24,7 +24,9 @@ import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
 
 // user
-import { useUser } from '@auth0/nextjs-auth0';
+//import { useUser } from '@auth0/nextjs-auth0';
+import { useAuth } from '../../auth';
+import firebase from 'firebase/app'
 
 import styles from "assets/jss/nextjs-material-kit-pro/components/headerLinksStyle.js";
 
@@ -73,8 +75,9 @@ export default function HeaderLinks(props) {
 
   const { dropdownHoverColor } = props;
   const classes = useStyles();
+  const { user } = useAuth();
 
-  const { user, error, isLoading } = useUser();
+  //const { user, error, isLoading } = useUser();
 
   return (
     <List className={classes.list + " " + classes.mlAuto}>
@@ -167,20 +170,25 @@ export default function HeaderLinks(props) {
               noLiPadding
               navDropdown
               hoverColor={dropdownHoverColor}
-              buttonText={user.name}
+              buttonText="Профиль"
               buttonProps={{
                 className: classes.navLink,
                 color: "transparent"
               }}
               buttonIcon={AccountBox}
               dropdownList={[
-                <Link href="/api/auth/me">
+                <Link href="/profile">
                   <a className={classes.dropdownLink}>
-                    Профиль
+                    Мой профиль
                   </a>
                 </Link>,
-                <Link href="/api/auth/logout">
-                  <a className={classes.dropdownLink}>
+                <Link href='#'>
+                  <a className={classes.dropdownLink}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      await firebase.auth().signOut();
+                    }}
+                  >
                     Выйти
                   </a>
                 </Link>
@@ -189,10 +197,10 @@ export default function HeaderLinks(props) {
           </ListItem>
         )
       }
-      {!isLoading && !error && !user && (
+      {!user && (
         <ListItem className={classes.listItem}>
           <Button
-            href="/api/auth/login"
+            href="/login"
             className={classes.navLink}
             color="transparent"
           >

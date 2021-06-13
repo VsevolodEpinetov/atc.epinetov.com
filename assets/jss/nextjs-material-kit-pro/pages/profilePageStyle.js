@@ -41,7 +41,8 @@ const profilePageStyle = {
     textAlign: "center !important"
   },
   name: {
-    marginTop: "-80px"
+    marginTop: "-80px",
+    textAlign: 'center'
   },
 
   main: {

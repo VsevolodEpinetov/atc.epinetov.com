@@ -38,10 +38,9 @@ yarn-error.log*
 /pages/ecommerce.js
 /pages/error-page.js
 /pages/landing-page.js
-/pages/login.js
 /pages/pricing.js
 /pages/product.js
-/pages/profile.js
+/pages/profile-old.js
 /pages/sections.js
 /pages/shopping-cart.js
 /pages/signup.js

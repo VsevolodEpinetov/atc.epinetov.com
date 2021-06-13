@@ -28,6 +28,13 @@ import Close from "@material-ui/icons/Close";
 
 import { getAllAircraftTestData } from 'lib/testAircraft'
 
+import firebase from 'firebase/app'
+import firebaseClient from '../../firebaseClient';
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firestore'
+import nookies from 'nookies'
+import { verifyIdToken } from '../../firebaseAdmin'
+
 const useStyles = makeStyles(testsAircraftPageStyle);
 
 function valueLabelFormat(value) {
@@ -104,7 +111,7 @@ function getTableWithResults(results) {
     }
     let correctAnswer = `L${result.correctAnswer.engines.number}${result.correctAnswer.engines.type}, ${result.correctAnswer.category}, ${result.correctAnswer.speed} км/ч, FL${result.correctAnswer.ceiling}`
     let userAnswer = `L${result.userAnswer.engines.number}${result.userAnswer.engines.type}, ${result.userAnswer.category}, ${result.userAnswer.speed} км/ч, FL${result.userAnswer.ceiling}`
-    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText}>{correctAnswer}</span>, <span className={classForText}>{userAnswer}</span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot.toFixed(1)}`])
+    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText}>{correctAnswer}</span>, <span className={classForText}>{userAnswer}</span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
     questionNumber++;
   })
   return data;
@@ -161,7 +168,12 @@ const colorsForSliders = {
   wrongAnswer: '#de7d7d'
 }
 
-export default function docsPage({ testData }) {
+firebaseClient();
+const auth = firebase.auth();
+
+export default function docsPage({ testData, userData }) {
+
+  const [user] = useAuthState(auth);
 
   // ---------------------------------
   // Start of Quiz Variables and Handlers
@@ -277,7 +289,18 @@ export default function docsPage({ testData }) {
   }
 
 
-  const startAgain = event => {
+  const startAgain = async (e) => {
+    e.preventDefault();
+    if (user && userData) {
+      const userRef = firebase.firestore().collection('users').doc(userData.id) ;
+      let obj = {
+        results: quizResults,
+        timestamp: Date.now(),
+        totalPointsGot: pts,
+        totalPoints: quizResults.length
+      }
+      await userRef.collection('testsAircraft').add(obj);
+    }
     resetQuiz(amountOfQuestions);
   };
 
@@ -345,7 +368,7 @@ export default function docsPage({ testData }) {
       document.getElementById('ceiling-label').classList.add('textRed');
     }
 
-
+    pointsGot = parseFloat(pointsGot.toFixed(1))
 
     let newResults = quizResults;
     newResults.push({
@@ -683,7 +706,7 @@ export default function docsPage({ testData }) {
               }
               {currentQuestion == quiz.length &&
                 <>
-                  <p className='test-results'>Из {quiz.length} возможных баллов ты получил {pts.toFixed(1)}.</p>
+                  <p className='test-results'>Из {quiz.length} возможных баллов ты получил {pts}.</p>
                   <p className='test-results-substring'>{getPhraseForTestResults(quiz.length, pts)}</p>
                   <Table
                     striped
@@ -704,11 +727,25 @@ export default function docsPage({ testData }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   const testData = getAllAircraftTestData()
-  return {
-    props: {
-      testData
-    }
+  try {
+    const cookies = nookies.get(context);
+    const token = await verifyIdToken(cookies.token);
+    const { uid } = token;
+    return {
+      props: {
+        userData:
+        {
+          id: uid
+        },
+        testData
+      },
+    };
+  } catch (error) {
+    //context.res.writeHead(302, { location: '/login' });
+    //context.res.end();
+    console.log(error)
+    return { props: { testData } };
   }
 }

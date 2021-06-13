@@ -16,7 +16,8 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-import { UserProvider } from '@auth0/nextjs-auth0';
+//import { UserProvider } from '@auth0/nextjs-auth0';
+import { AuthProvider } from '../auth'
 
 import SimpleReactLightbox from 'simple-react-lightbox-pro'
 
@@ -77,7 +78,7 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <UserProvider>
+      <AuthProvider>
         <SimpleReactLightbox>
           <React.Fragment>
             <Head>
@@ -102,7 +103,7 @@ class MyApp extends App {
             <Component {...pageProps} />
           </React.Fragment>
         </SimpleReactLightbox>
-      </UserProvider>
+      </AuthProvider>
     );
   }
 }
