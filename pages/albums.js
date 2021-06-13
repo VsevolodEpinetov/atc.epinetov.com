@@ -1,6 +1,5 @@
 /*eslint-disable*/
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,20 +8,10 @@ import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Tooltip from "@material-ui/core/Tooltip";
-import AlbumsGallery from 'components/AlbumsGallery/AlbumsGallery.js'
 import { SRLWrapper } from 'simple-react-lightbox-pro'
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 
 import docsPageStyle from "assets/jss/nextjs-material-kit-pro/pages/docsPageStyle.js";
-
-import Search from "@material-ui/icons/Search";
 
 const useStyles = makeStyles(docsPageStyle);
 

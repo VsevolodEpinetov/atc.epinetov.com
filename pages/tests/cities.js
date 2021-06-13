@@ -9,17 +9,12 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Tooltip from "@material-ui/core/Tooltip";
-import TextField from '@material-ui/core/TextField';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import Chip from '@material-ui/core/Chip';
 import Table from "components/Table/Table.js";
 
 import citiesPageStyle from "assets/jss/nextjs-material-kit-pro/pages/citiesPageStyle.js";
@@ -30,6 +25,13 @@ import Close from "@material-ui/icons/Close";
 
 import { getAllCitiesTestData } from 'lib/cities'
 import { string } from "prop-types";
+
+import firebase from 'firebase/app'
+import firebaseClient from '../../firebaseClient';
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firestore'
+import nookies from 'nookies'
+import { verifyIdToken } from '../../firebaseAdmin'
 
 const useStyles = makeStyles(citiesPageStyle);
 
@@ -67,7 +69,6 @@ function getTableWithResults (results) {
     let classForText = 'textRed';
     let ResultIcon = Close;
     let pointsGot = 0;
-    console.log(result)
     if (result.correctAnswer.includes(result.userAnswer)) {
       console.log(result.hintUses)
       if (result.hintUses != 3) ResultIcon = Done;
@@ -125,7 +126,12 @@ const allAreas = [
   }
 ]
 
-export default function docsPage({ testData }) {
+firebaseClient();
+const auth = firebase.auth();
+
+export default function docsPage({ testData, userData }) {
+
+  const [user] = useAuthState(auth);
 
   // ---------------------------------
   // Start of Quiz Variables and Handlers
@@ -197,7 +203,18 @@ export default function docsPage({ testData }) {
   };
 
 
-  const startAgain = event => {
+  const startAgain = async (e) => {
+    e.preventDefault();
+    if (user && userData) {
+      const userRef = firebase.firestore().collection('users').doc(userData.id) ;
+      let obj = {
+        results: quizResults,
+        timestamp: Date.now(),
+        totalPointsGot: pts,
+        totalPoints: quizResults.length
+      }
+      await userRef.collection('testsCities').add(obj);
+    }
     resetQuiz(amountOfQuestions, areas);
   };
 
@@ -430,13 +447,6 @@ export default function docsPage({ testData }) {
                     name: "areasSelector",
                     id: "areas-selector"
                   }}
-                /*renderValue={(selected) => (
-                  <div className={classes.chips}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} className={classes.chip} />
-                    ))}
-                  </div>
-                )}*/
                 >
                   <MenuItem
                     disabled
@@ -540,11 +550,26 @@ export default function docsPage({ testData }) {
   );
 }
 
-export async function getStaticProps() {
+
+export async function getServerSideProps(context) {
   const testData = getAllCitiesTestData()
-  return {
-    props: {
-      testData
-    }
+  try {
+    const cookies = nookies.get(context);
+    const token = await verifyIdToken(cookies.token);
+    const { uid } = token;
+    return {
+      props: {
+        userData:
+        {
+          id: uid
+        },
+        testData
+      },
+    };
+  } catch (error) {
+    //context.res.writeHead(302, { location: '/login' });
+    //context.res.end();
+    console.log(error)
+    return { props: { testData } };
   }
 }

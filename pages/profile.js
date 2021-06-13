@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React, { useEffect } from "react";
+import Link from 'next/link'
 import nookies from 'nookies'
 import { verifyIdToken } from '../firebaseAdmin'
 import classNames from "classnames";
@@ -54,6 +55,7 @@ export default function ProfilePage({ userData }) {
   const userRef = firebase.firestore().collection('users').doc(userData.id);
   const [basicInfo, loadingBasicInfo, errorBasicInfo] = useDocumentData(userRef);
   const [aircraftTestsInfo, loadingAircraftTestsInfo, errorAircraftTestsInfo] = useCollectionData(userRef.collection('testsAircraft'));
+  const [citiesTestsInfo, loadingCitiesTestsInfo, errorCitiesTestsInfo] = useCollectionData(userRef.collection('testsCities'));
 
 
   const getTablesForAircraftTests = (aircraftTestsInfo) => {
@@ -87,6 +89,46 @@ export default function ProfilePage({ userData }) {
 
     return resultsData;
   }
+
+  const getTablesForCitiesTests = (citiesTestsInfo) => {
+    let resultsData = [];
+    citiesTestsInfo.forEach(testResults => {
+      let data = {
+        timestamp: testResults.timestamp,
+        totalPoints: testResults.totalPoints,
+        totalPointsGot: testResults.totalPointsGot,
+        table: []
+      };
+      let questionNumber = 1;
+      testResults.results.forEach(result => {
+        let classForText = 'textRed';
+        let ResultIcon = Close;
+        let pointsGot = 0;
+        if (result.correctAnswer.includes(result.userAnswer)) {
+          console.log(result.hintUses)
+          if (result.hintUses != 3) ResultIcon = Done;
+          if (result.hintUses == 1) {
+            classForText = 'textOrange';
+            pointsGot = 0.5;
+          }
+          if (result.hintUses == 2) {
+            classForText = 'textOrange';
+            pointsGot = 0.25;
+          }
+          if (result.hintUses == 0) {
+            classForText = 'textGreen';
+            pointsGot = 1;
+          }
+        }
+        data.table.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText}>{result.correctAnswer[0]}/{result.correctAnswer[1]}</span>, <span className={classForText}>{result.userAnswer}</span>, <span className={classForText}><ResultIcon /></span>, `${pointsGot}`])
+        questionNumber++;
+      })
+      resultsData.push(data);
+    })
+
+    return resultsData;
+  }
+
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -126,6 +168,8 @@ export default function ProfilePage({ userData }) {
                 <GridItem
                   xs={12} sm={12} md={8}
                 >
+
+
                   <h3>Тесты ЛТХ ВС</h3>
                   {errorAircraftTestsInfo && <strong>Ошибка: {JSON.stringify(errorAircraftTestsInfo)}</strong>}
                   {loadingAircraftTestsInfo && <CircularProgress />}
@@ -148,7 +192,32 @@ export default function ProfilePage({ userData }) {
                         </AccordionDetails>
                       </Accordion>
                     </>
-                  )) : 'Пока нет 👏'}
+                  )) : (<>Хмм, тут ничего нет 🤔 Может, попробуешь <Link href='tests/aircraft'>проверить себя</Link>?</>)}
+
+
+                  <h3>Тесты Аэропорты РФ</h3>
+                  {errorCitiesTestsInfo && <strong>Ошибка: {JSON.stringify(errorCitiesTestsInfo)}</strong>}
+                  {loadingCitiesTestsInfo && <CircularProgress />}
+                  {citiesTestsInfo && getTablesForCitiesTests(citiesTestsInfo).length > 0 ? getTablesForCitiesTests(citiesTestsInfo).map((resultData, id) => (
+                    <>
+                      <Accordion expanded={expanded === `panel-citiesTest${id}`} onChange={handleChange(`panel-citiesTest${id}`)}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls={`panel-citiesTest${id}bh-content`}
+                          id={`panel-citiesTest${id}bh-header`}
+                        >
+                          <p>Тест от {convertTimestampToDate(resultData.timestamp)}, {resultData.totalPointsGot}/{resultData.totalPoints}</p>
+                        </AccordionSummary>
+                        <AccordionDetails className={'accordion-root'}>
+                          <Table
+                            striped
+                            tableHead={["#", "ВС", "Верный ответ", "Твой ответ", "Результат", "Баллы"]}
+                            tableData={resultData.table}
+                          />
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+                  )) : (<>Пока нет 👏 Может, самое время <Link href='tests/cities'>проверить себя</Link>?</>)}
 
 
                   <Button color='danger' fullWidth style={{ marginTop: '20px' }}
