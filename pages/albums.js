@@ -37,6 +37,16 @@ export default function docsPage({ albums }) {
     }
   }
 
+
+  const getRWs = (imageName) => {
+    return imageName.split('_').slice(1).map((rw, id) => {
+      if (id === 0)
+        return `${rw}`
+      else
+        return `, ${rw}`
+    })
+  }
+
   return (
     <div>
       <Header
@@ -77,7 +87,11 @@ export default function docsPage({ albums }) {
                       {
                         area.radar.map(imageName => (
                           <GridItem xs={12} sm={6} md={3} style={{ marginBottom: '1em' }}>
-                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}>
+                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`} className="element_with_overlay">
+                              <div className="overlay" srl_overlay="true">
+                                <h1>{imageName.split('_')[0]}</h1>
+                                <p>ВПП: {getRWs(imageName)}</p>
+                              </div>
                               <Image
                                 src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/radar/${imageName}.png`}
                                 width="320px"
@@ -104,7 +118,11 @@ export default function docsPage({ albums }) {
                       {
                         area.approach.map(imageName => (
                           <GridItem xs={12} sm={6} md={3} style={{ marginBottom: '1em' }}>
-                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}>
+                            <a href={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`} className="element_with_overlay">
+                              <div className="overlay" srl_overlay="true">
+                                <h1>{imageName.split('_')[0]}</h1>
+                                <p>ВПП: {getRWs(imageName)}</p>
+                              </div>
                               <Image
                                 src={`https://storage.googleapis.com/atc.epinetov.com/public/albums/${area.icao}/approach/${imageName}.png`}
                                 width="320px"

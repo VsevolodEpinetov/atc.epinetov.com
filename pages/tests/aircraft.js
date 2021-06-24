@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React from "react";
+import { useContext } from "react";
 import Link from 'next/link'
 // @material-ui/core components
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -28,12 +29,10 @@ import Close from "@material-ui/icons/Close";
 
 import { getAllAircraftTestData } from 'lib/testAircraft'
 
-import firebase from 'firebase/app'
-import firebaseClient from '../../firebaseClient';
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firestore'
-import nookies from 'nookies'
-import { verifyIdToken } from '../../firebaseAdmin'
+
+// auth
+import { auth, firestore } from '../../lib/firebase';
+import { UserContext } from '../../lib/context';
 
 const useStyles = makeStyles(testsAircraftPageStyle);
 
@@ -168,12 +167,11 @@ const colorsForSliders = {
   wrongAnswer: '#de7d7d'
 }
 
-firebaseClient();
-const auth = firebase.auth();
-
 export default function docsPage({ testData, userData }) {
 
-  const [user] = useAuthState(auth);
+  const { user } = useContext(UserContext);
+
+  
 
   // ---------------------------------
   // Start of Quiz Variables and Handlers
@@ -289,18 +287,8 @@ export default function docsPage({ testData, userData }) {
   }
 
 
-  const startAgain = async (e) => {
+  const startAgain = (e) => {
     e.preventDefault();
-    if (user && userData) {
-      const userRef = firebase.firestore().collection('users').doc(userData.id) ;
-      let obj = {
-        results: quizResults,
-        timestamp: Date.now(),
-        totalPointsGot: pts,
-        totalPoints: quizResults.length
-      }
-      await userRef.collection('testsAircraft').add(obj);
-    }
     resetQuiz(amountOfQuestions);
   };
 
@@ -389,7 +377,7 @@ export default function docsPage({ testData, userData }) {
 
   }
 
-  const nextQuestion = (e) => {
+  const nextQuestion = async (e) => {
     document.getElementById('test-answer').classList.add('is-hidden')
 
     setNumberOfEnginesSelectorIsDisabled(false);
@@ -420,6 +408,19 @@ export default function docsPage({ testData, userData }) {
     document.getElementById('check-answer-button').classList.remove('btn-disabled')
 
     setCurrentQuestion(currentQuestion + 1);
+
+    if (currentQuestion + 1 === amountOfQuestions) {
+      if (user) {
+        const userRef = firestore.collection('users').doc(auth.currentUser.uid) ;
+        let obj = {
+          results: quizResults,
+          timestamp: Date.now(),
+          totalPointsGot: pts,
+          totalPoints: quizResults.length
+        }
+        await userRef.collection('testsAircraft').add(obj);
+      }
+    }
   }
 
   // ---------------------------------
@@ -727,25 +728,11 @@ export default function docsPage({ testData, userData }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps() {
   const testData = getAllAircraftTestData()
-  try {
-    const cookies = nookies.get(context);
-    const token = await verifyIdToken(cookies.token);
-    const { uid } = token;
-    return {
-      props: {
-        userData:
-        {
-          id: uid
-        },
-        testData
-      },
-    };
-  } catch (error) {
-    //context.res.writeHead(302, { location: '/login' });
-    //context.res.end();
-    console.log(error)
-    return { props: { testData } };
+  return {
+    props: {
+      testData
+    }
   }
 }

@@ -1,7 +1,5 @@
 /*eslint-disable*/
-import React, { useEffect } from "react";
-import nookies from 'nookies'
-import { verifyIdToken } from '../firebaseAdmin'
+import React, { useEffect, useContext, useState } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,6 +21,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import UserCard from "../components/UserCard";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -33,10 +32,11 @@ import style from "assets/jss/nextjs-material-kit-pro/pages/aircraftPageStyle.js
 
 import { convertTimestampToDate } from '../lib/date';
 
-import firebase from 'firebase/app'
-import firebaseClient from '../firebaseClient';
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firestore'
+// auth
+import AuthCheck from '../components/AuthCheck';
+import { auth, firestore } from '../lib/firebase';
+import { useDocumentData, useCollectionData, useCollection } from 'react-firebase-hooks/firestore'
+import { UserContext } from '../lib/context';
 
 
 import Done from "@material-ui/icons/Done";
@@ -45,8 +45,6 @@ import Close from "@material-ui/icons/Close";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { urlObjectKeys } from "next/dist/next-server/lib/utils";
 
-firebaseClient();
-const auth = firebase.auth();
 const useStyles = makeStyles(style);
 
 export default function ProfilePage({ userData }) {
@@ -57,23 +55,92 @@ export default function ProfilePage({ userData }) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
-  const [user] = useAuthState(auth);
+
+  const { user } = useContext(UserContext);
+
+  return (
+    <div>
+      <Header
+        links={<HeaderLinks dropdownHoverColor="dark" />}
+        color="transparent"
+      />
+      <div className={classes.projects}>
+        <div className={classes.container}>
+          <GridContainer>
 
 
-  const userRef = firebase.firestore().collection('users').doc(userData.id);
-  const [basicInfo, loadingBasicInfo, errorBasicInfo] = useDocumentData(userRef);
+            <AuthCheck>
+              <GridItem
+                xs={12} sm={12} md={4}
+              >
+                <UserCard uid={user?.uid} backToProfileButton />
+              </GridItem>
+              <GridItem
+                xs={12} sm={12} md={8}
+              >
+                <FormChangeProfile uid={user?.uid} />
+                <Button color='danger' fullWidth style={{ marginTop: '-15px' }}
+                  onClick={async () => {
+                    await firebase.auth().signOut();
+                    window.location.href = '/';
+                  }}
+                >
+                  Выйти
+                </Button>
+              </GridItem>
+            </AuthCheck>
 
+          </GridContainer>
+        </div>
+      </div>
+      <Footer />
+    </div >
+  );
+}
 
-  const [workplace, setWorkplace] = React.useState('---');
-  const [position, setPosition] = React.useState('---');
+/*export async function getServerSideProps(context) {
+  try {
+    const cookies = nookies.get(context);
+    const token = await verifyIdToken(cookies.token);
+    const { uid } = token;
+    return {
+      props: {
+        userData:
+        {
+          id: uid
+        }
+      },
+    };
+  } catch (error) {
+    context.res.writeHead(302, { location: '/login' });
+    context.res.end();
+    console.log(error)
+    return { props: {} };
+  }
+}*/
+
+function FormChangeProfile({ uid }) {
+  const [workplace, setWorkplace] = React.useState('');
+  const [workplaceIsValid, setWorkplaceIsValid] = React.useState(false);
+  const [position, setPosition] = React.useState('');
+  const [positionIsValid, setPositionIsValid] = React.useState(false);
+
+  const [errors, setErrors] = React.useState(['Не выбрано место работы', 'Не выбрана должность']);
 
   const handleWorkplaceChange = (event) => {
     setWorkplace(event.target.value);
+    setWorkplaceIsValid(true);
   };
 
   const handlePositionChange = (event) => {
     setPosition(event.target.value);
+    setPositionIsValid(true);
   };
+
+
+  const ref = firestore.collection('users').doc(auth.currentUser.uid);
+  const [info, infoLoading] = useDocumentData(ref);
+
 
 
   const [openError, setOpenError] = React.useState(false);
@@ -95,198 +162,195 @@ export default function ProfilePage({ userData }) {
     setOpenSuccess(false);
   };
 
+  const [nameValue, setNameValue] = useState('');
+  const [nameIsValid, setNameIsValid] = useState(false);
+
+  const [surnameValue, setSurnameValue] = useState('');
+  const [surnameIsValid, setSurnameIsValid] = useState(false);
+
+  const onChangeName = (e) => {
+    let val = e.target.value;
+    if (e.target.value.length > 0)
+      val = e.target.value[0].toUpperCase() + e.target.value.substring(1).toLowerCase();
+
+    const re = /^(?=[а-яА-Я]{0,15}$)/;
+
+    if (re.test(val)) {
+      setNameValue(val);
+      if (val.length < 2) setNameIsValid(false);
+      else setNameIsValid(true);
+    }
+  };
+
+
+  const onChangeSurname = (e) => {
+    let val = e.target.value;
+    if (e.target.value.length > 0)
+      val = e.target.value[0].toUpperCase() + e.target.value.substring(1).toLowerCase();
+
+    const re = /^(?=[а-яА-Я]{0,20}$)/;
+
+    if (re.test(val)) {
+      setSurnameValue(val);
+      if (val.length < 2) setSurnameIsValid(false);
+      else setSurnameIsValid(true);
+    }
+  };
+
+  let dataSet = false;
+
+  useEffect(() => {
+    if (!dataSet) {
+      const reName = /^(?=[а-яА-Я]{0,15}$)/;
+      const reSurname = /^(?=[а-яА-Я]{0,20}$)/;
+
+      if (reName.test(info?.name)) {
+        setNameValue(info?.name);
+        if (info?.name.length < 2) setNameIsValid(false);
+        else setNameIsValid(true);
+      }
+
+      if (reSurname.test(info?.surname)) {
+        setSurnameValue(info?.surname);
+        if (info?.surname.length < 2) setSurnameIsValid(false);
+        else setSurnameIsValid(true);
+      }
+
+      setWorkplace(info?.workingAt)
+      if (info?.workingAt.length > 4) setWorkplaceIsValid(true)
+
+      setPosition(info?.workingPosition)
+      if (info?.workingPosition.length > 4) setPositionIsValid(true)
+
+      //  console.log({surnameIsValid, nameIsValid, positionIsValid, })
+
+      dataSet = true;
+    }
+  }, [info]);
 
   return (
-    <div>
-      <Header
-        links={<HeaderLinks dropdownHoverColor="dark" />}
-        color="transparent"
-      />
-      <div className={classes.projects}>
-        <div className={classes.container}>
-          <GridContainer>
-
-
-            {user && (
-              <>
-                <GridItem
-                  xs={12} sm={12} md={4}
-                >
-                  {basicInfo &&
-                    <CardProfile
-                      name={`${basicInfo.name} ${basicInfo.surname}`}
-                      avatarURL='https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png'
-                      uid={user.uid}
-                      workingAt={basicInfo.workingAt}
-                      workingPosition={basicInfo.workingPosition}
-                      backToProfileButton
-                    />
-                  }
-                  {loadingBasicInfo && <CircularProgress />}
-                  {errorBasicInfo && <p style={{ color: 'red' }}><b>Ошибка загрузки!</b></p>}
-                </GridItem>
-                <GridItem
-                  xs={12} sm={12} md={8}
-                >
-                  <h3>Данные профиля</h3>
-                  <p>Здесь ты можешь поменять данные профиля. Имей в виду, что сделать это можно только один раз.</p>
-                  {
-                    basicInfo && (
-                      <GridContainer>
-                        <GridItem
-                          xs={12} sm={12} md={6}
-                          style={{ marginBottom: '20px' }}
-                        >
-                          <TextField
-                            disabled={basicInfo.locked}
-                            id="name-text-field"
-                            label="Имя"
-                            defaultValue={basicInfo.name}
-                            fullWidth
-                          />
-                        </GridItem>
-                        <GridItem
-                          xs={12} sm={12} md={6}
-                          style={{ marginBottom: '20px' }}
-                        >
-                          <TextField
-                            disabled={basicInfo.locked}
-                            id="surname-text-field"
-                            label="Фамилия"
-                            defaultValue={basicInfo.surname}
-                            fullWidth
-                          />
-                        </GridItem>
-                        <GridItem
-                          xs={12} sm={12} md={6}
-                          style={{ marginBottom: '20px' }}
-                        >
-                          <FormControl fullWidth>
-                            <InputLabel id="workplace-select-label">Место работы</InputLabel>
-                            <Select
-                              labelId="workplace-select-label"
-                              id="workplace-select"
-                              value={workplace}
-                              onChange={handleWorkplaceChange}
-                              fullWidth
-                              disabled={basicInfo.locked}
-                            >
-                              <MenuItem value='moscow'>МЦ АУВД</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </GridItem>
-                        <GridItem
-                          xs={12} sm={12} md={6}
-                          style={{ marginBottom: '20px' }}
-                        >
-                          <FormControl fullWidth>
-                            <InputLabel id="position-select-label">Должность</InputLabel>
-                            <Select
-                              labelId="position-select-label"
-                              id="position-select"
-                              value={position}
-                              onChange={handlePositionChange}
-                              fullWidth
-                              disabled={basicInfo.locked}
-                            >
-                              <MenuItem value='trainee'>Диспетчер-стажёр</MenuItem>
-                              <MenuItem value='controller'>Диспетчер РЛУ и ПК</MenuItem>
-                              <MenuItem value='coach'>Диспетчер-инструктор</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </GridItem>
-                        <GridItem
-                          xs={12} sm={12} md={12}
-                          style={{ marginBottom: '20px' }}
-                        >
-                          <Button
-                            color='success'
-                            fullWidth
-                            style={{ marginTop: '20px' }}
-                            disabled={basicInfo.locked}
-                            onClick={async (e) => {
-                              e.preventDefault();
-                              let userObj = {
-                                name: document.getElementById('name-text-field').value,
-                                surname: document.getElementById('surname-text-field').value,
-                                workingAt: workplace,
-                                workingPosition: position,
-                                locked: true
-                              }
-                              await firebase
-                                .firestore()
-                                .collection('users')
-                                .doc(userData.id)
-                                .set(userObj)
-                                .catch(function (error) {
-                                  setMessageError(error.message);
-                                  setOpenError(true);
-                                })
-                                .then(() => {
-                                  setMessageSuccess('Данные успешно сохранены');
-                                  setOpenSuccess(true);
-                                })
-                            }}
-                          >
-                            Сохранить
-                          </Button>
-                        </GridItem>
-                      </GridContainer>
-                    )
-                  }
-                  <Button color='danger' fullWidth style={{ marginTop: '-15px' }}
-                    onClick={async () => {
-                      await firebase.auth().signOut();
-                      window.location.href = '/';
-                    }}
+    <>
+      {info &&
+        (
+          <>
+            <h3>Данные профиля</h3>
+            <p>Здесь ты можешь поменять данные профиля. Имей в виду, что сделать это можно только один раз.</p>
+            <GridContainer>
+              <GridItem
+                xs={12} sm={12} md={6}
+                style={{ marginBottom: '20px' }}
+              >
+                <TextField
+                  disabled={info.locked}
+                  id="name-text-field"
+                  label="Имя"
+                  value={nameValue}
+                  fullWidth
+                  onChange={onChangeName}
+                />
+              </GridItem>
+              <GridItem
+                xs={12} sm={12} md={6}
+                style={{ marginBottom: '20px' }}
+              >
+                <TextField
+                  disabled={info.locked}
+                  id="surname-text-field"
+                  label="Фамилия"
+                  value={surnameValue}
+                  fullWidth
+                  onChange={onChangeSurname}
+                />
+              </GridItem>
+              <GridItem
+                xs={12} sm={12} md={6}
+                style={{ marginBottom: '20px' }}
+              >
+                <FormControl fullWidth>
+                  <InputLabel id="workplace-select-label">Место работы</InputLabel>
+                  <Select
+                    labelId="workplace-select-label"
+                    id="workplace-select"
+                    defaultValue={info.workingAt}
+                    value={workplace}
+                    onChange={handleWorkplaceChange}
+                    fullWidth
+                    disabled={info.locked}
                   >
-                    Выйти
-                  </Button>
-                </GridItem>
-              </>
-            )}
+                    <MenuItem value='moscow'>МЦ АУВД</MenuItem>
+                  </Select>
+                </FormControl>
+              </GridItem>
+              <GridItem
+                xs={12} sm={12} md={6}
+                style={{ marginBottom: '20px' }}
+              >
+                <FormControl fullWidth>
+                  <InputLabel id="position-select-label">Должность</InputLabel>
+                  <Select
+                    labelId="position-select-label"
+                    id="position-select"
+                    defaultValue={info.workingPosition}
+                    value={position}
+                    onChange={handlePositionChange}
+                    fullWidth
+                    disabled={info.locked}
+                  >
+                    <MenuItem value='trainee'>Диспетчер-стажёр</MenuItem>
+                    <MenuItem value='controller'>Диспетчер РЛУ и ПК</MenuItem>
+                    <MenuItem value='coach'>Диспетчер-инструктор</MenuItem>
+                  </Select>
+                </FormControl>
+              </GridItem>
+              <GridItem
+                xs={12} sm={12} md={12}
+                style={{ marginBottom: '20px' }}
+              >
+                <Button
+                  color='success'
+                  fullWidth
+                  style={{ marginTop: '20px' }}
+                  disabled={info.locked || !nameIsValid || !surnameIsValid || !workplaceIsValid || !positionIsValid}
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    let userObj = {
+                      name: document.getElementById('name-text-field').value,
+                      surname: document.getElementById('surname-text-field').value,
+                      workingAt: workplace,
+                      workingPosition: position,
+                      locked: true
+                    }
+                    await firestore
+                      .collection('users')
+                      .doc(uid)
+                      .set(userObj)
+                      .catch(function (error) {
+                        setMessageError(error.message);
+                        setOpenError(true);
+                      })
+                      .then(() => {
+                        setMessageSuccess('Данные успешно сохранены');
+                        setOpenSuccess(true);
+                      })
+                  }}
+                >
+                  Сохранить
+                </Button>
+              </GridItem>
+            </GridContainer>
 
-            {
-              !user &&
-              <Button color='success' fullWidth href='/login'>
-                Залогиниться
-              </Button>
-            }
-          </GridContainer>
-          <Snackbar open={openError} autoHideDuration={6000} onClose={handleCloseError}>
-            <Alert onClose={handleCloseError} severity="error">
-              {messageError}
-            </Alert>
-          </Snackbar>
-          <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleCloseSuccess}>
-            <Alert onClose={handleCloseSuccess} severity="success">
-              {messageSuccess}
-            </Alert>
-          </Snackbar>
-        </div>
-      </div>
-      <Footer />
-    </div >
-  );
-}
-
-export async function getServerSideProps(context) {
-  try {
-    const cookies = nookies.get(context);
-    const token = await verifyIdToken(cookies.token);
-    const { uid } = token;
-    return {
-      props: {
-        userData:
-        {
-          id: uid
-        }
-      },
-    };
-  } catch (error) {
-    context.res.writeHead(302, { location: '/login' });
-    context.res.end();
-    console.log(error)
-    return { props: {} };
-  }
+            <Snackbar open={openError} autoHideDuration={6000} onClose={handleCloseError}>
+              <Alert onClose={handleCloseError} severity="error">
+                {messageError}
+              </Alert>
+            </Snackbar>
+            <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleCloseSuccess}>
+              <Alert onClose={handleCloseSuccess} severity="success">
+                {messageSuccess}
+              </Alert>
+            </Snackbar>
+          </>
+        )}
+    </>
+  )
 }

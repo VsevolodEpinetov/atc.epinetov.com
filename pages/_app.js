@@ -1,16 +1,3 @@
-/*!
-
-=========================================================
-* Методические, учебные и просто полезные материалы для диспетчеров УВД
-=========================================================
-
-* Дизайн: NextJS Material Kit PRO v1.1.0, основано на Material Kit PRO - v2.0.2 (Bootstrap 4.0.0 Final Edition) и Material Kit PRO React v1.8.0
-* Разработка темы Creative Tim (https://www.creative-tim.com)
-
-* Доработка темы/разработка бекенда Vsevolod Epinetov (https://epinetov.com)
-=========================================================
-
-*/
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "next/app";
@@ -18,6 +5,8 @@ import Head from "next/head";
 import Router from "next/router";
 //import { UserProvider } from '@auth0/nextjs-auth0';
 import { AuthProvider } from '../auth'
+import { UserContext } from '../lib/context'
+import { useUserData } from '../lib/hooks'
 
 import SimpleReactLightbox from 'simple-react-lightbox-pro'
 
@@ -48,7 +37,7 @@ Router.events.on("routeChangeError", () => {
   document.body.classList.remove("body-page-transition");
 });
 
-class MyApp extends App {
+/*class MyApp extends App {
   componentDidMount() {
     let comment = document.createComment(`
 =========================================================
@@ -67,18 +56,20 @@ class MyApp extends App {
 
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
+    const userData = useUserData();
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    return { pageProps };
+    return { pageProps, userData };
   }
+
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, userData } = this.props;
 
     return (
-      <AuthProvider>
+      <UserContext.Provider value={userData}>
         <SimpleReactLightbox>
           <React.Fragment>
             <Head>
@@ -103,9 +94,45 @@ class MyApp extends App {
             <Component {...pageProps} />
           </React.Fragment>
         </SimpleReactLightbox>
-      </AuthProvider>
+      </UserContext.Provider>
     );
   }
 }
+*/
 
-export default MyApp;
+
+function MyApp({ Component, pageProps }) {
+
+  const userData = useUserData();
+
+  return (
+    <UserContext.Provider value={userData}>
+      <SimpleReactLightbox>
+        <React.Fragment>
+          <Head>
+            <title>Информация по ОВД | ATC</title>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            />
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-SPEBEGWV0S');
+              
+              `
+              }}
+            />
+          </Head>
+          <Component {...pageProps} />
+        </React.Fragment>
+      </SimpleReactLightbox>
+    </UserContext.Provider>
+  )
+}
+
+export default MyApp

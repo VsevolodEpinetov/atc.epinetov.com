@@ -207,7 +207,21 @@ const headerLinksStyle = theme => ({
     MsFlexAlign: "center",
     alignItems: "center"
   },
-  mlAuto
+  mlAuto,
+  img: {
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%"
+  },
+    imageDropdownButton: {
+    [theme.breakpoints.down("md")]: {
+      top: "0",
+      margin: "5px 15px"
+    },
+    padding: "0px",
+    borderRadius: "50%",
+    marginLeft: "5px"
+  }
 });
 
 export default headerLinksStyle;

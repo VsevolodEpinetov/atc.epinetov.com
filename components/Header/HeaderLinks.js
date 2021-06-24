@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from "react";
+import { useContext } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // react components for routing our app without refresh
@@ -10,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Hidden from "@material-ui/core/Hidden";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 // @material-ui/icons
 import AirplanemodeActive from "@material-ui/icons/AirplanemodeActive";
@@ -24,9 +26,8 @@ import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
 
 // user
-//import { useUser } from '@auth0/nextjs-auth0';
-import { useAuth } from '../../auth';
-import firebase from 'firebase/app'
+import { UserContext } from '../../lib/context';
+import { auth } from '../../lib/firebase';
 
 import styles from "assets/jss/nextjs-material-kit-pro/components/headerLinksStyle.js";
 
@@ -75,9 +76,9 @@ export default function HeaderLinks(props) {
 
   const { dropdownHoverColor } = props;
   const classes = useStyles();
-  const { user } = useAuth();
 
-  //const { user, error, isLoading } = useUser();
+
+  const { user, userName, userSurname, userIsLoading } = useContext(UserContext);
 
   return (
     <List className={classes.list + " " + classes.mlAuto}>
@@ -164,18 +165,25 @@ export default function HeaderLinks(props) {
         />
       </ListItem>
       {
-        user && (
+        user && !userIsLoading && (
           <ListItem className={classes.listItem}>
             <CustomDropdown
               noLiPadding
               navDropdown
               hoverColor={dropdownHoverColor}
-              buttonText="Профиль"
+              caret={false}
+              buttonText={
+                <img
+                  src='https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png'
+                  className={classes.img}
+                  alt="profile"
+                />
+              }
+              dropdownHeader={`${userName} ${userSurname[0]}.`}
               buttonProps={{
-                className: classes.navLink,
+                className: classes.navLink + " " + classes.imageDropdownButton,
                 color: "transparent"
               }}
-              buttonIcon={AccountBox}
               dropdownList={[
                 <Link href="/profile">
                   <a className={classes.dropdownLink}>
@@ -186,7 +194,7 @@ export default function HeaderLinks(props) {
                   <a className={classes.dropdownLink}
                     onClick={async (e) => {
                       e.preventDefault();
-                      await firebase.auth().signOut();
+                      auth.signOut()
                     }}
                   >
                     Выйти
@@ -197,12 +205,18 @@ export default function HeaderLinks(props) {
           </ListItem>
         )
       }
+      {/*userIsLoading && (
+        <ListItem className={classes.listItem}>
+          <Skeleton animation="wave" variant="circle" width={40} height={40} />
+        </ListItem>
+      )*/}
       {!user && (
         <ListItem className={classes.listItem}>
           <Button
             href="/login"
             className={classes.navLink}
-            color="transparent"
+            color="info"
+            style={{ color: 'white' }}
           >
             <AccountBox /> Войти
           </Button>

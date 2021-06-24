@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import firebaseClient from '../firebaseClient'
 import firebase from 'firebase/app'
 import 'firebase/auth';
@@ -36,20 +36,26 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-import { useAuthState } from 'react-firebase-hooks/auth'
+//import { useAuthState } from 'react-firebase-hooks/auth'
 
-firebaseClient();
-const auth = firebase.auth();
+//firebaseClient();
+//const auth = firebase.auth();
+
+import { auth, firestore, googleAuthProvider } from '../lib/firebase';
+import { UserContext } from '../lib/context'
+
 
 export default function LoginPage({ }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [user, userLoading, userError] = useAuthState(auth);
+  //const [user, userLoading, userError] = useAuthState(auth);
+  const { user, userName } = useContext(UserContext);
 
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState('');
   const classes = useStyles();
+
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -78,7 +84,7 @@ export default function LoginPage({ }) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={8} md={4}>
               <Card>
-                {!user && !userLoading && !userError && (
+                {(
                   <form className={classes.form}>
                     <CardHeader
                       color="primary"
@@ -130,8 +136,7 @@ export default function LoginPage({ }) {
                     <div className={classes.textCenter}>
                       <Button simple color="primary" size="lg" disabled={email === '' || password === ''}
                         onClick={async () => {
-                          await firebase
-                            .auth()
+                          await auth
                             .signInWithEmailAndPassword(email, password)
                             .then(function () {
                               window.location.href = '/'
@@ -145,8 +150,7 @@ export default function LoginPage({ }) {
                     </Button>
                       <Button simple color="primary" size="lg" disabled={email === '' || password === ''}
                         onClick={async () => {
-                          await firebase
-                            .auth()
+                          await auth
                             .createUserWithEmailAndPassword(email, password)
                             .then(async function (userData) {
                               let userObj = {
@@ -156,8 +160,7 @@ export default function LoginPage({ }) {
                                 workingPosition: '---',
                                 locked: false
                               }
-                              await firebase
-                                .firestore()
+                              await firestore
                                 .collection('users')
                                 .doc(userData.user.uid)
                                 .set(userObj)
@@ -178,14 +181,6 @@ export default function LoginPage({ }) {
                     </Button>
                     </div>
                   </form>
-                )}
-                {userLoading && <div style={{justifyContent: 'center', textAlign: 'center'}}><CircularProgress /></div>}
-                {user && (
-                  <>
-                    <Button simple color="primary" size="lg" href='/profile'>
-                      В профиль
-                    </Button>
-                  </>
                 )}
               </Card>
             </GridItem>
