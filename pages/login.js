@@ -1,18 +1,11 @@
 /*eslint-disable*/
 import React, { useState, useEffect, useContext } from "react";
-import firebaseClient from '../firebaseClient'
-import firebase from 'firebase/app'
-import 'firebase/auth';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
-import Favorite from "@material-ui/icons/Favorite";
-import Face from "@material-ui/icons/Face";
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -36,11 +29,6 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-//import { useAuthState } from 'react-firebase-hooks/auth'
-
-//firebaseClient();
-//const auth = firebase.auth();
-
 import { auth, firestore, googleAuthProvider } from '../lib/firebase';
 import { UserContext } from '../lib/context'
 
@@ -49,7 +37,6 @@ export default function LoginPage({ }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  //const [user, userLoading, userError] = useAuthState(auth);
   const { user, userName } = useContext(UserContext);
 
   const [open, setOpen] = React.useState(false);
@@ -84,7 +71,7 @@ export default function LoginPage({ }) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={8} md={4}>
               <Card>
-                {(
+                {!user && (
                   <form className={classes.form}>
                     <CardHeader
                       color="primary"
@@ -95,7 +82,7 @@ export default function LoginPage({ }) {
                     </CardHeader>
                     <p className={classes.description + " " + classes.textCenter}>
                       Регистрироваться тоже тут, если что
-                  </p>
+                    </p>
                     <CardBody signup>
                       <CustomInput
                         id="email"
@@ -125,7 +112,7 @@ export default function LoginPage({ }) {
                             <InputAdornment position="start">
                               <Icon className={classes.inputIconsColor}>
                                 lock_utline
-                            </Icon>
+                              </Icon>
                             </InputAdornment>
                           ),
                           autoComplete: "off"
@@ -147,7 +134,7 @@ export default function LoginPage({ }) {
                             })
                         }}>
                         Пустите
-                    </Button>
+                      </Button>
                       <Button simple color="primary" size="lg" disabled={email === '' || password === ''}
                         onClick={async () => {
                           await auth
@@ -178,9 +165,16 @@ export default function LoginPage({ }) {
                             })
                         }}>
                         Зарегистрируйте
-                    </Button>
+                      </Button>
                     </div>
                   </form>
+                )}
+                {user && (
+                  <>
+                    <Button simple color="primary" size="lg" href='/profile'>
+                      В профиль
+                    </Button>
+                  </>
                 )}
               </Card>
             </GridItem>

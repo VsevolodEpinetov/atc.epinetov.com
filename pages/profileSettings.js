@@ -10,13 +10,9 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Footer from "components/Footer/Footer.js";
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CardProfile from "components/Card/CardProfile.js";
-import CustomInput from 'components/CustomInput/CustomInput.js';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -49,12 +45,6 @@ const useStyles = makeStyles(style);
 
 export default function ProfilePage({ userData }) {
   const classes = useStyles();
-  const imageClasses = classNames(
-    classes.imgRaised,
-    classes.imgRoundedCircle,
-    classes.imgFluid
-  );
-  const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
   const { user } = useContext(UserContext);
 
@@ -97,27 +87,6 @@ export default function ProfilePage({ userData }) {
     </div >
   );
 }
-
-/*export async function getServerSideProps(context) {
-  try {
-    const cookies = nookies.get(context);
-    const token = await verifyIdToken(cookies.token);
-    const { uid } = token;
-    return {
-      props: {
-        userData:
-        {
-          id: uid
-        }
-      },
-    };
-  } catch (error) {
-    context.res.writeHead(302, { location: '/login' });
-    context.res.end();
-    console.log(error)
-    return { props: {} };
-  }
-}*/
 
 function FormChangeProfile({ uid }) {
   const [workplace, setWorkplace] = React.useState('');
@@ -221,8 +190,6 @@ function FormChangeProfile({ uid }) {
 
       setPosition(info?.workingPosition)
       if (info?.workingPosition.length > 4) setPositionIsValid(true)
-
-      //  console.log({surnameIsValid, nameIsValid, positionIsValid, })
 
       dataSet = true;
     }
