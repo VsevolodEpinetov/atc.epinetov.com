@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-//import { UserProvider } from '@auth0/nextjs-auth0';
-import { AuthProvider } from '../auth'
 import { UserContext } from '../lib/context'
 import { useUserData } from '../lib/hooks'
 
