@@ -286,7 +286,7 @@ body {
   display: none;
 }
 
-.article-image-wrapper {
+.article-image-wrapper-full-width {
   width: 100%;
   border: 1px solid #ececec;
   border-radius: 10px;
@@ -301,7 +301,7 @@ body {
   margin-bottom: 0px !important;
 }
 
-.article-image {
+.article-image-full-width {
   width: 100% !important;
 }
 

@@ -18,6 +18,7 @@ import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import UserCard from "../components/UserCard";
+import AvatarUpload from '../components/AvatarUpload';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -46,7 +47,7 @@ const useStyles = makeStyles(style);
 export default function ProfilePage({ userData }) {
   const classes = useStyles();
 
-  const { user } = useContext(UserContext);
+  const { user, userPhotoURL } = useContext(UserContext);
 
   return (
     <div>
@@ -63,7 +64,11 @@ export default function ProfilePage({ userData }) {
               <GridItem
                 xs={12} sm={12} md={4}
               >
-                <UserCard uid={user?.uid} backToProfileButton />
+                <UserCard 
+                  uid={user?.uid} 
+                  backToProfileButton 
+                  disableAvatarUpload={userPhotoURL != 'https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png'}
+                />
               </GridItem>
               <GridItem
                 xs={12} sm={12} md={8}
@@ -93,8 +98,14 @@ function FormChangeProfile({ uid }) {
   const [workplaceIsValid, setWorkplaceIsValid] = React.useState(false);
   const [position, setPosition] = React.useState('');
   const [positionIsValid, setPositionIsValid] = React.useState(false);
+  const [photoURL, setPhotoURL] = React.useState('https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png');
 
-  const [errors, setErrors] = React.useState(['Не выбрано место работы', 'Не выбрана должность']);
+  const [errors, setErrors] = React.useState({
+    workplace: true,
+    position: true,
+    name: false,
+    surname: false
+  });
 
   const handleWorkplaceChange = (event) => {
     setWorkplace(event.target.value);
@@ -191,6 +202,8 @@ function FormChangeProfile({ uid }) {
       setPosition(info?.workingPosition)
       if (info?.workingPosition.length > 4) setPositionIsValid(true)
 
+      setPhotoURL(info?.photoURL)
+
       dataSet = true;
     }
   }, [info]);
@@ -285,6 +298,7 @@ function FormChangeProfile({ uid }) {
                       surname: document.getElementById('surname-text-field').value,
                       workingAt: workplace,
                       workingPosition: position,
+                      photoURL: photoURL,
                       locked: true
                     }
                     await firestore

@@ -9,6 +9,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import Button from "components/CustomButtons/Button.js";
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import AvatarUpload from "./AvatarUpload";
+
 import styles from "assets/jss/nextjs-material-kit-pro/components/cardAvatarStyle.js";
 const useStyles = makeStyles(styles);
 
@@ -20,7 +22,7 @@ import Person from "@material-ui/icons/Person";
 import { auth, firestore } from '../lib/firebase';
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 
-export default function UserCard({ uid, backToProfileButton }) {
+export default function UserCard({ uid, backToProfileButton, disableAvatarUpload }) {
 
   const ref = firestore.collection('users').doc(auth.currentUser.uid);
   const [info, infoLoading] = useDocumentData(ref);
@@ -35,19 +37,21 @@ export default function UserCard({ uid, backToProfileButton }) {
         <CardHeader image>
           {info &&
             (<>
-              <a onClick={e => e.preventDefault()} style={{ pointer: 'none' }}>
-                <img
-                  src='https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png'
-                  alt="..."
+              {(!backToProfileButton || (backToProfileButton && disableAvatarUpload)) &&
+                <a onClick={e => e.preventDefault()} style={{ pointer: 'none' }}>
+                  <img
+                    src={info.photoURL}
+                    alt="..."
+                    className={classes.avatar}
+                  />
+                </a>
+              }
+              {backToProfileButton && !disableAvatarUpload &&
+                <AvatarUpload
+                  currentPicture={info.photoURL}
+                  uid={uid}
                 />
-              </a>
-              <div
-                className={classes.coloredShadow}
-                style={{
-                  backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png)`,
-                  opacity: "1"
-                }}
-              />
+              }
             </>)
           }
           {infoLoading &&

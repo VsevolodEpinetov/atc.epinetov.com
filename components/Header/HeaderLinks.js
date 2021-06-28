@@ -78,7 +78,7 @@ export default function HeaderLinks(props) {
   const classes = useStyles();
 
 
-  const { user, userName, userSurname, userIsLoading } = useContext(UserContext);
+  const { user, userName, userSurname, userPhotoURL } = useContext(UserContext);
 
   return (
     <List className={classes.list + " " + classes.mlAuto}>
@@ -165,7 +165,7 @@ export default function HeaderLinks(props) {
         />
       </ListItem>
       {
-        user && !userIsLoading && (
+        user && (
           <ListItem className={classes.listItem}>
             <CustomDropdown
               noLiPadding
@@ -174,7 +174,7 @@ export default function HeaderLinks(props) {
               caret={false}
               buttonText={
                 <img
-                  src='https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png'
+                  src={userPhotoURL}
                   className={classes.img}
                   alt="profile"
                 />
@@ -187,7 +187,12 @@ export default function HeaderLinks(props) {
               dropdownList={[
                 <Link href="/profile">
                   <a className={classes.dropdownLink}>
-                    Мой профиль
+                    Профиль
+                  </a>
+                </Link>,
+                <Link href="/profileSettings">
+                  <a className={classes.dropdownLink}>
+                    Настройки
                   </a>
                 </Link>,
                 <Link href='#'>

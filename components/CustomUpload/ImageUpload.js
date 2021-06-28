@@ -27,9 +27,7 @@ export default function ImageUpload(props) {
   // eslint-disable-next-line
   const handleSubmit = e => {
     e.preventDefault();
-    // file is the file/image uploaded
-    // in this function you can save the image (file) on form submit
-    // you have to call it yourself
+    
   };
   const handleClick = () => {
     fileInput.current.click();
@@ -48,17 +46,17 @@ export default function ImageUpload(props) {
       </div>
       <div>
         {file === null ? (
-          <Button {...addButtonProps} onClick={() => handleClick()}>
-            {avatar ? "Add Photo" : "Select image"}
+          <Button {...addButtonProps} onClick={() => handleClick()} color='success'>
+            {avatar ? "Выбрать аватар" : "Select image"}
           </Button>
         ) : (
           <span>
-            <Button {...changeButtonProps} onClick={() => handleClick()}>
+            <Button {...changeButtonProps} onClick={() => handleClick()} color='primary'>
               Change
             </Button>
             {avatar ? <br /> : null}
-            <Button {...removeButtonProps} onClick={() => handleRemove()}>
-              <i className="fas fa-times" /> Remove
+            <Button {...removeButtonProps} onClick={() => handleRemove()} color='danger'>
+              <i className="fas fa-times" /> Удалить
             </Button>
           </span>
         )}

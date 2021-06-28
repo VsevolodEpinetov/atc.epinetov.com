@@ -145,6 +145,7 @@ export default function LoginPage({ }) {
                                 surname: '---',
                                 workingAt: '---',
                                 workingPosition: '---',
+                                photoURL: 'https://storage.googleapis.com/atc.epinetov.com/public/img/profile-pic-dummy.png',
                                 locked: false
                               }
                               await firestore
