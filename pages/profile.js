@@ -136,7 +136,7 @@ function CitiesTestList() {
 
 function InternshipInfo() {
   const refInternship = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info');
-  const [internshipInfo, internshipInfoLoading, internshipInfoError] = useDocumentData(ref);
+  const [internshipInfo, internshipInfoLoading, internshipInfoError] = useDocumentData(refInternship);
 
   const refPreliminary = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info').collection('historyPreliminary');
   const queryPreliminary = refPreliminary.orderBy('when', 'asc');
@@ -156,7 +156,7 @@ function InternshipInfo() {
 
   return (
     <>
-      {internship &&
+      {internshipInfo &&
         (
           <>
             <h3>Стажировка</h3>
@@ -170,7 +170,7 @@ function InternshipInfo() {
           </>
         )
       }
-      {internshipLoading &&
+      {internshipInfoLoading &&
         (
           <>
             <Skeleton height={60} width='30%' style={{ marginBottom: '0px' }} />
