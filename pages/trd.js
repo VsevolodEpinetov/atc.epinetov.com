@@ -168,7 +168,25 @@ export default function docsPage({ allTrdData }) {
   const [pinIsValid, setPinIsValid] = React.useState(false);
   const [wrongPin, setWrongPin] = React.useState(false);
 
-  function _0x43da(_0x22d87b,_0x1092b7){const _0x214b38=_0x214b();return _0x43da=function(_0x43dae5,_0x1cde6e){_0x43dae5=_0x43dae5-0x1c5;let _0x214466=_0x214b38[_0x43dae5];return _0x214466;},_0x43da(_0x22d87b,_0x1092b7);}(function(_0x6ca4f0,_0x4949a3){const _0x5ea439=_0x43da,_0x774b98=_0x6ca4f0();while(!![]){try{const _0x3358f2=-parseInt(_0x5ea439(0x1d1))/0x1+-parseInt(_0x5ea439(0x1c5))/0x2+-parseInt(_0x5ea439(0x1c8))/0x3*(parseInt(_0x5ea439(0x1ce))/0x4)+-parseInt(_0x5ea439(0x1ca))/0x5*(-parseInt(_0x5ea439(0x1c7))/0x6)+parseInt(_0x5ea439(0x1c9))/0x7+-parseInt(_0x5ea439(0x1cb))/0x8*(-parseInt(_0x5ea439(0x1c6))/0x9)+parseInt(_0x5ea439(0x1cc))/0xa*(-parseInt(_0x5ea439(0x1d0))/0xb);if(_0x3358f2===_0x4949a3)break;else _0x774b98['push'](_0x774b98['shift']());}catch(_0x262d21){_0x774b98['push'](_0x774b98['shift']());}}}(_0x214b,0x3a059));function _0x214b(){const _0x3b78fa=['995270okzApw','DDMMYY','4GVkeYI','format','22QkMpsz','74890AHLWrm','117516kbXjMk','72rPXCGi','16998gfWMvI','1174899GqkekK','2124143ZXkDdq','435UtYkuv','412072ETknvH'];_0x214b=function(){return _0x3b78fa;};return _0x214b();}const handlePinChange=_0x352622=>{const _0xd3f164=_0x43da;let _0xcca8ec=moment()[_0xd3f164(0x1cf)](_0xd3f164(0x1cd)),_0x4ca325=_0xcca8ec+'mc',_0x386aee=_0xcca8ec+'мц';_0x352622['length']==0x8?_0x352622===_0x4ca325||_0x352622===_0x386aee?setPinIsValid(!![]):setWrongPin(!![]):setWrongPin(![]);};
+  const handlePinChange = (event) => {
+    let date = moment().format('DDMMYY');
+    let stringToCompare1 = date + 'mc';
+    let stringToCompare2 = date + 'мц';
+    let stringToCompare3 = date + 'МЦ';
+    let stringToCompare4 = date + 'MC';
+    if (event.length == 8) {
+      if (event === stringToCompare1 || 
+          event === stringToCompare2 ||
+          event === stringToCompare3 ||
+          event === stringToCompare4) {
+        setPinIsValid(true)
+      } else {
+        setWrongPin(true)
+      }
+    } else {
+      setWrongPin(false)
+    }
+  };
 
   return (
     <div>
