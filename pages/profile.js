@@ -135,8 +135,24 @@ function CitiesTestList() {
 
 
 function InternshipInfo() {
-  const ref = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info');
-  const [internship, internshipLoading] = useDocumentData(ref);
+  const refInternship = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info');
+  const [internshipInfo, internshipInfoLoading, internshipInfoError] = useDocumentData(ref);
+
+  const refPreliminary = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info').collection('historyPreliminary');
+  const queryPreliminary = refPreliminary.orderBy('when', 'asc');
+  const [historyPreliminary, historyPreliminaryLoading, historyPreliminaryError] = useCollectionData(queryPreliminary);
+
+  const refWorking = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info').collection('historyWorking');
+  const queryWorking = refWorking.orderBy('when', 'asc');
+  const [historyWorking, historyWorkingLoading, historyWorkingError] = useCollectionData(queryWorking);
+
+  const refNeighbours = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info').collection('historyNeighbours');
+  const queryNeighbours = refNeighbours.orderBy('when', 'asc');
+  const [historyNeighbours, historyNeighboursLoading, historyNeighboursError] = useCollectionData(queryNeighbours);
+
+  const refTraining = firestore.collection('users').doc(auth.currentUser.uid).collection('internship').doc('info').collection('historyTraining');
+  const queryTraining = refTraining.orderBy('when', 'asc');
+  const [historyTraining, historyTrainingLoading, historyTrainingError] = useCollectionData(queryTraining);
 
   return (
     <>
@@ -144,7 +160,13 @@ function InternshipInfo() {
         (
           <>
             <h3>Стажировка</h3>
-            <InternshipFeed internship={internship} />
+            <InternshipFeed 
+              internshipInfo={internshipInfo} 
+              historyPreliminary={historyPreliminary}
+              historyWorking={historyWorking}
+              historyNeighbours={historyNeighbours}
+              historyTraining={historyTraining}
+            />
           </>
         )
       }

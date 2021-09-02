@@ -8,8 +8,8 @@ type: 'article'
 
 Механизация крыла – перечень устройств, которые устанавливаются на крыло самолета для изменения его характеристик на протяжении разных стадий полета. Механизация крыла непосредственно влияет на его площадь и коэффициент подъемной силы, так как коэффициент подъемной силы зависит от кривизны крыла и его толщины. Соответственно можно сделать вывод, что механизация крыла кроме площади крыла еще и увеличивает его кривизну и толщину профиля.
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/mech.webp' class='article-image'/>
+<div class='article-image-wrapper fullWidth'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/mech.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Механизация крыла на примере Боинг-737</p>
 </div>
 
@@ -19,17 +19,17 @@ type: 'article'
 
 Простой закрылок увеличивает подъемную силу за счет увеличения кривизны профиля. При этом увеличивается давление на нижней поверхности крыла. Выдвижной закрылок увеличивает еще и площадь крыла, что также повышает его несущие свойства.
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/flaps.webp' class='article-image'/>
+<div class='article-image-wrapper halfWidth'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/flaps.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Виды закрылков и щитков</p>
 </div>
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/flaps-2.webp' class='article-image'/>
+Более эффективен в этом плане щелевой закрылок. Щель в нем выполнена сужающейся и воздух, проходя через нее, разгоняется. Далее он, взаимодействуя с пограничным слоем, разгоняет и его, препятствуя его отрыву и увеличивая подъемную силу. Таких щелей на закрылках современных самолетов бывает от одной до трех и общее увеличение подъемной силы при их применении достигает 90%.
+
+<div class='article-image-wrapper halfWidth right'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/flaps-2.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Виды предкрылков и щитков</p>
 </div>
-
-Более эффективен в этом плане щелевой закрылок. Щель в нем выполнена сужающейся и воздух, проходя через нее, разгоняется. Далее он, взаимодействуя с пограничным слоем, разгоняет и его, препятствуя его отрыву и увеличивая подъемную силу. Таких щелей на закрылках современных самолетов бывает от одной до трех и общее увеличение подъемной силы при их применении достигает 90%.
 
 Еще одна из проблем, возникающих при выпуске закрылков – это дополнительный продольный момент, стремящийся опустить нос самолету. Это несколько затрудняет пилотирование. Чаще всего этот момент компенсируется дополнительным отклонением руля высоты (стабилизатора).
 
@@ -39,8 +39,8 @@ type: 'article'
 
 По конструкции и принципу действия предкрылки похожи на щелевые закрылки, только устанавливаются, естественно, на передней кромке крыла.
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/pr.webp' class='article-image'/>
+<div class='article-image-wrapper fullWidth'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/pr.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Предкрылок</p>
 </div>
 
@@ -56,8 +56,8 @@ type: 'article'
 
 Интерцепторы - это плоские элементы на верхней поверхности крыла, которые поднимаются (отклоняются) в поток. При этом происходит торможение этого потока, как следствие увеличение давления на верхней поверхности крыла и далее, понятно, уменьшение подъемной силы этого крыла. Интерцепторы еще иногда называют органами непосредственного управления подъемной силой. 
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/mech-320.webp' class='article-image'/>
+<div class='article-image-wrapper fullWidth'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/mech-320.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Механизация крыла самолета А-320. Хорошо видны спойлеры и закрылки</p>
 </div>
 
@@ -65,7 +65,7 @@ type: 'article'
 
 Во втором случае синхронный выпуск интерцепторов позволяет изменить вертикальную скорость самолета без изменения угла тангажа (то есть не опуская его нос). В этом случае они работают как воздушные тормоза и называются спойлерами. Спойлеры обычно применяются еще и после посадки одновременно с ревесом тяги (если, конечно, таковой имеется). Главная их задача в этом случае быстро уменьшить подъемную силу крыла и тем самым прижать колеса к ВПП, чтобы можно было эффективно тормозить тормозами колес.
 
-<div class='article-image-wrapper-full-width'>
+<div class='article-image-wrapper fullWidth'>
   <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/spoiler.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Выпущенные спойлеры (посадка)</p>
 </div>
@@ -74,8 +74,8 @@ type: 'article'
 
 Хвостовое оперение – аэродинамические профили, расположенные в задней части самолета. Хвостовое оперение состоит из руля направления, руля высоты и стабилизатора.
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/tail-mech.webp' class='article-image'/>
+<div class='article-image-wrapper fullWidth'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/wing/tail-mech.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Выпущенные спойлеры (посадка)</p>
 </div>
 
@@ -86,4 +86,4 @@ type: 'article'
 Рули включают триммеры, которые предназначены для путевой балансировки самолета. 
 
 
-На основе материалов: <a href='http://avia-simply.ru/mehanizacija-krila/'>1</a>, <a href='https://puteshectvuy.ru/moskva/konstrukciya-vertikalnogo-opereniya-samoleta-gorizontalnoe/'>2</a>, .
+На основе материалов: <a href='http://avia-simply.ru/mehanizacija-krila/'>1</a>, <a href='https://puteshectvuy.ru/moskva/konstrukciya-vertikalnogo-opereniya-samoleta-gorizontalnoe/'>2</a>.

@@ -28,8 +28,14 @@ import InfoIcon from '@material-ui/icons/Info';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import Autorenew from '@material-ui/icons/Autorenew';
+import CompareArrows from '@material-ui/icons/CompareArrows';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 
 import { getAllTrdData } from 'lib/trd'
+
+import ReactCodeInput from "react-code-input";
+
 
 const useStyles = makeStyles(trdPageStyle);
 const useTreeItemStyles = makeStyles((theme) => ({
@@ -121,7 +127,7 @@ StyledTreeItem.propTypes = {
   labelText: PropTypes.string.isRequired,
 };
 
-function parseAirportStructure (airportStructure) {
+function parseAirportStructure(airportStructure) {
   let structure = [];
   let nodeID = 1;
   let rootID = 0;
@@ -156,6 +162,23 @@ export default function docsPage({ allTrdData }) {
   React.useEffect(() => {
   });
   const classes = useStyles();
+
+  const [pin, setPin] = React.useState('');
+  const [pinIsValid, setPinIsValid] = React.useState(false);
+  const [wrongPin, setWrongPin] = React.useState(false);
+
+  const handlePinChange = (event) => {
+    if (event.length == 8) {
+      if (event === '090921mc' || event === '090921мц') {
+        setPinIsValid(true)
+      } else {
+        setWrongPin(true)
+      }
+    } else {
+      setWrongPin(false)
+    }
+  };
+
   return (
     <div>
       <Header
@@ -171,14 +194,22 @@ export default function docsPage({ allTrdData }) {
             >
               <h2 className={classes.title}>Технология работы</h2>
               <h5 className={classes.description}>
-                Технология работы диспетчера РЛУ и ПК МАДЦ. Актуальна на 22 апреля 2021 г.
+                Технология работы диспетчера РЛУ и ПК МАДЦ. Актуальна на 9 сентября 2021 г.
               </h5>
             </GridItem>
+            <ReactCodeInput
+              type='text'
+              fields={8}
+              onChange={handlePinChange}
+              disabled={pinIsValid}
+              isValid={!wrongPin}
+            />
             {
-              allTrdData.map(city => (
+              pinIsValid && allTrdData.map(city => (
                 <GridItem
                   md={12}
                   className={classes.mlAuto + " " + classes.mrAuto}
+                  style={{ marginTop: '15px' }}
                 >
                   <TreeView
                     className={classes.root}
@@ -192,19 +223,63 @@ export default function docsPage({ allTrdData }) {
                 </GridItem>
               ))
             }
+            {
+              pinIsValid && (
+                <GridItem
+                  md={12}
+                  className={classes.mlAuto + " " + classes.mrAuto}
+                  style={{ marginTop: '15px' }}
+                >
+                  <TreeView
+                    className={classes.root}
+                    defaultExpanded={[]}
+                    defaultCollapseIcon={<ArrowDropDownIcon />}
+                    defaultExpandIcon={<ArrowRightIcon />}
+                    defaultEndIcon={<div style={{ width: 24 }} />}
+                  >
+                    <StyledTreeItem nodeId="1" labelText="Изменения" labelIcon={Autorenew}>
+                      <StyledTreeItem
+                        nodeId="changes-4"
+                        labelText="Р4"
+                        labelIcon={CompareArrows}
+                        color="#1a73e8"
+                        bgColor="#e8f0fe"
+                        onClick={() => { window.open(`https://storage.googleapis.com/atc.epinetov.com/public/trd/P4.pdf`, "_blank"); }}
+                      />
+                      <StyledTreeItem
+                        nodeId="changes-5"
+                        labelText="P5"
+                        labelIcon={CompareArrows}
+                        color="#1a73e8"
+                        bgColor="#e8f0fe"
+                        onClick={() => { window.open(`https://storage.googleapis.com/atc.epinetov.com/public/trd/P5.pdf`, "_blank"); }}
+                      />
+                      <StyledTreeItem
+                        nodeId="changes-presentation"
+                        labelText="Презентация"
+                        labelIcon={HelpOutline}
+                        color="#1a73e8"
+                        bgColor="#e8f0fe"
+                        onClick={() => { window.open(`https://storage.googleapis.com/atc.epinetov.com/public/trd/Взаимодействие.pdf`, "_blank"); }}
+                      />
+                    </StyledTreeItem>
+                  </TreeView>
+                </GridItem>
+              )
+            }
           </GridContainer>
         </div>
-        </div>
-        <Footer />
       </div>
+      <Footer />
+    </div>
   );
 }
 
 export async function getStaticProps() {
   const allTrdData = getAllTrdData()
   return {
-        props: {
-        allTrdData
-      }
+    props: {
+      allTrdData
+    }
   }
 }

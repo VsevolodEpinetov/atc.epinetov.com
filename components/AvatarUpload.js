@@ -7,12 +7,9 @@ import clsx from 'clsx';
 // core components
 import Button from "components/CustomButtons/Button.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { green } from '@material-ui/core/colors';
-
-import CheckIcon from '@material-ui/icons/Check';
 
 import { auth, storage, STATE_CHANGED, firestore } from '../lib/firebase';
 import { useDocumentData } from 'react-firebase-hooks/firestore'
@@ -134,6 +131,7 @@ export default function AvatarUpload(props) {
           setSuccess(true);
 
           if (!alreadyDidThat) {
+            console.log('hey')
             alreadyDidThat = true;
             let userObj = info;
             userObj.photoURL = url;

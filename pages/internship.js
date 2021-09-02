@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from 'prop-types';
+
+import Header from "components/Header/Header.js";
+import HeaderLinks from "components/Header/HeaderLinks.js";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,6 +15,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Tooltip from "@material-ui/core/Tooltip";
+import Footer from "components/Footer/Footer.js";
 
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -32,8 +36,6 @@ import { convertTimestampToDateInternship } from "../lib/date.js";
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import { firestore, auth } from "../lib/firebase.js";
-import { useCollectionData, useCollectionDataOnce } from "react-firebase-hooks/firestore";
 
 import linearProgressInternshipStyle from "../assets/jss/nextjs-material-kit-pro/components/linearProgressInternshipStyle.js";
 const useStylesLinearProgress = makeStyles(linearProgressInternshipStyle);
@@ -42,128 +44,73 @@ import style from "assets/jss/nextjs-material-kit-pro/pages/aircraftPageStyle.js
 const useStyles = makeStyles(style);
 
 
-const materialsToRead = [
-  [
-    {
-      name: 'Организационная структура МЦ АУВД',
-      type: 'post',
-      link: '/posts/matcc-structure'
-    }
-  ]
-]
+// auth
+import AuthCheck from '../components/AuthCheck';
+import { auth, firestore } from '../lib/firebase';
+import { useDocumentData, useCollectionData, useCollection, useCollectionDataOnce } from 'react-firebase-hooks/firestore'
+import { UserContext } from '../lib/context';
 
-
-
-export default function InternshipFeed({ internshipInfo, historyPreliminary, historyWorking, historyNeighbours, historyTraining }) {
+export default function InternshipPage(props) {
   const classes = useStyles();
 
-  const [expanded, setExpanded] = useState(false);
+  const { user } = useContext(UserContext);
 
-  const handleChange = (panel) => (e, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const refInternship = firestore.collection('users').doc(auth.currentUser?.uid).collection('internship').doc('info');
+  const [internshipInfo, internshipInfoLoading, internshipInfoError] = useDocumentData(refInternship);
 
-  const getCurrentInternshipState = (info) => {
-    let state = '';
+  const refPreliminary = firestore.collection('users').doc(auth.currentUser?.uid).collection('internship').doc('info').collection('historyPreliminary');
+  const queryPreliminary = refPreliminary.orderBy('when', 'asc');
+  const [historyPreliminary, historyPreliminaryLoading, historyPreliminaryError] = useCollectionDataOnce(queryPreliminary);
 
-    if (info.currentHoursPreliminary < info.totalHoursPreliminary)
-      state = `Предварительная подготовка`
-    else {
-      state = `На рабочем месте. Задача №`
+  const refWorking = firestore.collection('users').doc(auth.currentUser?.uid).collection('internship').doc('info').collection('historyWorking');
+  const queryWorking = refWorking.orderBy('when', 'asc');
+  const [historyWorking, historyWorkingLoading, historyWorkingError] = useCollectionDataOnce(queryWorking);
 
-      let trainingTaskNumber = '0';
-      switch (true) {
-        case info.currentHoursTraining < 10:
-          trainingTaskNumber = 1;
-          break;
-        case info.currentHoursTraining < 20:
-          trainingTaskNumber = 2;
-          break;
-        case info.currentHoursTraining < 30:
-          trainingTaskNumber = 3;
-          break;
-        default:
-          trainingTaskNumber = 4;
-          break;
-      }
-      state += trainingTaskNumber;
-    }
+  const refNeighbours = firestore.collection('users').doc(auth.currentUser?.uid).collection('internship').doc('info').collection('historyNeighbours');
+  const queryNeighbours = refNeighbours.orderBy('when', 'asc');
+  const [historyNeighbours, historyNeighboursLoading, historyNeighboursError] = useCollectionDataOnce(queryNeighbours);
 
-    return state;
-  }
+  const refTraining = firestore.collection('users').doc(auth.currentUser?.uid).collection('internship').doc('info').collection('historyTraining');
+  const queryTraining = refTraining.orderBy('when', 'asc');
+  const [historyTraining, historyTrainingLoading, historyTrainingError] = useCollectionDataOnce(queryTraining);
 
   return (
-    <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
-        <TableWithHours
-          historyPreliminary={historyPreliminary}
-          historyNeighbours={historyNeighbours}
-          historyWorking={historyWorking}
-          historyTraining={historyTraining}
-          internshipInfo={internshipInfo}
-        />
-      </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
-        Текущий этап: {getCurrentInternshipState(internshipInfo)}
-      </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
-        <Accordion expanded={expanded === `panel-internship-materials`} onChange={handleChange(`panel-internship-materials`)}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-internship-materials-bh-content`}
-            id={`panel-internship-materials-bh-header`}
-          >
-            Материалы для изучения
-          </AccordionSummary>
-          <AccordionDetails className={'accordion-root'}>
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={6}>
-                <Card>
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>ФП ИВП</h4>
-                    <h6 className={classes.cardSubtitle}>Документ</h6>
-                    <p>
-                      Руководящий документ
-                    </p>
-                    <a
-                      href="#pablo"
-                      className={classes.cardLink}
-                      onClick={e => e.preventDefault()}
-                    >
-                      Прочитать
-                    </a>
-                  </CardBody>
-                </Card>
-              </GridItem>
-              <GridItem xs={12} sm={12} md={6}>
-                <Card>
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>ФАП 362</h4>
-                    <h6 className={classes.cardSubtitle}>Документ</h6>
-                    <p>
-                      Руководящий документ
-                    </p>
-                    <a
-                      href="#pablo"
-                      className={classes.cardLink}
-                      onClick={e => e.preventDefault()}
-                    >
-                      Прочитать
-                    </a>
-                  </CardBody>
-                </Card>
-              </GridItem>
-            </GridContainer>
-          </AccordionDetails>
-        </Accordion>
-      </GridItem>
-    </GridContainer>
-  )
+    <div>
+      <Header
+        links={<HeaderLinks dropdownHoverColor="dark" />}
+        color="transparent"
+      />
+      <div className={classes.projects}>
+        <div className={classes.container}>
+          <GridContainer>
+            <AuthCheck>
+              <GridItem
+                xs={12} sm={12} md={12}
+              >
+                <GridContainer>
 
+                  <GridItem xs={12} sm={12} md={12}>
+                    <InternshipProgress
+                      internshipInfo={internshipInfo}
+                      historyPreliminary={historyPreliminary}
+                      historyWorking={historyWorking}
+                      historyNeighbours={historyNeighbours}
+                      historyTraining={historyTraining} 
+                    />
+                  </GridItem>
+
+                </GridContainer>
+              </GridItem>
+            </AuthCheck>
+          </GridContainer>
+        </div>
+      </div>
+      <Footer />
+    </div >
+  );
 }
 
-
-function TableWithHours({ internshipInfo, historyPreliminary, historyWorking, historyNeighbours, historyTraining }) {
+function InternshipProgress({ internshipInfo, historyPreliminary, historyWorking, historyNeighbours, historyTraining }) {
 
   const useRowStyles = makeStyles({
     root: {
@@ -277,7 +224,7 @@ function TableWithHours({ internshipInfo, historyPreliminary, historyWorking, hi
   })
   history = history.reverse();
   allCurrentHours.preliminary = currentHours;
-  rows.push(createData('Предварительная', currentHours, internshipInfo.totalHoursPreliminary - currentHours, internshipInfo.totalHoursPreliminary, history))
+  rows.push(createData('Предварительная', currentHours, internshipInfo?.totalHoursPreliminary - currentHours, internshipInfo?.totalHoursPreliminary, history))
 
 
   currentHours = 0;
@@ -288,7 +235,7 @@ function TableWithHours({ internshipInfo, historyPreliminary, historyWorking, hi
   })
   history = history.reverse();
   allCurrentHours.training = currentHours;
-  rows.push(createData('Тренажёры', currentHours, internshipInfo.totalHoursTraining - currentHours, internshipInfo.totalHoursTraining, history))
+  rows.push(createData('Тренажёры', currentHours, internshipInfo?.totalHoursTraining - currentHours, internshipInfo?.totalHoursTraining, history))
 
   currentHours = 0;
   history = [];
@@ -298,7 +245,7 @@ function TableWithHours({ internshipInfo, historyPreliminary, historyWorking, hi
   })
   history = history.reverse();
   allCurrentHours.neighbours = currentHours;
-  rows.push(createData('Соседи', currentHours, internshipInfo.totalHoursNeighbours - currentHours, internshipInfo.totalHoursNeighbours, history))
+  rows.push(createData('Соседи', currentHours, internshipInfo?.totalHoursNeighbours - currentHours, internshipInfo?.totalHoursNeighbours, history))
 
   currentHours = 0;
   history = [];
@@ -308,11 +255,11 @@ function TableWithHours({ internshipInfo, historyPreliminary, historyWorking, hi
   })
   history = history.reverse();
   allCurrentHours.working = currentHours;
-  rows.push(createData('На рабочем месте', currentHours, internshipInfo.totalHoursWorking - currentHours, internshipInfo.totalHoursWorking, history))
+  rows.push(createData('На рабочем месте', currentHours, internshipInfo?.totalHoursWorking - currentHours, internshipInfo?.totalHoursWorking, history))
 
   return (
     <>
-      <InternshipProgress
+      <InternshipLinearProgress
         allCurrentHours={allCurrentHours}
         internshipInfo={internshipInfo}
       />
@@ -338,22 +285,21 @@ function TableWithHours({ internshipInfo, historyPreliminary, historyWorking, hi
   )
 }
 
-
-function InternshipProgress({ allCurrentHours, internshipInfo }) {
+function InternshipLinearProgress({ allCurrentHours, internshipInfo }) {
   const classesLinearProgress = useStylesLinearProgress();
 
-  const totalHours = internshipInfo.totalHoursNeighbours + internshipInfo.totalHoursPreliminary + internshipInfo.totalHoursTraining + internshipInfo.totalHoursWorking;
+  const totalHours = internshipInfo?.totalHoursNeighbours + internshipInfo?.totalHoursPreliminary + internshipInfo?.totalHoursTraining + internshipInfo?.totalHoursWorking;
   const percentagePreliminary = Math.ceil((allCurrentHours.preliminary / totalHours) * 100);
   const percentageTraining = Math.ceil((allCurrentHours.training / totalHours) * 100);
   const percentageNeighbours = Math.ceil((allCurrentHours.neighbours / totalHours) * 100);
   const percentageWorking = 100 - percentagePreliminary - percentageTraining - percentageNeighbours;
 
-  const valueWorking = parseInt((allCurrentHours.working / internshipInfo.totalHoursWorking) * 100);
+  const valueWorking = parseInt((allCurrentHours.working / internshipInfo?.totalHoursWorking) * 100);
 
   return (
     <>
       <Tooltip
-        title={`Предварительная ${allCurrentHours.preliminary}/${internshipInfo.totalHoursPreliminary}`}
+        title={`Предварительная ${allCurrentHours.preliminary}/${internshipInfo?.totalHoursPreliminary}`}
         aria-label="tooltip-linear-preliminary"
         classes={{
           tooltip: classesLinearProgress.tooltipFont,
@@ -370,7 +316,7 @@ function InternshipProgress({ allCurrentHours, internshipInfo }) {
         />
       </Tooltip>
       <Tooltip
-        title={`Ознакомление со смежными ${allCurrentHours.neighbours}/${internshipInfo.totalHoursNeighbours}`}
+        title={`Ознакомление со смежными ${allCurrentHours.neighbours}/${internshipInfo?.totalHoursNeighbours}`}
         aria-label="tooltip-linear-neighbours"
         classes={{
           tooltip: classesLinearProgress.tooltipFont,
@@ -387,7 +333,7 @@ function InternshipProgress({ allCurrentHours, internshipInfo }) {
         />
       </Tooltip>
       <Tooltip
-        title={`Тренажёры ${allCurrentHours.training}/${internshipInfo.totalHoursTraining}`}
+        title={`Тренажёры ${allCurrentHours.training}/${internshipInfo?.totalHoursTraining}`}
         aria-label="tooltip-linear-training"
         classes={{
           tooltip: classesLinearProgress.tooltipFont,
@@ -404,7 +350,7 @@ function InternshipProgress({ allCurrentHours, internshipInfo }) {
         />
       </Tooltip>
       <Tooltip
-        title={`На рабочем месте ${allCurrentHours.working}/${internshipInfo.totalHoursWorking}`}
+        title={`На рабочем месте ${allCurrentHours.working}/${internshipInfo?.totalHoursWorking}`}
         aria-label="tooltip-linear-working"
         classes={{
           tooltip: classesLinearProgress.tooltipFont,
