@@ -5,7 +5,8 @@
     "availableTypes": {
       "full": true,
       "STAR": true,
-      "SID": true
+      "SID": true,
+      "Approach": false
     }
   },
   "UUEE": {
@@ -14,7 +15,8 @@
     "availableTypes": {
       "full": true,
       "STAR": true,
-      "SID": true
+      "SID": true,
+      "Approach": true
     }
   },
   "UUWW": {
@@ -23,7 +25,8 @@
     "availableTypes": {
       "full": true,
       "STAR": true,
-      "SID": true
+      "SID": true,
+      "Approach": true
     }
   },
   "UUDD": {
@@ -32,7 +35,8 @@
     "availableTypes": {
       "full": true,
       "STAR": true,
-      "SID": true
+      "SID": true,
+      "Approach": true
     }
   },
   "UUMO": {
@@ -41,7 +45,8 @@
     "availableTypes": {
       "full": true,
       "STAR": true,
-      "SID": true
+      "SID": true,
+      "Approach": false
     }
   }
 }

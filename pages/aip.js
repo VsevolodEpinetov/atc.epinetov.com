@@ -29,7 +29,7 @@ const createAIPDate = (allAIPData) => {
   allAIPData.forEach(airportData => {
     var row = [airportData.aeroportICAOCode, airportData.aeroportInfo.name, airportData.aeroportInfo.country];
 
-    let possibleAIPTypes = ["full", "STAR", "SID"];
+    let possibleAIPTypes = ["full", "STAR", "SID", "Approach"];
 
     possibleAIPTypes.forEach(type => {
       if (airportData.availableAIPTypes[type]) {
@@ -99,7 +99,10 @@ export default function AIPPage({ allAIPData }) {
               Все файлы взяты с <a href="http://www.caiga.ru/" target='_blank'>сайта ЦАИ ГА</a>.
             </h5>
             <h5 className={classes.description}>
-              Ближайшее обновление примерно планируется <GetDateOfUpdatingAIP/>
+              В последний раз обновлено <span style={{color: "#dc7474"}}>9 сентября 2021 г.</span>
+            </h5>
+            <h5 className={classes.description}>
+              Следующее обновление примерно планируется <GetDateOfUpdatingAIP/>
             </h5>
           </GridItem>
           <GridItem
@@ -116,7 +119,8 @@ export default function AIPPage({ allAIPData }) {
                 "Страна",
                 "Полный",
                 "STAR",
-                "SID"
+                "SID",
+                "Approach"
               ]}
               tableData={createAIPDate(allAIPData)}
             />
