@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import Link from 'next/link'
 // @material-ui/core components
@@ -11,115 +11,54 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Footer from "components/Footer/Footer.js";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControl from "@material-ui/core/FormControl";
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Checkbox from '@material-ui/core/Checkbox';
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Table from "components/Table/Table.js";
-import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 
-import Slider from '@material-ui/core/Slider';
-
-import testsAircraftPageStyle from "assets/jss/nextjs-material-kit-pro/pages/testsAircraftPageStyle.js";
+import testsTrdPageStyle from "assets/jss/nextjs-material-kit-pro/pages/testsTrdPageStyle.js";
 
 import Done from "@material-ui/icons/Done";
 import DoneAll from "@material-ui/icons/DoneAll";
 import Close from "@material-ui/icons/Close";
 
-import { getAllAircraftTestData } from 'lib/testAircraft'
+import { getAllTrdTestData } from 'lib/testTrd'
 
 
 // auth
 import { auth, firestore } from '../../lib/firebase';
 import { UserContext } from '../../lib/context';
 
-const useStyles = makeStyles(testsAircraftPageStyle);
-
-function valueLabelFormat(value) {
-  return `FL${value}`;
-}
-
-function ValueLabelComponent(props) {
-  const { children, open, value } = props;
-
-  return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
-      {children}
-    </Tooltip>
-  );
-}
-
-ValueLabelComponent.propTypes = {
-  children: PropTypes.element.isRequired,
-  open: PropTypes.bool.isRequired,
-  value: PropTypes.number.isRequired,
-};
+const useStyles = makeStyles(testsTrdPageStyle);
 
 function getRandomQuestionsFromData(testData, amountOfQuestions) {
-  /*const data = testData.sort(() => 0.5 - Math.random()).slice(0, amountOfQuestions)
-  let questions = [];
-  data.forEach(aircraft => {
-    questions.push({
-      question: aircraft.name.plain,
-      answers: {
-        engines: {
-          number: aircraft.specs.engines.quantity,
-          type: aircraft.specs.engines.type,
-        },
-        ceiling: aircraft.specs.ceiling.fl,
-        speed: aircraft.specs.speed.cruising.kmh,
-        category: category
-      }
-    })
-  })*/
-  let questions = [{
-    "question": "Пример вопроса №1",
-    "choose": "one",
-    "answers": [
-        {
-          "answer": "Это неверный ответ",
-          "correct": false
-        },
-        {
-          "answer": "Это тоже неверный ответ",
-          "correct": false
-        },
-        {
-          "answer": "Это правильный ответ!",
-          "correct": true
-        }
-      ]
-    },
-    {
-      "question": "Пример вопроса №2",
-      "choose": "one",
-      "answers": [
-        {
-          "answer": "Это неверный ответ",
-          "correct": false
-        },
-        {
-          "answer": "Это правильный ответ :)",
-          "correct": true
-        },
-        {
-          "answer": "Это тоже неверный ответ, но пониже",
-          "correct": false
-        }
-      ]
-    }
+  let data = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
   ]
 
-  return questions;
-}
-
-const getTextForAnswer = (answers) => {
-  let correct = [];
-  answers.forEach(answer => {
-    if (answer.correct) correct.push(answer);
+  testData.forEach(q => {
+    data[q.chapter - 1].push(q)
   })
-  return correct;
+
+  for (let i = 0; i < data.length; i++) {
+    data[i] = data[i].sort(() => 0.5 - Math.random()).slice(0, amountOfQuestions)
+  }
+
+  let questions = data[0].concat(data[1]).concat(data[2]).concat(data[3]).concat(data[4]).concat(data[5]);
+
+  return questions;
 }
 
 function getPhraseForTestResults(goal, result) {
@@ -137,6 +76,7 @@ function getTableWithResults(results) {
   let data = [];
   let questionNumber = 1;
   results.forEach(result => {
+    console.log(result);
     let classForText = 'textOrange';
     let ResultIcon = Done;
     if (result.pointsGot === 1) {
@@ -147,9 +87,21 @@ function getTableWithResults(results) {
       classForText = 'textRed'
       ResultIcon = Close;
     }
-    let correctAnswer = `L${result.correctAnswer.engines.number}${result.correctAnswer.engines.type}, ${result.correctAnswer.category}, ${result.correctAnswer.speed} км/ч, FL${result.correctAnswer.ceiling}`
-    let userAnswer = `L${result.userAnswer.engines.number}${result.userAnswer.engines.type}, ${result.userAnswer.category}, ${result.userAnswer.speed} км/ч, FL${result.userAnswer.ceiling}`
-    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText}>{correctAnswer}</span>, <span className={classForText}>{userAnswer}</span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
+    let correctAnswer = result.correctAnswer;
+    if (result.correctAnswer.length > 1) {
+      correctAnswer = '';
+      result.correctAnswer.forEach((ca, id) => {
+        correctAnswer += `${id + 1}. ${ca}<br/>`
+      })
+    }
+    let userAnswer = result.userAnswer;
+    if (result.userAnswer.length > 1) {
+      userAnswer = '';
+      result.userAnswer.forEach((ua, id) => {
+        userAnswer += `${id + 1}. ${ua}<br/>`
+      })
+    }
+    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.chapter}, п.{result.paragraph}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${correctAnswer}` }}></span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${userAnswer}` }}></span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
     questionNumber++;
   })
   return data;
@@ -158,8 +110,6 @@ function getTableWithResults(results) {
 export default function docsPage({ testData, userData }) {
 
   const { user } = useContext(UserContext);
-
-
 
   // ---------------------------------
   // Start of Quiz Variables and Handlers
@@ -174,13 +124,48 @@ export default function docsPage({ testData, userData }) {
     setCurrentQuestion(0);
     setPts(0);
     setQuizResults([]);
+    let uA = {
+      "0": false,
+      "1": false,
+      "2": false,
+      "3": false,
+      "4": false,
+      "5": false,
+      "6": false,
+      "7": false,
+      "8": false,
+      "9": false,
+      "10": false,
+      "11": false,
+      "12": false,
+      "13": false,
+      "14": false,
+      "15": false
+    }
+    setUserAnswers(uA);
+    setDisableAnswers(false);
+    setTextColor({
+      "0": '#3c4858',
+      "1": '#3c4858',
+      "2": '#3c4858',
+      "3": '#3c4858',
+      "4": '#3c4858',
+      "5": '#3c4858',
+      "6": '#3c4858',
+      "7": '#3c4858',
+      "8": '#3c4858',
+      "9": '#3c4858',
+      "10": '#3c4858',
+      "11": '#3c4858',
+      "12": '#3c4858',
+      "13": '#3c4858',
+      "14": '#3c4858',
+      "15": '#3c4858'
+    })
+
+
 
     document.getElementById('check-button') && document.getElementById('check-button').classList.remove('btn-disabled')
-
-    let testAnswer = document.getElementById('test-answer');
-    if (testAnswer)
-      if (!testAnswer.classList.contains('is-hidden'))
-        testAnswer.classList.add('is-hidden')
 
     let nextButton = document.getElementById('next-button');
     if (nextButton)
@@ -188,13 +173,72 @@ export default function docsPage({ testData, userData }) {
         nextButton.classList.add('btn-disabled')
   }
 
-  const handleAnswerButtonClick = (isCorrect) => {
-    if (isCorrect) {
-      alert("the answer is correct!");
+  const [disableAnswers, setDisableAnswers] = useState(false)
+
+  const [userAnswers, setUserAnswers] = useState({
+    "0": false,
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "11": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  });
+  const handleChangeAnswers = index => {
+    if (quiz[currentQuestion].choose == 'multiple') {
+      setUserAnswers((prevState) => ({ ...prevState, [index]: !userAnswers[index] }));
+    } else {
+      let newAnswers = {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "10": false,
+        "11": false,
+        "12": false,
+        "13": false,
+        "14": false,
+        "15": false
+      };
+      newAnswers[event.target.value] = true;
+      setUserAnswers(newAnswers);
     }
-    const nextQuestion = currentQuestion + 1;
-    setCurrentQuestion(nextQuestion);
-  };
+  }
+
+  const [textColor, setTextColor] = useState({
+    "0": '#3c4858',
+    "1": '#3c4858',
+    "2": '#3c4858',
+    "3": '#3c4858',
+    "4": '#3c4858',
+    "5": '#3c4858',
+    "6": '#3c4858',
+    "7": '#3c4858',
+    "8": '#3c4858',
+    "9": '#3c4858',
+    "10": '#3c4858',
+    "11": '#3c4858',
+    "12": '#3c4858',
+    "13": '#3c4858',
+    "14": '#3c4858',
+    "15": '#3c4858'
+  })
+
 
   const [amountOfQuestions, setAmountOfQuestions] = React.useState(5);
   const handleAmountOfQuestionsSelector = event => {
@@ -202,6 +246,11 @@ export default function docsPage({ testData, userData }) {
     resetQuiz(parseInt(event.target.value));
   };
 
+  const [chosenAreas, setChosenAreas] = React.useState('approach');
+  const handleChosenAreas = event => {
+    setChosenAreas(event.target.value);
+    resetQuiz(parseInt(event.target.value));
+  };
 
   const startAgain = (e) => {
     e.preventDefault();
@@ -210,7 +259,10 @@ export default function docsPage({ testData, userData }) {
 
   // Initiate a quiz
   React.useEffect(() => {
-    if (quiz.length == 0) setQuiz(getRandomQuestionsFromData(testData, amountOfQuestions));
+    if (quiz.length == 0) {
+      let randomQuiz = getRandomQuestionsFromData(testData, amountOfQuestions);
+      setQuiz(randomQuiz);
+    }
   })
   // End of Quiz Variables and Handlers
   // ---------------------------------
@@ -218,67 +270,91 @@ export default function docsPage({ testData, userData }) {
 
   // ---------------------------------
   // Start of Quiz Functions
+  const getRadioValue = (ua) => {
+    let value;
+    Object.values(ua).forEach(v => {
+      if (v) value = v;
+    })
+    return value;
+  }
+
   const checkAnswer = (e) => {
-    let userAnswer = {
-      engines: {
-        number: numberOfEngines,
-        type: typeOfEngines
-      },
-      category: typeOfAircraft,
-      ceiling: ceiling,
-      speed: speed
-    }
+    let correctAnswer = quiz[currentQuestion].answers.map(answer => {
+      return answer.correct;
+    })
+
+    setDisableAnswers(true);
+
+    let userAnswer = Object.values(userAnswers).splice(0, quiz[currentQuestion].answers.length)
+    let userAnswerInWords = [];
+    userAnswer.forEach((a, id) => {
+      if (a)  userAnswerInWords.push(quiz[currentQuestion].answers[id].answer)
+    })
+
+    setTextColor({
+      "0": '#8c8f95',
+      "1": '#8c8f95',
+      "2": '#8c8f95',
+      "3": '#8c8f95',
+      "4": '#8c8f95',
+      "5": '#8c8f95',
+      "6": '#8c8f95',
+      "7": '#8c8f95',
+      "8": '#8c8f95',
+      "9": '#8c8f95',
+      "10": '#8c8f95',
+      "11": '#8c8f95',
+      "12": '#8c8f95',
+      "13": '#8c8f95',
+      "14": '#8c8f95',
+      "15": '#8c8f95'
+    })
+
+    correctAnswer.forEach((ca, id) => {
+      if (ca) {
+        setTextColor((prevState) => ({ ...prevState, [id]: 'green' }))
+      } else {
+        if (userAnswer[id]) {
+          setTextColor((prevState) => ({ ...prevState, [id]: 'red' }))
+        }
+      }
+    })
 
     let pointsGot = 0;
+    let correct = 0;
+    let incorrect = 0;
 
-    setNumberOfEnginesSelectorIsDisabled(true);
-    if (userAnswer.engines.number === quiz[currentQuestion].answers.engines.number) {
-      pointsGot += 0.2
-    } else {
-      setNumberOfEnginesSelectorError(true);
-    }
+    userAnswer.forEach((ua, id) => {
+      if (ua) {
+        if (correctAnswer[id])
+          correct++;
+        else
+          incorrect++;
+      }
+    })
 
-    setTypeOfEnginesSelectorIsDisabled(true);
-    if (userAnswer.engines.type === quiz[currentQuestion].answers.engines.type) {
-      pointsGot += 0.2
-    } else {
-      setTypeOfEnginesSelectorError(true);
-    }
+    let questionAmountOfTrues = 0;
+    correctAnswer.forEach(ua => {
+      if (ua) questionAmountOfTrues++;
+    })
 
-    setTypeOfAircraftSelectorIsDisabled(true);
-    if (userAnswer.category === quiz[currentQuestion].answers.category) {
-      pointsGot += 0.2
-    } else {
-      setTypeOfAircraftSelectorError(true);
-    }
-
-    setSpeedIsDisabled(true);
-    if (quiz[currentQuestion].answers.speed + 50 > userAnswer.speed && userAnswer.speed > quiz[currentQuestion].answers.speed - 50) {
-      pointsGot += 0.2
-      setSpeedSliderColor(colorsForSliders.correctAnswer);
-      document.getElementById('speed-label').classList.add('textGreen');
-    } else {
-      setSpeedSliderColor(colorsForSliders.wrongAnswer);
-      document.getElementById('speed-label').classList.add('textRed');
-    }
-
-    setCeilingIsDisabled(true);
-    if (quiz[currentQuestion].answers.ceiling + 30 > userAnswer.ceiling && userAnswer.ceiling > quiz[currentQuestion].answers.ceiling - 30) {
-      pointsGot += 0.2
-      setCeilingSliderColor(colorsForSliders.correctAnswer);
-      document.getElementById('ceiling-label').classList.add('textGreen');
-    } else {
-      setCeilingSliderColor(colorsForSliders.wrongAnswer);
-      document.getElementById('ceiling-label').classList.add('textRed');
-    }
+    pointsGot = correct / questionAmountOfTrues - incorrect / (quiz[currentQuestion].answers.length - questionAmountOfTrues);
+    if (pointsGot < 0) pointsGot = 0;
 
     pointsGot = parseFloat(pointsGot.toFixed(1))
+
+    let trues = [];
+    quiz[currentQuestion].answers.forEach((answer, id) => {
+      if (answer.correct) trues.push(answer.answer)
+    })
 
     let newResults = quizResults;
     newResults.push({
       "question": quiz[currentQuestion].question,
-      "correctAnswer": quiz[currentQuestion].answers,
-      "userAnswer": userAnswer,
+      "chapter": quiz[currentQuestion].chapter,
+      "paragraph": quiz[currentQuestion].paragraph,
+      "correctAnswer": trues,
+      "userAnswer": userAnswerInWords,
       "pointsGot": pointsGot
     })
     setQuizResults(newResults)
@@ -288,15 +364,50 @@ export default function docsPage({ testData, userData }) {
 
     document.getElementById('next-button').classList.remove('btn-disabled')
     document.getElementById('check-answer-button').classList.add('btn-disabled')
-
-    document.getElementById('test-answer').classList.remove('is-hidden')
-
   }
 
   const nextQuestion = async (e) => {
-    document.getElementById('test-answer').classList.add('is-hidden')
+    document.getElementById('next-button').classList.add('btn-disabled')
+    document.getElementById('check-answer-button').classList.remove('btn-disabled')
 
+    setUserAnswers({
+      "0": false,
+      "1": false,
+      "2": false,
+      "3": false,
+      "4": false,
+      "5": false,
+      "6": false,
+      "7": false,
+      "8": false,
+      "9": false,
+      "10": false,
+      "11": false,
+      "12": false,
+      "13": false,
+      "14": false,
+      "15": false
+    });
     setCurrentQuestion(currentQuestion + 1);
+    setDisableAnswers(false);
+    setTextColor({
+      "0": '#3c4858',
+      "1": '#3c4858',
+      "2": '#3c4858',
+      "3": '#3c4858',
+      "4": '#3c4858',
+      "5": '#3c4858',
+      "6": '#3c4858',
+      "7": '#3c4858',
+      "8": '#3c4858',
+      "9": '#3c4858',
+      "10": '#3c4858',
+      "11": '#3c4858',
+      "12": '#3c4858',
+      "13": '#3c4858',
+      "14": '#3c4858',
+      "15": '#3c4858'
+    })
 
     if (currentQuestion + 1 === amountOfQuestions) {
       if (user) {
@@ -332,7 +443,7 @@ export default function docsPage({ testData, userData }) {
             >
               <h2 className={classes.title}>Тестирование. ТРД</h2>
               <h5 className={classes.description}>
-                Текстик бы написать
+                Тестирование по ТРД АузДЦ. При проверке <span style={{color: 'green'}}>зелёным</span> цветом отмечены правильные варианты ответа, а <span style={{color: 'red'}}>красным</span> - неверно выбранные варианты. В зависимости от степени верности ответов начисляются баллы. В самом конце будет показана сводная таблица с результатами. 
               </h5>
             </GridItem>
             <GridItem
@@ -346,7 +457,7 @@ export default function docsPage({ testData, userData }) {
                   htmlFor="simple-select"
                   className={classes.selectLabel}
                 >
-                  Количество вопросов
+                  Количество вопросов из каждого раздела
                 </InputLabel>
                 <Select
                   MenuProps={{
@@ -368,7 +479,16 @@ export default function docsPage({ testData, userData }) {
                       root: classes.selectMenuItem
                     }}
                   >
-                    Количество вопросов
+                    Количество вопросов из каждого раздела
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="1"
+                  >
+                    1
                   </MenuItem>
                   <MenuItem
                     classes={{
@@ -401,6 +521,71 @@ export default function docsPage({ testData, userData }) {
               </FormControl>
             </GridItem>
             <GridItem
+              md={6}
+              className={classes.mlAuto + " " + classes.mrAuto + ' margin-bottom-fix'}
+              style={{ marginBottom: '3em !important' }}
+              key='test-trd-settings-areas'
+            >
+              <FormControl fullWidth className={classes.selectFormControl}>
+                <InputLabel
+                  htmlFor="simple-select"
+                  className={classes.selectLabel}
+                >
+                  Сектор
+                </InputLabel>
+                <Select
+                  MenuProps={{
+                    className: classes.selectMenu
+                  }}
+                  classes={{
+                    select: classes.select
+                  }}
+                  value={chosenAreas}
+                  onChange={handleChosenAreas}
+                  inputProps={{
+                    name: "handleChosenAreasSelector",
+                    id: "areas-selector"
+                  }}
+                >
+                  <MenuItem
+                    disabled
+                    classes={{
+                      root: classes.selectMenuItem
+                    }}
+                  >
+                    Сектор
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="approach"
+                  >
+                    ДПП
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="radar"
+                  >
+                    ДПК
+                  </MenuItem>
+                  <MenuItem
+                    classes={{
+                      root: classes.selectMenuItem,
+                      selected: classes.selectMenuItemSelected
+                    }}
+                    value="approach,radar"
+                  >
+                    ДПП+ДПК
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </GridItem>
+            <GridItem
               md={12}
               className={classes.mlAuto + " " + classes.mrAuto}
               style={{ marginBottom: '3em !important' }}
@@ -415,19 +600,65 @@ export default function docsPage({ testData, userData }) {
                     key='12'
                   >
                     <p className='test-step' dangerouslySetInnerHTML={{ __html: `${currentQuestion + 1}/${quiz.length}` }}></p>
-                    <p className='test-question' dangerouslySetInnerHTML={{ __html: `${quiz[currentQuestion].question}` }}></p>
-                    <p className='test-answer is-hidden' id='test-answer' dangerouslySetInnerHTML={{ __html: `${getTextForAnswer(quiz[currentQuestion].answers)}` }}></p>
+                    <p className='test-question-trd' dangerouslySetInnerHTML={{ __html: `${quiz[currentQuestion].question}` }}></p>
+                    <p className='test-answer' id='test-answer' dangerouslySetInnerHTML={{ __html: `Раздел: ${quiz[currentQuestion].chapter}, пункт: ${quiz[currentQuestion].paragraph}` }}></p>
                   </GridItem>
 
                   <GridItem
                     md={12}
                     sm={12}
-                    className={classes.mlAuto + " " + classes.mrAuto + " " + classes.mb3em}
+                    className={classes.mlAuto + " " + classes.mrAuto + " " + classes.mb3em + " " + classes.textCenter}
                     key='answer-field'
                   >
-                    {quiz[currentQuestion].answers.map((answerOption, index) => (
-                      <button onClick={() => handleAnswerButtonClick(answerOption.correct)}>{answerOption.answer}</button>
-                    ))}
+                    {
+                      quiz[currentQuestion].choose == 'multiple' &&
+                      <FormControl component="fieldset" className={classes.formControl + " " + classes.textLeft}>
+                        <FormGroup>
+                          {quiz[currentQuestion].answers.map((answerOption, index) => (
+                            <div className={classes.root}>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={userAnswers[index]}
+                                    disabled={disableAnswers}
+                                    onChange={() => handleChangeAnswers(index)}
+                                    name={`answer-field-${index}`}
+                                    style={{
+                                      marginBottom: '3px'
+                                    }}
+                                  />
+                                }
+                                label={<Typography style={{ color: textColor[index], fontSize: '1.2rem' }}>{answerOption.answer}</Typography>}
+                                className={'answer-option-for-trd'}
+                              />
+                            </div>
+                          ))}
+                        </FormGroup>
+                      </FormControl>
+                    }
+                    {
+                      quiz[currentQuestion].choose == 'one' &&
+                      <GridItem
+                        md={6}
+                        sm={12}
+                        className={classes.mlAuto + " " + classes.mrAuto + " " + classes.textCenter}
+                        key={`answer-${currentQuestion}`}
+                      >
+                        <FormControl component="fieldset" className={classes.formControl + " " + classes.textLeft}>
+                          <RadioGroup aria-label="gender" name="gender1" value={getRadioValue(userAnswers)} onChange={handleChangeAnswers}>
+                            {quiz[currentQuestion].answers.map((answerOption, index) => (
+                              <FormControlLabel
+                                control={<Radio />}
+                                disabled={disableAnswers}
+                                value={`${index}`}
+                                label={<Typography style={{ color: textColor[index], fontSize: '1.2rem' }}>{answerOption.answer}</Typography>}
+                                className={'answer-option-for-trd'}
+                              />
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                      </GridItem>
+                    }
                   </GridItem>
 
                   <GridItem
@@ -457,7 +688,7 @@ export default function docsPage({ testData, userData }) {
                   <p className='test-results-substring'>{getPhraseForTestResults(quiz.length, pts)}</p>
                   <Table
                     striped
-                    tableHead={["#", "ВС", "Верный ответ", "Твой ответ", "Результат", "Баллы"]}
+                    tableHead={["#", "Раздел", "Вопрос", "Верный ответ", "Твой ответ", "Результат", "Баллы"]}
                     tableData={getTableWithResults(quizResults)}
                   />
                   <Button color="primary" size="sm" fullWidth onClick={startAgain} id='start-again'>
@@ -475,7 +706,7 @@ export default function docsPage({ testData, userData }) {
 }
 
 export async function getStaticProps() {
-  const testData = getAllAircraftTestData()
+  const testData = getAllTrdTestData()
   return {
     props: {
       testData

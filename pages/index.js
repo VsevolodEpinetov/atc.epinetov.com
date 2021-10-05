@@ -14,6 +14,9 @@ import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
 
 import Subject from "@material-ui/icons/Subject";
+import Flight from "@material-ui/icons/Flight";
+import LocationCity from "@material-ui/icons/LocationCity";
+import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
 import indexPageStyle from "assets/jss/nextjs-material-kit-pro/pages/indexPageStyle.js";
 
@@ -57,7 +60,7 @@ export default function IndexPage() {
                     color="blue"
                   >
                     <Subject /> Перейти
-                    </Button>
+                  </Button>
                 </CardBody>
               </Card>
             </GridItem>
@@ -72,12 +75,12 @@ export default function IndexPage() {
                     <a>
                       <h3 className={classes.cardTitleWhite}>
                         Документы
-                        </h3>
+                      </h3>
                     </a>
                   </Link>
                   <p className={classes.cardDescription}>
                     Документация ОВД
-                    </p>
+                  </p>
                   <Button
                     href="/docs"
                     round
@@ -99,19 +102,19 @@ export default function IndexPage() {
                     <a>
                       <h3 className={classes.cardTitleWhite}>
                         AIP
-                    </h3>
+                      </h3>
                     </a>
                   </Link>
                   <p className={classes.cardDescription}>
                     И так всё понятно, думаю 🤔
-                    </p>
+                  </p>
                   <Button
                     href="/aip"
                     round
                     color="blue"
                   >
                     <Subject /> Перейти
-                    </Button>
+                  </Button>
                 </CardBody>
               </Card>
             </GridItem>
@@ -126,7 +129,7 @@ export default function IndexPage() {
                     <a>
                       <h3 className={classes.cardTitleWhite}>
                         Полезное
-                    </h3>
+                      </h3>
                     </a>
                   </Link>
                   <p className={classes.cardDescription}>
@@ -138,7 +141,7 @@ export default function IndexPage() {
                     color="blue"
                   >
                     <Subject /> Перейти
-                    </Button>
+                  </Button>
                 </CardBody>
               </Card>
             </GridItem>
@@ -153,25 +156,66 @@ export default function IndexPage() {
                     <a>
                       <h3 className={classes.cardTitleWhite}>
                         ТРД
-                    </h3>
+                      </h3>
                     </a>
                   </Link>
                   <p className={classes.cardDescription}>
                     ТРД МАДЦ
-                    </p>
+                  </p>
                   <Button
                     href="/trd"
                     round
                     color="blue"
                   >
                     <Subject /> Перейти
-                    </Button>
+                  </Button>
+                </CardBody>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <Card
+                raised
+                background
+                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/tests-bg.webp)` }}
+              >
+                <CardBody background>
+                  <Link href="/aircraft">
+                    <a>
+                      <h3 className={classes.cardTitleWhite}>
+                        Тестирования
+                      </h3>
+                    </a>
+                  </Link>
+                  <p className={classes.cardDescription}>
+                    Различные тесты для диспетчеров
+                  </p>
+                  <Button
+                    href="/tests/aircraft"
+                    round
+                    color="blue"
+                  >
+                    <Flight /> ВС
+                  </Button>
+                  <Button
+                    href="/tests/cities"
+                    round
+                    color="blue"
+                  >
+                    <LocationCity /> Города
+                  </Button>
+                  <Button
+                    href="/tests/trd"
+                    round
+                    color="blue"
+                  >
+                    <LibraryBooks /> ТРД АузДЦ
+                  </Button>
                 </CardBody>
               </Card>
             </GridItem>
           </GridContainer>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

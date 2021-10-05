@@ -160,6 +160,11 @@ export default function HeaderLinks(props) {
               <a className={classes.dropdownLink}>
                 ЛТХ ВС
               </a>
+            </Link>,
+            <Link href="/tests/trd" prefetch>
+              <a className={classes.dropdownLink}>
+                ТРД АузДЦ
+              </a>
             </Link>
           ]}
         />

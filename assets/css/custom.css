@@ -396,6 +396,19 @@ body {
   }
 }
 
+.test-question-trd {
+  font-size: 2.2em;
+  text-align: center;
+  line-height: normal;
+}
+
+@media only screen and (max-width: 425px) {
+  .test-question-trd {
+    font-size: 1.4em;
+  }
+}
+
+
 .test-results {
   font-size: 2em;
   text-align: center;
@@ -528,4 +541,20 @@ swd-pin-field[completed] .pin-field {
   to {
     transform: scale(1.05) translateY(5%);
   }
+}
+
+.answer-option-for-trd:hover {
+  background-color: rgb(241, 244, 255);
+  -webkit-transition: background-color 500ms linear;
+  -ms-transition: background-color 500ms linear;
+  transition: background-color 500ms linear;
+}
+
+.answer-option-for-trd {
+  width: 100%;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  -webkit-transition: background-color 500ms linear;
+  -ms-transition: background-color 500ms linear;
+  transition: background-color 500ms linear;
 }

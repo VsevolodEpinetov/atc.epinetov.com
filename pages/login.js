@@ -81,7 +81,7 @@ export default function LoginPage({ }) {
                       <h4 className={classes.cardTitle}>Вход/регистрация</h4>
                     </CardHeader>
                     <p className={classes.description + " " + classes.textCenter}>
-                      Регистрироваться тоже тут, если что
+                      Регистрироваться тоже тут, если что.<br/> Для сброса пароля напиши мне в <a href='https://t.me/epinetov' target="_blank">телегу</a>.
                     </p>
                     <CardBody signup>
                       <CustomInput

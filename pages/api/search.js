@@ -3,7 +3,7 @@ import { getAllData } from '../../lib/allData'
 const data = getAllData();
 
 
-const getRidOfThrash = (string, stringToSplit) => {
+const getRidOfTrash = (string, stringToSplit) => {
   return string.replace(/\r\n/g, ' ')
   .replace(/\r/g, '')
   .replace(/\n/g, '')
@@ -62,7 +62,7 @@ export default (req, res) => {
 
       results[id].resultsInContents = [];
 
-      let splittedText = getRidOfThrash(post.content, req.query.q.toLowerCase())
+      let splittedText = getRidOfTrash(post.content, req.query.q.toLowerCase())
 
       splittedText.forEach((part, partID) => {
         if (partID !== (splittedText.length - 1)) {
@@ -151,7 +151,7 @@ export default (req, res) => {
 
       results[id].resultsInContents = [];
 
-      let splittedText = getRidOfThrash(post.content, req.query.q.toLowerCase())
+      let splittedText = getRidOfTrash(post.content, req.query.q.toLowerCase())
 
 
       splittedText.forEach((part, partID) => {
