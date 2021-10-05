@@ -229,12 +229,14 @@ export default function docsPage({ testData, userData }) {
   // ---------------------------------
   // Start of Quiz Variables and Handlers
   const [quiz, setQuiz] = React.useState([]);
+  const [testId, setTestId] = React.useState([]);
   const [quizResults, setQuizResults] = React.useState([]);
   const [pts, setPts] = React.useState(0);
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
 
   // Resets current state of the quiz
   const resetQuiz = (amOfQuestions) => {
+    setTestId(generateRandomID())
     setQuiz(getRandomQuestionsFromData(testData, amOfQuestions, chosenAreas));
     setCurrentQuestion(0);
     setPts(0);
@@ -376,6 +378,7 @@ export default function docsPage({ testData, userData }) {
     if (quiz.length == 0) {
       let randomQuiz = getRandomQuestionsFromData(testData, amountOfQuestions, chosenAreas);
       setQuiz(randomQuiz);
+      setTestId(generateRandomID())
     }
   })
   // End of Quiz Variables and Handlers
@@ -561,7 +564,7 @@ export default function docsPage({ testData, userData }) {
               </h5>
               <h5 className={classes.description}>Большое спасибо за помощь в составлении вопросов в алфавитном порядке: Колосов Илья, Лозовик Валентин, Пожитнов Максим, Поляков Даня, Поляков Лёша, Потапов Саша.</h5>
               <h6 className={classes.description}>
-                id: {generateRandomID()}
+                id: {testId}
               </h6>
             </GridItem>
             <GridItem
