@@ -101,7 +101,7 @@ function getTableWithResults(results) {
         userAnswer += `${id + 1}. ${ua}<br/>`
       })
     }
-    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.chapter}, п.{result.paragraph}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${correctAnswer}` }}></span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${userAnswer}` }}></span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
+    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.chapter}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${correctAnswer}` }}></span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${userAnswer}` }}></span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
     questionNumber++;
   })
   return data;
@@ -445,6 +445,7 @@ export default function docsPage({ testData, userData }) {
               <h5 className={classes.description}>
                 Тестирование по ТРД АузДЦ. При проверке <span style={{color: 'green'}}>зелёным</span> цветом отмечены правильные варианты ответа, а <span style={{color: 'red'}}>красным</span> - неверно выбранные варианты. В зависимости от степени верности ответов начисляются баллы. В самом конце будет показана сводная таблица с результатами. 
               </h5>
+              <h5 className={classes.description}>Большое спасибо за помощь в составлении вопросов в алфавитном порядке: Колосов Илья, Лозовик Валентин, Пожитнов Максим, Поляков Даня, Поляков Лёша, Потапов Саша.</h5>
             </GridItem>
             <GridItem
               md={6}
@@ -601,7 +602,7 @@ export default function docsPage({ testData, userData }) {
                   >
                     <p className='test-step' dangerouslySetInnerHTML={{ __html: `${currentQuestion + 1}/${quiz.length}` }}></p>
                     <p className='test-question-trd' dangerouslySetInnerHTML={{ __html: `${quiz[currentQuestion].question}` }}></p>
-                    <p className='test-answer' id='test-answer' dangerouslySetInnerHTML={{ __html: `Раздел: ${quiz[currentQuestion].chapter}, пункт: ${quiz[currentQuestion].paragraph}` }}></p>
+                    <p className='test-answer' id='test-answer' dangerouslySetInnerHTML={{ __html: `Раздел: ${quiz[currentQuestion].chapter}` }}></p>
                   </GridItem>
 
                   <GridItem
