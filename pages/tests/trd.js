@@ -38,7 +38,7 @@ import { UserContext } from '../../lib/context';
 
 const useStyles = makeStyles(testsTrdPageStyle);
 
-function getRandomQuestionsFromData(testData, amountOfQuestions) {
+function getRandomQuestionsFromData(testData, amountOfQuestions, chosenAreas) {
   let data = [
     [],
     [],
@@ -49,7 +49,7 @@ function getRandomQuestionsFromData(testData, amountOfQuestions) {
   ]
 
   testData.forEach(q => {
-    data[q.chapter - 1].push(q)
+    if (q.areas.join(',').indexOf(chosenAreas) > -1) data[q.chapter - 1].push(q)
   })
 
   for (let i = 0; i < data.length; i++) {
@@ -120,7 +120,7 @@ export default function docsPage({ testData, userData }) {
 
   // Resets current state of the quiz
   const resetQuiz = (amOfQuestions) => {
-    setQuiz(getRandomQuestionsFromData(testData, amOfQuestions));
+    setQuiz(getRandomQuestionsFromData(testData, amOfQuestions, chosenAreas));
     setCurrentQuestion(0);
     setPts(0);
     setQuizResults([]);
@@ -246,7 +246,7 @@ export default function docsPage({ testData, userData }) {
     resetQuiz(parseInt(event.target.value));
   };
 
-  const [chosenAreas, setChosenAreas] = React.useState('approach');
+  const [chosenAreas, setChosenAreas] = React.useState('approach,radar');
   const handleChosenAreas = event => {
     setChosenAreas(event.target.value);
     resetQuiz(parseInt(event.target.value));
@@ -260,7 +260,7 @@ export default function docsPage({ testData, userData }) {
   // Initiate a quiz
   React.useEffect(() => {
     if (quiz.length == 0) {
-      let randomQuiz = getRandomQuestionsFromData(testData, amountOfQuestions);
+      let randomQuiz = getRandomQuestionsFromData(testData, amountOfQuestions, chosenAreas);
       setQuiz(randomQuiz);
     }
   })
@@ -645,7 +645,7 @@ export default function docsPage({ testData, userData }) {
                         key={`answer-${currentQuestion}`}
                       >
                         <FormControl component="fieldset" className={classes.formControl + " " + classes.textLeft}>
-                          <RadioGroup aria-label="gender" name="gender1" value={getRadioValue(userAnswers)} onChange={handleChangeAnswers}>
+                          <RadioGroup aria-label="answers-options" name="answers-options" value={getRadioValue(userAnswers)} onChange={handleChangeAnswers}>
                             {quiz[currentQuestion].answers.map((answerOption, index) => (
                               <FormControlLabel
                                 control={<Radio />}
