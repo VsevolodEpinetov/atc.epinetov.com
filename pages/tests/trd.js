@@ -38,6 +38,24 @@ import { UserContext } from '../../lib/context';
 
 const useStyles = makeStyles(testsTrdPageStyle);
 
+function shuffleArray(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
 function getRandomQuestionsFromData(testData, amountOfQuestions, chosenAreas) {
   let data = [
     [],
@@ -58,6 +76,11 @@ function getRandomQuestionsFromData(testData, amountOfQuestions, chosenAreas) {
 
   let questions = data[0].concat(data[1]).concat(data[2]).concat(data[3]).concat(data[4]).concat(data[5]);
 
+  // Shuffle answer options
+  questions.forEach(q => {
+    q.answers = shuffleArray(q.answers)
+  })
+
   return questions;
 }
 
@@ -70,6 +93,98 @@ function getPhraseForTestResults(goal, result) {
   if (mark >= 1) message = 'Вау, ты верно назвал абсолютно всё. Чемпион! 🥇'
 
   return message;
+}
+
+const generateRandomID = () => {
+  const firstWord = [
+    'Великолепный',
+    'Умный',
+    'Красивый',
+    'Восхитительный',
+    'Потрясающий',
+    'Божественный',
+    'Интересный',
+    'Приятный',
+    'Неподражаемый',
+    'Артистичный',
+    'Внимательный',
+    'Активный',
+    'Благородный',
+    'Бесценный',
+    'Бесподобный',
+    'Блестящий',
+    'Веселый',
+    'Воспитанный',
+    'Волшебный',
+    'Гениальный',
+    'Грандиозный',
+    'Грамотный',
+    'Достойный',
+    'Дивный',
+    'Душевный',
+    'Доблестный',
+    'Завидный',
+    'Задорный',
+    'Знаменитый',
+    'Идеальный',
+    'Искусный',
+    'Компетентный',
+    'Лучший',
+    'Мудрый',
+    'Настоящий',
+    'Неотразимый',
+    'Одаренный',
+    'Обаятельный',
+    'Ослепительный',
+    'Окрыляющий',
+    'Очаровательный',
+    'Оптимистичный',
+    'Отважный',
+    'Первоклассный',
+    'Позитивный',
+    'Поразительный',
+    'Рациональный',
+    'Радушный',
+    'Серъёзный',
+    'Славный',
+    'Талантливый',
+    'Толковый',
+    'Удачливый',
+    'Уверенный',
+    'Умный',
+    'Успешный',
+    'Усердный',
+    'Ценный',
+    'Честный',
+    'Чуткий',
+    'Шикарный',
+    'Шедевральный',
+    'Эффектный'
+  ]
+  const secondWord = [
+    'Самолёт',
+    'Диспетчер',
+    'Старший',
+    'Руководитель',
+    'Экипаж',
+    'Борт',
+    'Фюзеляж',
+    'Эшелон',
+    'Вектор',
+    'Азимут',
+    'Документ',
+    'Пульт',
+    'Инструктор',
+    'Взлёт',
+    'План',
+    'Рубеж',
+    'Реверс',
+    'Аэродром',
+    'Аэропорт'
+  ]
+
+  const phrase = `${firstWord[Math.floor(Math.random()*firstWord.length)]}${secondWord[Math.floor(Math.random()*secondWord.length)]}${Math.floor(Math.random() * 1000)}`;
+  return phrase;
 }
 
 function getTableWithResults(results) {
@@ -124,7 +239,7 @@ export default function docsPage({ testData, userData }) {
     setCurrentQuestion(0);
     setPts(0);
     setQuizResults([]);
-    let uA = {
+    setUserAnswers({
       "0": false,
       "1": false,
       "2": false,
@@ -141,8 +256,7 @@ export default function docsPage({ testData, userData }) {
       "13": false,
       "14": false,
       "15": false
-    }
-    setUserAnswers(uA);
+    });
     setDisableAnswers(false);
     setTextColor({
       "0": '#3c4858',
@@ -446,6 +560,9 @@ export default function docsPage({ testData, userData }) {
                 Тестирование по ТРД АузДЦ. При проверке <span style={{color: 'green'}}>зелёным</span> цветом отмечены правильные варианты ответа, а <span style={{color: 'red'}}>красным</span> - неверно выбранные варианты. В зависимости от степени верности ответов начисляются баллы. В самом конце будет показана сводная таблица с результатами. 
               </h5>
               <h5 className={classes.description}>Большое спасибо за помощь в составлении вопросов в алфавитном порядке: Колосов Илья, Лозовик Валентин, Пожитнов Максим, Поляков Даня, Поляков Лёша, Потапов Саша.</h5>
+              <h6 className={classes.description}>
+                id: {generateRandomID()}
+              </h6>
             </GridItem>
             <GridItem
               md={6}
