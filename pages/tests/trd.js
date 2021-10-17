@@ -216,7 +216,7 @@ function getTableWithResults(results) {
         userAnswer += `${id + 1}. ${ua}<br/>`
       })
     }
-    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{result.chapter}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${correctAnswer}` }}></span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${userAnswer}` }}></span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
+    data.push([<span className={classForText}>{questionNumber}</span>, <span className={classForText}>{`${result.chapter}, ${result.paragraph}`}</span>, <span className={classForText}>{result.question}</span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${correctAnswer}` }}></span>, <span className={classForText} dangerouslySetInnerHTML={{ __html: `${userAnswer}` }}></span>, <span className={classForText}><ResultIcon /></span>, `${result.pointsGot}`])
     questionNumber++;
   })
   return data;
