@@ -6,8 +6,6 @@ import Router from "next/router";
 import { UserContext } from '../lib/context'
 import { useUserData } from '../lib/hooks'
 
-import SimpleReactLightbox from 'simple-react-lightbox-pro'
-
 import PageChange from "components/PageChange/PageChange.js";
 
 import "assets/scss/nextjs-material-kit-pro.scss?v=1.1.0";
@@ -68,7 +66,6 @@ Router.events.on("routeChangeError", () => {
 
     return (
       <UserContext.Provider value={userData}>
-        <SimpleReactLightbox>
           <React.Fragment>
             <Head>
               <title>Информация по ОВД | ATC</title>
@@ -91,7 +88,6 @@ Router.events.on("routeChangeError", () => {
             </Head>
             <Component {...pageProps} />
           </React.Fragment>
-        </SimpleReactLightbox>
       </UserContext.Provider>
     );
   }
@@ -105,7 +101,6 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <UserContext.Provider value={userData}>
-      <SimpleReactLightbox>
         <React.Fragment>
           <Head>
             <title>Информация по ОВД | ATC</title>
@@ -128,7 +123,6 @@ function MyApp({ Component, pageProps }) {
           </Head>
           <Component {...pageProps} />
         </React.Fragment>
-      </SimpleReactLightbox>
     </UserContext.Provider>
   )
 }
