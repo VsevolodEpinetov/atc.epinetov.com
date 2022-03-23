@@ -4,15 +4,18 @@
   "private": true,
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.2.0",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@mdx-js/loader": "^1.6.22",
-    "@mui/material": "^5.0.2",
+    "@mui/icons-material": "^5.5.1",
+    "@mui/lab": "*",
+    "@mui/material": "^5.5.2",
+    "@mui/styles": "^5.5.1",
     "@next/mdx": "^10.2.2",
     "@soywod/pin-field": "^0.1.9",
-    "@zeit/next-css": "1.0.1",
-    "@zeit/next-sass": "1.0.1",
     "animate.css": "3.7.2",
     "axios": "^0.21.1",
     "classnames": "2.2.6",
@@ -24,7 +27,7 @@
     "gray-matter": "^4.0.2",
     "mdx": "^0.3.1",
     "moment": "^2.24.0",
-    "next": "^10.0.2",
+    "next": "^12.1.0",
     "next-compose-plugins": "2.2.0",
     "next-dark-mode": "^3.0.0",
     "next-firebase-auth": "^0.13.1",
@@ -50,11 +53,13 @@
     "react-svg-map": "^2.2.0",
     "react-swipeable-views": "0.13.9",
     "react-tagsinput": "3.19.0",
+    "rehype-stringify": "^9.0.3",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
     "remark-mdx": "^1.6.21",
     "remark-parse": "^9.0.0",
     "remark-react": "^8.0.0",
+    "remark-rehype": "^10.1.0",
     "unified": "^9.2.0",
     "webpack": "4.43.0"
   },
@@ -80,5 +85,8 @@
   "optionalDependencies": {
     "@types/googlemaps": "3.39.4",
     "@types/markerclustererplus": "2.1.33"
+  },
+  "devDependencies": {
+    "sass": "^1.49.9"
   }
 }

@@ -33,13 +33,13 @@ export default function DocPage({ postData }) {
   const structureList = (structure) => {
     const headersLinks = Object.keys(structure).map(id => {
       var subheaderLinks;
-      if (structure[id].subheaders) subheaderLinks = structure[id].subheaders.map((subheader, subheaderID) => <li><a href={`#${id}-${subheaderID}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}-${subheaderID}`); }}>{subheader}</a></li>)
-      return <span><li><a href={`#${id}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}`); }}>{structure[id].name}</a></li><ul className='nav-sidebar-subheaders'>{subheaderLinks}</ul></span>;
+      if (structure[id].subheaders) subheaderLinks = structure[id].subheaders.map((subheader, subheaderID) => <li key={`link-${id}-${subheaderID}`}><a href={`#${id}-${subheaderID}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}-${subheaderID}`); }}>{subheader}</a></li>)
+      return <span><li key={`link-${id}`}><a href={`#${id}`} onClick={e => { e.preventDefault(); smoothScroll(`${id}`); }}>{structure[id].name}</a></li><ul className='nav-sidebar-subheaders'>{subheaderLinks}</ul></span>;
     });
     return (<ul class='nav-sidebar-headers'>{headersLinks}</ul>);
   }
 
-  const navigationLinks = (postData) => {
+  const navigationLinks = () => {
     return (
       <div>
         <h5>Ссылки</h5>

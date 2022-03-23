@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
+import Script from 'next/script'
 import Router from "next/router";
 import { UserContext } from '../lib/context'
 import { useUserData } from '../lib/hooks'
@@ -108,8 +109,8 @@ function MyApp({ Component, pageProps }) {
               name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no"
             />
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
-            <script
+            <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
+            <Script
               dangerouslySetInnerHTML={{
                 __html: `
               window.dataLayer = window.dataLayer || [];

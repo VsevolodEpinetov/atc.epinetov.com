@@ -40,6 +40,23 @@ export default function IndexPage() {
             <GridItem xs={12} sm={12} md={12}>
               <Card
                 raised
+              >
+                <CardBody>
+                  <h3 className={classes.cardTitleWhite}>
+                    Привет! 👋
+                  </h3>
+                  <p className={classes.cardDescription}>
+                    От 23 марта 2022 года: <br/>
+                    — Обновлены ТРД <br/>
+                    — Исправлена ошибка отображения изображений <br/>
+                    — Исправлено отображение таблиц в ФАП 362 <br/>
+                  </p>
+                </CardBody>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <Card
+                raised
                 background
                 style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/aircraft-bg.webp)` }}
               >

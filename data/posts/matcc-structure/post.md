@@ -6,8 +6,8 @@ type: 'article'
 
 <p class="text-warning">NB: Очень скоро структура поменяется!</p>
 
-<div class='article-image-wrapper'>
-  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/matcc-structure/matcc-structure.webp' class='article-image'/>
+<div class='article-image-wrapper fullWidth'>
+  <img src='https://storage.googleapis.com/atc.epinetov.com/public/posts/matcc-structure/matcc-structure.webp' class='article-image-full-width'/>
   <p class='article-image-description'>Организационная структура МЦ АУВД</p>
 </div>
 
