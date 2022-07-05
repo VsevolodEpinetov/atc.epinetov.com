@@ -60,6 +60,10 @@ export default function ProfilePage(props) {
                   </GridItem>
 
                   <GridItem xs={12} sm={12} md={12}>
+                    <TrdTestList />
+                  </GridItem>
+
+                  <GridItem xs={12} sm={12} md={12}>
                     <AircraftTestList />
                   </GridItem>
 
@@ -91,6 +95,34 @@ function AircraftTestList() {
           <>
             <h3>Тесты ЛТХ ВС</h3>
             <TestFeed tests={tests} testType='aircraft' />
+          </>
+        )
+      }
+      {queryLoading &&
+        (
+          <>
+            <Skeleton height={60} width='60%' style={{ marginBottom: '0px' }} />
+          </>
+        )
+      }
+    </>
+  )
+  
+}
+
+function TrdTestList() {
+  const ref = firestore.collection('users').doc(auth.currentUser.uid).collection('testsTrd');
+  const query = ref.orderBy('timestamp', 'desc');
+  const [querySnapshot, queryLoading] = useCollection(query);
+  const tests = querySnapshot?.docs.map((doc) => doc.data())
+
+  return (
+    <>
+      {querySnapshot &&
+        (
+          <>
+            <h3>Тесты ТРД АузДЦ</h3>
+            <TestFeed tests={tests} testType='trd' />
           </>
         )
       }

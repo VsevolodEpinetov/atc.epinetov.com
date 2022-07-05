@@ -191,7 +191,6 @@ function getTableWithResults(results) {
   let data = [];
   let questionNumber = 1;
   results.forEach(result => {
-    console.log(result);
     let classForText = 'textOrange';
     let ResultIcon = Done;
     if (result.pointsGot === 1) {
@@ -526,16 +525,20 @@ export default function docsPage({ testData, userData }) {
       "15": '#3c4858'
     })
 
-    if (currentQuestion + 1 === amountOfQuestions) {
+    console.log(`currentQuestion: ${currentQuestion}`)
+    console.log(`amountOfQuestions: ${amountOfQuestions}`)
+
+    if (currentQuestion + 1 === amountOfQuestions * 6) {
       if (user) {
         const userRef = firestore.collection('users').doc(auth.currentUser.uid);
-        let obj = {
+        const obj = {
           results: quizResults,
           timestamp: Date.now(),
           totalPointsGot: pts,
           totalPoints: quizResults.length
         }
-        await userRef.collection('testsAircraft').add(obj);
+        console.log(obj)
+        await userRef.collection('testsTrd').add(obj);
       }
     }
   }

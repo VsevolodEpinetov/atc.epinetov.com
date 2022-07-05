@@ -54,7 +54,7 @@ export default function IndexPage() {
                     Привет! 👋
                   </h3>
                   <p className={classes.cardDescription}>
-                    От 23 марта 2022 года: <br/>
+                    От 7 июля 2022 года: <br/>
                     — Исправлена ошибка отображения изображений <br/>
                     — Исправлено отображение таблиц в ФАП 362 <br/>
                   </p>

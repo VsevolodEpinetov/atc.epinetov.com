@@ -120,6 +120,41 @@ const convertTestData = (testData, testType) => {
       }
 
 
+      // TRD TEST
+      if (testType === 'trd') {
+        let classForText = 'textOrange';
+        let ResultIcon = Done;
+        if (result.pointsGot === 1) {
+          classForText = 'textGreen'
+          ResultIcon = DoneAll;
+        }
+        if (result.pointsGot === 0) {
+          classForText = 'textRed'
+          ResultIcon = Close;
+        }
+        let correctAnswer = result.correctAnswer;
+        if (result.correctAnswer.length > 1) {
+          correctAnswer = '';
+          result.correctAnswer.forEach((ca, id) => {
+            correctAnswer += `${id + 1}. ${ca}<br/>`
+          })
+        }
+        let userAnswer = `${result.userAnswer}`
+        if (result.userAnswer.length > 1) {
+          userAnswer = '';
+          result.userAnswer.forEach((ua, id) => {
+            userAnswer += `${id + 1}. ${ua}<br/>`
+          })
+        }
+        tableRow = [
+          <span className={classForText}>{questionNumber}</span>, 
+          <span className={classForText}>{result.question}</span>, 
+          <span className={classForText}>{correctAnswer}</span>, 
+          <span className={classForText}>{userAnswer}</span>, 
+          <span className={classForText}><ResultIcon /></span>, 
+          `${result.pointsGot}`
+        ];
+      }
 
 
       data.table.push(tableRow)
