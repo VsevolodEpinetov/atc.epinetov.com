@@ -93,7 +93,10 @@ export default function AIPPage({ allAIPData }) {
           >
             <h2 className={classes.title}>Актуальная информация AIP</h2>
             <h5 className={classes.description}>
-              На этой странице вы можете найти актуальную опубликованную аэронавигационную информацию по аэродромам гражданской авиации и совместного базирования.
+              AIP (от английского Aeronautical Information Publication) - это публикация аэронавигационных данных государствами-членами ICAO. АИП в России выпускается ЦАИ ГА РФ и доступен для просмотра на их официальном сайте.
+            </h5>
+            <h5 className={classes.description}>
+              На этой странице вы можете найти актуальную опубликованную аэронавигационную информацию по аэродромам гражданской авиации и совместного базирования, например AIP UUWW, AIP UUEE, AIP UUDD и т.д.
             </h5>
             <h5 className={classes.description}>
               Все файлы взяты с <a href="http://www.caiga.ru/" target='_blank'>сайта ЦАИ ГА</a>.

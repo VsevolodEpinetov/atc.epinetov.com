@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React from "react";
 import Link from "next/link";
+import Head from "next/head"
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -30,6 +31,13 @@ export default function IndexPage() {
   const classes = useStyles();
   return (
     <div>
+      <Head>
+        <meta property="og:title" content="Информация ОВД" key="meta-title-og" />
+        <meta property="title" content="Информация ОВД" key="meta-title" />
+        <meta property="og:description" content="Сайт с полезной информацией, если ты диспетчер-стажер или даже диспетчер РЛУ и ПК. Документы ОВД, тесты, ЛТХ ВС, статьи и прочие интересности" key="meta-description-og" />
+        <meta property="description" content="Сайт с полезной информацией, если ты диспетчер-стажер или даже диспетчер РЛУ и ПК. Документы ОВД, тесты, ЛТХ ВС, статьи и прочие интересности" key="meta-description" />
+        <meta property="og:image" content="https://storage.googleapis.com/atc.epinetov.com/public/img/meta-image.png" key="meta-image-og" />
+      </Head>
       <Header
         links={<HeaderLinks dropdownHoverColor="dark" />}
         color="transparent"
@@ -47,7 +55,6 @@ export default function IndexPage() {
                   </h3>
                   <p className={classes.cardDescription}>
                     От 23 марта 2022 года: <br/>
-                    — Обновлены ТРД <br/>
                     — Исправлена ошибка отображения изображений <br/>
                     — Исправлено отображение таблиц в ФАП 362 <br/>
                   </p>

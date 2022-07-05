@@ -109,6 +109,8 @@ function MyApp({ Component, pageProps }) {
               name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no"
             />
+            <meta property="keywords" content="ОВД, УВД, диспетчер, AIP, АИП, ЛТХ ВС, диспетчер ГА, стажировка диспетчера" key="meta-keywords" />
+            <meta property="author" content="Epinetov V." key="meta-author" />
             <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
             <Script
               dangerouslySetInnerHTML={{
