@@ -20,6 +20,7 @@ import LocationCity from "@material-ui/icons/LocationCity";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
 import indexPageStyle from "assets/jss/nextjs-material-kit-pro/pages/indexPageStyle.js";
+import HeroCard from "../components/HeroCard";
 
 const useStyles = makeStyles(indexPageStyle);
 
@@ -54,189 +55,55 @@ export default function IndexPage() {
                     Привет! 👋
                   </h3>
                   <p className={classes.cardDescription}>
-                    От 7 июля 2022 года: <br/>
-                    — Исправлена ошибка отображения изображений <br/>
-                    — Исправлено отображение таблиц в ФАП 362 <br/>
+                    От 7 июля 2022 года: <br />
+                    — Исправлена ошибка отображения изображений <br />
+                    — Исправлено отображение таблиц в ФАП 362 <br />
                   </p>
                 </CardBody>
               </Card>
             </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-              <Card
-                raised
-                background
-                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/aircraft-bg.webp)` }}
-              >
-                <CardBody background>
-                  <Link href="/aircraft">
-                    <a>
-                      <h3 className={classes.cardTitleWhite}>
-                        Воздушные суда
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className={classes.cardDescription}>
-                    Список наиболее встречаемых ВС с кратким описанием
-                  </p>
-                  <Button
-                    href="/aircraft"
-                    round
-                    color="blue"
-                  >
-                    <Subject /> Перейти
-                  </Button>
-                </CardBody>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={6}>
-              <Card
-                raised
-                background
-                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/docs-bg.webp)` }}
-              >
-                <CardBody background>
-                  <Link href="/docs">
-                    <a>
-                      <h3 className={classes.cardTitleWhite}>
-                        Документы
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className={classes.cardDescription}>
-                    Документация ОВД
-                  </p>
-                  <Button
-                    href="/docs"
-                    round
-                    color="blue"
-                  >
-                    <Subject /> Перейти
-                  </Button>
-                </CardBody>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={6}>
-              <Card
-                raised
-                background
-                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/aip-bg.webp)` }}
-              >
-                <CardBody background>
-                  <Link href="/aip">
-                    <a>
-                      <h3 className={classes.cardTitleWhite}>
-                        AIP
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className={classes.cardDescription}>
-                    И так всё понятно, думаю 🤔
-                  </p>
-                  <Button
-                    href="/aip"
-                    round
-                    color="blue"
-                  >
-                    <Subject /> Перейти
-                  </Button>
-                </CardBody>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={6}>
-              <Card
-                raised
-                background
-                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/posts-bg.webp)` }}
-              >
-                <CardBody background>
-                  <Link href="/posts">
-                    <a>
-                      <h3 className={classes.cardTitleWhite}>
-                        Полезное
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className={classes.cardDescription}>
-                    То, что может оказаться полезным, но не подходит под другие категории
-                  </p>
-                  <Button
-                    href="/posts"
-                    round
-                    color="blue"
-                  >
-                    <Subject /> Перейти
-                  </Button>
-                </CardBody>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={6}>
-              <Card
-                raised
-                background
-                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/trd-bg.webp)` }}
-              >
-                <CardBody background>
-                  <Link href="/trd">
-                    <a>
-                      <h3 className={classes.cardTitleWhite}>
-                        ТРД
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className={classes.cardDescription}>
-                    ТРД МАДЦ
-                  </p>
-                  <Button
-                    href="/trd"
-                    round
-                    color="blue"
-                  >
-                    <Subject /> Перейти
-                  </Button>
-                </CardBody>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-              <Card
-                raised
-                background
-                style={{ backgroundImage: `url(https://storage.googleapis.com/atc.epinetov.com/public/img/tests-bg.webp)` }}
-              >
-                <CardBody background>
-                  <Link href="/aircraft">
-                    <a>
-                      <h3 className={classes.cardTitleWhite}>
-                        Тестирования
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className={classes.cardDescription}>
-                    Различные тесты для диспетчеров
-                  </p>
-                  <Button
-                    href="/tests/aircraft"
-                    round
-                    color="blue"
-                  >
-                    <Flight /> ВС
-                  </Button>
-                  <Button
-                    href="/tests/cities"
-                    round
-                    color="blue"
-                  >
-                    <LocationCity /> Города
-                  </Button>
-                  <Button
-                    href="/tests/trd"
-                    round
-                    color="blue"
-                  >
-                    <LibraryBooks /> ТРД АузДЦ
-                  </Button>
-                </CardBody>
-              </Card>
-            </GridItem>
+            <HeroCard
+              title='Воздушные суда'
+              description='Список наиболее встречаемых ВС с кратким описанием'
+              href='/aircraft'
+              backgroundImageName='aircraft-bg.webp'
+              large
+            />
+            <HeroCard
+              title='Документы'
+              description='Документация по ОВД'
+              href='/docs'
+              backgroundImageName='docs-bg.webp'
+            />
+            <HeroCard
+              title='AIP'
+              description='И так всё понятно, думаю 🤔'
+              href='/aip'
+              backgroundImageName='aip-bg.webp'
+            />
+            <HeroCard
+              title='Полезное'
+              description='То, что может оказаться полезным, но не подходит под другие категории'
+              href='/posts'
+              backgroundImageName='posts-bg.webp'
+            />
+            <HeroCard
+              title='ТРД'
+              description='ТРД МАДЦ'
+              href='/trd'
+              backgroundImageName='trd-bg.webp'
+            />
+            <HeroCard
+              title='Тестирования'
+              description='Различные тесты для диспетчеров'
+              backgroundImageName='tests-bg.webp'
+              customButtons={[
+                {href: '/tests/aircraft', icon: <Flight/>, title: 'ВС'},
+                {href: '/tests/cities', icon: <LocationCity/>, title: 'Города'},
+                {href: '/tests/trd', icon: <LibraryBooks/>, title: 'ТРД АузДЦ'}
+              ]}
+              large
+            />
           </GridContainer>
         </div>
         <Footer />
