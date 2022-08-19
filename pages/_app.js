@@ -102,30 +102,35 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <UserContext.Provider value={userData}>
-        <React.Fragment>
-          <Head>
-            <title>Информация по ОВД | ATC</title>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            />
-            <meta property="keywords" content="ОВД, УВД, диспетчер, AIP, АИП, ЛТХ ВС, диспетчер ГА, стажировка диспетчера" key="meta-keywords" />
-            <meta property="author" content="Epinetov V." key="meta-author" />
-            <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
-            <Script
-              dangerouslySetInnerHTML={{
-                __html: `
+      <React.Fragment>
+        <Head>
+          <title>Информация по ОВД | ATC</title>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <meta property="keywords" content="ОВД, УВД, диспетчер, AIP, АИП, ЛТХ ВС, диспетчер ГА, стажировка диспетчера" key="meta-keywords" />
+          <meta property="author" content="Epinetov V." key="meta-author" />
+          <meta property="og:title" content="Информация ОВД" key="meta-title-og" />
+          <meta property="title" content="Информация ОВД" key="meta-title" />
+          <meta property="og:description" content="Сайт с полезной информацией, если ты диспетчер-стажер или даже диспетчер РЛУ и ПК. Документы ОВД, тесты, ЛТХ ВС, статьи и прочие интересности" key="meta-description-og" />
+          <meta property="description" content="Сайт с полезной информацией, если ты диспетчер-стажер или даже диспетчер РЛУ и ПК. Документы ОВД, тесты, ЛТХ ВС, статьи и прочие интересности" key="meta-description" />
+          <meta property="og:image" content="https://storage.googleapis.com/atc.epinetov.com/public/img/meta-image.png" key="meta-image-og" />
+          <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SPEBEGWV0S" />
+          <Script
+            dangerouslySetInnerHTML={{
+              __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-SPEBEGWV0S');
               
               `
-              }}
-            />
-          </Head>
-          <Component {...pageProps} />
-        </React.Fragment>
+            }}
+          />
+        </Head>
+        <Component {...pageProps} />
+      </React.Fragment>
     </UserContext.Provider>
   )
 }

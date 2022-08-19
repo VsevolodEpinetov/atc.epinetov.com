@@ -34,7 +34,7 @@ const createAIPDate = (allAIPData) => {
     possibleAIPTypes.forEach(type => {
       if (airportData.availableAIPTypes[type]) {
         //let link = `https://storage.googleapis.com/atc.epinetov.com/public/aip/${aeroportICAOCode}/${aeroportICAOCode}_${type}.pdf`;
-        row.push(<Button href={`https://storage.googleapis.com/atc.epinetov.com/public/aip/${airportData.aeroportICAOCode}/${airportData.aeroportICAOCode}_${type}.pdf`} color="blue"> <GetApp /> {`${type}`} </Button>)
+        row.push(<Button href={`https://storage.googleapis.com/atc.epinetov.com/public/aip/${airportData.aeroportICAOCode}/${airportData.aeroportICAOCode}_${type}.pdf`} color="blue" target="_blank"> <GetApp /> {`${type}`} </Button>)
       } else {
         row.push(<Button disabled color="blue"> <GetApp /> {`${type}`} </Button>)
       }
@@ -102,10 +102,10 @@ export default function AIPPage({ allAIPData }) {
               Все файлы взяты с <a href="http://www.caiga.ru/" target='_blank'>сайта ЦАИ ГА</a>.
             </h5>
             <h5 className={classes.description}>
-              В последний раз обновлено <span style={{color: "#dc7474"}}>9 сентября 2021 г.</span>
+              В последний раз обновлено <span style={{color: "#dc7474"}}>20 августа 2022 г.</span>
             </h5>
             <h5 className={classes.description}>
-              Следующее обновление примерно планируется <GetDateOfUpdatingAIP/>
+              Следующее обновление примерно планируется как-нибудь когда-нибудь {'¯\\_(ツ)_/¯'}
             </h5>
           </GridItem>
           <GridItem

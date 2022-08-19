@@ -33,11 +33,12 @@ const HeroCard = ({ title, description, backgroundImageName, href, large, custom
             {description}
           </p>
           {customButtons ?
-            customButtons.map((b) => {
+            customButtons.map((b, id) => {
               return (<Button
                 href={b.href}
                 round
                 color="blue"
+                key={`${id}-key-button`}
               >
                 {b.icon} {b.title}
               </Button>)

@@ -13,6 +13,7 @@ import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Footer from "components/Footer/Footer.js";
+import CardFooter from "components/Card/CardFooter.js";
 
 import Subject from "@material-ui/icons/Subject";
 import Flight from "@material-ui/icons/Flight";
@@ -21,24 +22,20 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
 import indexPageStyle from "assets/jss/nextjs-material-kit-pro/pages/indexPageStyle.js";
 import HeroCard from "../components/HeroCard";
+import NewsFeed from "../components/NewsFeed/NewsFeed";
 
 const useStyles = makeStyles(indexPageStyle);
 
 export default function IndexPage() {
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-  });
+  }, []);
+
   const classes = useStyles();
   return (
     <div>
-      <Head>
-        <meta property="og:title" content="Информация ОВД" key="meta-title-og" />
-        <meta property="title" content="Информация ОВД" key="meta-title" />
-        <meta property="og:description" content="Сайт с полезной информацией, если ты диспетчер-стажер или даже диспетчер РЛУ и ПК. Документы ОВД, тесты, ЛТХ ВС, статьи и прочие интересности" key="meta-description-og" />
-        <meta property="description" content="Сайт с полезной информацией, если ты диспетчер-стажер или даже диспетчер РЛУ и ПК. Документы ОВД, тесты, ЛТХ ВС, статьи и прочие интересности" key="meta-description" />
-        <meta property="og:image" content="https://storage.googleapis.com/atc.epinetov.com/public/img/meta-image.png" key="meta-image-og" />
-      </Head>
       <Header
         links={<HeaderLinks dropdownHoverColor="dark" />}
         color="transparent"
@@ -55,19 +52,21 @@ export default function IndexPage() {
                     Привет! 👋
                   </h3>
                   <p className={classes.cardDescription}>
-                    От 7 июля 2022 года: <br />
-                    — Исправлена ошибка отображения изображений <br />
-                    — Исправлено отображение таблиц в ФАП 362 <br />
+                    От 20 августа 2022 года: <br />
+                    — Обновлены АИПы <br />
+                    — Добавлена лента новостей (см. ниже) <br />
+                    — Прочие обновления. Что-то починил, что-то поломал. <br />
                   </p>
                 </CardBody>
               </Card>
             </GridItem>
+            <NewsFeed />
             <HeroCard
+              large
               title='Воздушные суда'
               description='Список наиболее встречаемых ВС с кратким описанием'
               href='/aircraft'
               backgroundImageName='aircraft-bg.webp'
-              large
             />
             <HeroCard
               title='Документы'
@@ -94,20 +93,20 @@ export default function IndexPage() {
               backgroundImageName='trd-bg.webp'
             />
             <HeroCard
+              large
               title='Тестирования'
               description='Различные тесты для диспетчеров'
               backgroundImageName='tests-bg.webp'
               customButtons={[
-                {href: '/tests/aircraft', icon: <Flight/>, title: 'ВС'},
-                {href: '/tests/cities', icon: <LocationCity/>, title: 'Города'},
-                {href: '/tests/trd', icon: <LibraryBooks/>, title: 'ТРД АузДЦ'}
+                { href: '/tests/aircraft', icon: <Flight />, title: 'ВС' },
+                { href: '/tests/cities', icon: <LocationCity />, title: 'Города' },
+                { href: '/tests/trd', icon: <LibraryBooks />, title: 'ТРД АузДЦ' }
               ]}
-              large
             />
           </GridContainer>
         </div>
         <Footer />
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

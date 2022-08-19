@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Link from 'next/link'
 // @material-ui/core components
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -33,6 +33,8 @@ import { getAllAircraftTestData } from 'lib/testAircraft'
 // auth
 import { auth, firestore } from '../../lib/firebase';
 import { UserContext } from '../../lib/context';
+import AmountOfQuestionsSelector from "../../components/AmountOfQuestionsSelector";
+import AircraftSlider from "../../components/AircraftSlider";
 
 const useStyles = makeStyles(testsAircraftPageStyle);
 
@@ -49,12 +51,6 @@ function ValueLabelComponent(props) {
     </Tooltip>
   );
 }
-
-ValueLabelComponent.propTypes = {
-  children: PropTypes.element.isRequired,
-  open: PropTypes.bool.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
 function getRandomQuestionsFromData(testData, amountOfQuestions) {
   const data = testData.sort(() => 0.5 - Math.random()).slice(0, amountOfQuestions)
@@ -195,11 +191,7 @@ export default function docsPage({ testData, userData }) {
   const [typeOfAircraft, setTypeOfAircraft] = React.useState('');
 
 
-  const [numberOfEnginesSelectorIsDisabled, setNumberOfEnginesSelectorIsDisabled] = React.useState(false);
-  const [typeOfEnginesSelectorIsDisabled, setTypeOfEnginesSelectorIsDisabled] = React.useState(false);
-  const [typeOfAircraftSelectorIsDisabled, setTypeOfAircraftSelectorIsDisabled] = React.useState(false);
-  const [ceilingIsDisabled, setCeilingIsDisabled] = React.useState(false);
-  const [speedIsDisabled, setSpeedIsDisabled] = React.useState(false);
+  const [fieldsAreDisabled, setFieldsAreDisabled] = useState(false);
 
 
   const [numberOfEnginesSelectorError, setNumberOfEnginesSelectorError] = React.useState(false);
@@ -220,19 +212,16 @@ export default function docsPage({ testData, userData }) {
       if (!testAnswer.classList.contains('is-hidden'))
         testAnswer.classList.add('is-hidden')
 
-    setNumberOfEnginesSelectorIsDisabled(false);
+    setFieldsAreDisabled(false);
     setNumberOfEnginesSelectorError(false);
     setNumberOfEngines('')
 
-    setTypeOfEnginesSelectorIsDisabled(false);
     setTypeOfEnginesSelectorError(false);
     setTypeOfEngines('')
 
-    setTypeOfAircraftSelectorIsDisabled(false);
     setTypeOfAircraftSelectorError(false);
     setNumberOfEngines('')
 
-    setSpeedIsDisabled(false);
     setSpeed(startingSpeed)
     setSpeedSliderColor(startingSpeedColor);
     let speedLabel = document.getElementById('speed-label');
@@ -241,7 +230,6 @@ export default function docsPage({ testData, userData }) {
       speedLabel.classList.remove('textRed');
     }
 
-    setCeilingIsDisabled(false);
     setCeiling(startingCeiling)
     setCeilingSliderColor(startingCeilingColor);
     let ceilingLabel = document.getElementById('ceiling-label');
@@ -274,7 +262,7 @@ export default function docsPage({ testData, userData }) {
     setSpeed(newValue);
   }
 
-  const handleCeilingSlider = (event, newValue) => {
+  const handleCeilingSlider = (newValue) => {
     let color = colorsForSliders.green;
     if (newValue >= 480) color = colorsForSliders.purple;
     else if (newValue < 400) {
@@ -315,28 +303,26 @@ export default function docsPage({ testData, userData }) {
 
     let pointsGot = 0;
 
-    setNumberOfEnginesSelectorIsDisabled(true);
+    setFieldsAreDisabled(true)
+
     if (userAnswer.engines.number === quiz[currentQuestion].answers.engines.number) {
       pointsGot += 0.2
     } else {
       setNumberOfEnginesSelectorError(true);
     }
 
-    setTypeOfEnginesSelectorIsDisabled(true);
     if (userAnswer.engines.type === quiz[currentQuestion].answers.engines.type) {
       pointsGot += 0.2
     } else {
       setTypeOfEnginesSelectorError(true);
     }
 
-    setTypeOfAircraftSelectorIsDisabled(true);
     if (userAnswer.category === quiz[currentQuestion].answers.category) {
       pointsGot += 0.2
     } else {
       setTypeOfAircraftSelectorError(true);
     }
 
-    setSpeedIsDisabled(true);
     if (quiz[currentQuestion].answers.speed + 50 > userAnswer.speed && userAnswer.speed > quiz[currentQuestion].answers.speed - 50) {
       pointsGot += 0.2
       setSpeedSliderColor(colorsForSliders.correctAnswer);
@@ -346,7 +332,6 @@ export default function docsPage({ testData, userData }) {
       document.getElementById('speed-label').classList.add('textRed');
     }
 
-    setCeilingIsDisabled(true);
     if (quiz[currentQuestion].answers.ceiling + 30 > userAnswer.ceiling && userAnswer.ceiling > quiz[currentQuestion].answers.ceiling - 30) {
       pointsGot += 0.2
       setCeilingSliderColor(colorsForSliders.correctAnswer);
@@ -380,25 +365,21 @@ export default function docsPage({ testData, userData }) {
   const nextQuestion = async (e) => {
     document.getElementById('test-answer').classList.add('is-hidden')
 
-    setNumberOfEnginesSelectorIsDisabled(false);
+    setFieldsAreDisabled(false);
     setNumberOfEnginesSelectorError(false);
     setNumberOfEngines('')
 
-    setTypeOfEnginesSelectorIsDisabled(false);
     setTypeOfEnginesSelectorError(false);
     setTypeOfEngines('')
 
-    setTypeOfAircraftSelectorIsDisabled(false);
     setTypeOfAircraftSelectorError(false);
     setTypeOfAircraft('')
 
-    setSpeedIsDisabled(false);
     setSpeed(startingSpeed)
     setSpeedSliderColor(startingSpeedColor);
     document.getElementById('speed-label').classList.remove('textGreen');
     document.getElementById('speed-label').classList.remove('textRed');
 
-    setCeilingIsDisabled(false);
     setCeiling(startingCeiling)
     setCeilingSliderColor(startingCeilingColor);
     document.getElementById('ceiling-label').classList.remove('textGreen');
@@ -458,71 +439,11 @@ export default function docsPage({ testData, userData }) {
                 Тестирование на знание ЛТХ ВС, которые чаще всего встречаются при ОВД в зоне МУДР (все ВС перечислены на <Link href='/aircraft'>соответствующей странице</Link>). По-умолчанию запущено тестирование из 5 вопросов. Каждый вопрос состоит из 5 частей: количество двигателей ВС, их тип, категория ВС по шкале ИКАО  по турбулентности в следе (WTC), крейсерская скорость (пока в км/ч, <b>в Махах будет реализовано, но позже</b>) и потолок ВС (в FL). За каждый верный ответ даётся по 0.2 балла. Таким образом, за абсолютно верный ответ можно получить 1 балл.
               </h5>
             </GridItem>
-            <GridItem
-              md={6}
-              className={classes.mlAuto + " " + classes.mrAuto + ' margin-bottom-fix'}
-              style={{ marginBottom: '3em !important' }}
-              key='test-cities-settings-number'
-            >
-              <FormControl fullWidth className={classes.selectFormControl}>
-                <InputLabel
-                  htmlFor="simple-select"
-                  className={classes.selectLabel}
-                >
-                  Количество вопросов
-                    </InputLabel>
-                <Select
-                  MenuProps={{
-                    className: classes.selectMenu
-                  }}
-                  classes={{
-                    select: classes.select
-                  }}
-                  value={amountOfQuestions}
-                  onChange={handleAmountOfQuestionsSelector}
-                  inputProps={{
-                    name: "handleAmountOfQuestionsSelector",
-                    id: "amount-of-questions-selector"
-                  }}
-                >
-                  <MenuItem
-                    disabled
-                    classes={{
-                      root: classes.selectMenuItem
-                    }}
-                  >
-                    Количество вопросов
-                      </MenuItem>
-                  <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelected
-                    }}
-                    value="5"
-                  >
-                    5
-                      </MenuItem>
-                  <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelected
-                    }}
-                    value="10"
-                  >
-                    10
-                      </MenuItem>
-                  <MenuItem
-                    classes={{
-                      root: classes.selectMenuItem,
-                      selected: classes.selectMenuItemSelected
-                    }}
-                    value="20"
-                  >
-                    20
-                      </MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
+            <AmountOfQuestionsSelector
+              amountOfQuestions={amountOfQuestions}
+              handleAmountOfQuestionsSelector={handleAmountOfQuestionsSelector}
+              possibleOptions={[5, 10, 20]}
+            />
             <GridItem
               md={12}
               className={classes.mlAuto + " " + classes.mrAuto}
@@ -537,9 +458,9 @@ export default function docsPage({ testData, userData }) {
                     className={classes.mlAuto + " " + classes.mrAuto}
                     key='12'
                   >
-                    <p className='test-step' dangerouslySetInnerHTML={{ __html: `${currentQuestion + 1}/${quiz.length}` }}></p>
-                    <p className='test-question' dangerouslySetInnerHTML={{ __html: `${quiz[currentQuestion].question}` }}></p>
-                    <p className='test-answer is-hidden' id='test-answer' dangerouslySetInnerHTML={{ __html: `${getTextForAnswer(quiz[currentQuestion].answers)}` }}></p>
+                    <p className='test-step'>{currentQuestion + 1}/{quiz.length}</p>
+                    <p className='test-question'>{quiz[currentQuestion].question}</p>
+                    <p className='test-answer is-hidden' id='test-answer'>{getTextForAnswer(quiz[currentQuestion].answers)}</p>
                   </GridItem>
 
                   <GridItem
@@ -551,7 +472,7 @@ export default function docsPage({ testData, userData }) {
                     <FormControl
                       className={classes.formControl}
                       fullWidth
-                      disabled={numberOfEnginesSelectorIsDisabled}
+                      disabled={fieldsAreDisabled}
                       error={numberOfEnginesSelectorError}
                     >
                       <InputLabel id="answer-number-of-engines-label">Количество двигателей</InputLabel>
@@ -561,10 +482,7 @@ export default function docsPage({ testData, userData }) {
                         value={numberOfEngines}
                         onChange={handleNumberOfEnginesChange}
                       >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
+                        {Array(4).fill(0).map((_, k) => <MenuItem value={k+1}>{k+1}</MenuItem>)}
                       </Select>
                     </FormControl>
                   </GridItem>
@@ -573,12 +491,12 @@ export default function docsPage({ testData, userData }) {
                     sm={6}
                     className={classes.mlAuto + " " + classes.mrAuto + " " + classes.mb3em}
                     key='answer-field-enginges-type'
-                    disabled={typeOfEnginesSelectorIsDisabled}
+                    disabled={fieldsAreDisabled}
                   >
                     <FormControl
                       className={classes.formControl}
                       fullWidth
-                      disabled={typeOfEnginesSelectorIsDisabled}
+                      disabled={fieldsAreDisabled}
                       error={typeOfEnginesSelectorError}
                     >
                       <InputLabel id="answer-type-of-engines-label">Тип двигателей</InputLabel>
@@ -602,7 +520,7 @@ export default function docsPage({ testData, userData }) {
                     <FormControl
                       className={classes.formControl}
                       fullWidth
-                      disabled={typeOfAircraftSelectorIsDisabled}
+                      disabled={fieldsAreDisabled}
                       error={typeOfAircraftSelectorError}
                     >
                       <InputLabel id="answer-type-of-aircraft-label">Категория ВС</InputLabel>
@@ -645,10 +563,17 @@ export default function docsPage({ testData, userData }) {
                         color: speedSliderColor
                       }}
                       marks={marksForSpeed}
-                      disabled={speedIsDisabled}
+                      disabled={fieldsAreDisabled}
                       value={speed}
                     />
                   </GridItem>
+                  <AircraftSlider 
+                    title={`Потолок: FL${ceiling}`}
+                    defaultValue={startingCeiling}
+                    sliderType='ceiling'
+                    marks={marksForCeiling}
+                    disabled={fieldsAreDisabled}
+                  />
                   <GridItem
                     md={6}
                     sm={12}
@@ -680,7 +605,7 @@ export default function docsPage({ testData, userData }) {
                       getAriaValueText={valueLabelFormat}
                       valueLabelFormat={valueLabelFormat}
                       marks={marksForCeiling}
-                      disabled={ceilingIsDisabled}
+                      disabled={fieldsAreDisabled}
                       value={ceiling}
                     />
                   </GridItem>
