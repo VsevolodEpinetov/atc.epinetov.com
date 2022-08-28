@@ -6,7 +6,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 export default class PostService {
   static async getAll(page = 1, numberOfPosts = 4) {
-    const response = await axios.get(`https://rss.app/feeds/_TJquZIzaredTQXmR.xml`);
+    const channels = [ 'aviatorshina' ]
+    const response = await axios.get(`https://rsshub.app/telegram/channel/aviatorshina`);
     const xml = response.data;
     const parseString = require('xml2js').parseString;
     let json;
@@ -14,15 +15,15 @@ export default class PostService {
       json = result;
     });
 
-    //console.log(json);
+    console.log(json);
 
-    const posts = json.rss.channel[0].item;
-    let res=[];
+    //const posts = json.rss.channel[0].item;
+    //let res=[];
 
-    require('dayjs/locale/ru')
-    dayjs.extend(customParseFormat)
+    /*require('dayjs/locale/ru')
+    dayjs.extend(customParseFormat)*/
 
-    posts.splice(0, numberOfPosts).forEach((p) => {
+    /*posts.splice(0, numberOfPosts).forEach((p) => {
       res.push({
         source: 'tg',
         channel: p['dc:creator'].join(''),
@@ -31,7 +32,7 @@ export default class PostService {
         //date: dayjs(p.pubDate.join('')).locale('ru').format('HH:mm, DD MMM')
         date: dayjs(p.pubDate.join('')).locale('ru').format('HH:mm')
       })
-    })
+    })*/
     
     return res;
   }

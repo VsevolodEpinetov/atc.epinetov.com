@@ -54,13 +54,12 @@ export default function IndexPage() {
                   <p className={classes.cardDescription}>
                     От 20 августа 2022 года: <br />
                     — Обновлены АИПы <br />
-                    — Добавлена лента новостей (см. ниже) <br />
                     — Прочие обновления. Что-то починил, что-то поломал. <br />
                   </p>
                 </CardBody>
               </Card>
             </GridItem>
-            <NewsFeed />
+            {/*<NewsFeed />*/}
             <HeroCard
               large
               title='Воздушные суда'
