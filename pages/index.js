@@ -43,22 +43,6 @@ export default function IndexPage() {
       <div className={classes.projects}>
         <div className={classes.container}>
           <GridContainer>
-            <GridItem xs={12} sm={12} md={12}>
-              <Card
-                raised
-              >
-                <CardBody>
-                  <h3 className={classes.cardTitleWhite}>
-                    Привет! 👋
-                  </h3>
-                  <p className={classes.cardDescription}>
-                    От 20 августа 2022 года: <br />
-                    — Обновлены АИПы <br />
-                    — Прочие обновления. Что-то починил, что-то поломал. <br />
-                  </p>
-                </CardBody>
-              </Card>
-            </GridItem>
             {/*<NewsFeed />*/}
             <HeroCard
               large

@@ -203,7 +203,7 @@ export default function docsPage({ allTrdData }) {
             >
               <h2 className={classes.title}>Технология работы</h2>
               <h5 className={classes.description}>
-                Технология работы диспетчера РЛУ и ПК МАДЦ. Актуальна на 9 сентября 2021 г.
+                Технология работы диспетчера РЛУ и ПК МАДЦ. Актуальна на 4 октября 2022 г.
               </h5>
             </GridItem>
             <ReactCodeInput
